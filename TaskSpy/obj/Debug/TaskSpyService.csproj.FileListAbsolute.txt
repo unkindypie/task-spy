@@ -1,0 +1,10 @@
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\bin\Debug\TaskSpy.exe.config
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\bin\Debug\TaskSpy.exe
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\bin\Debug\TaskSpy.pdb
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpyService.csprojAssemblyReference.cache
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.ProjectInstaller.resources
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.TaskSpyService.resources
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpyService.csproj.GenerateResource.cache
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpyService.csproj.CoreCompileInputs.cache
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.exe
+C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.pdb

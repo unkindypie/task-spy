@@ -1,0 +1,19 @@
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.exe.config
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.exe
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.pdb
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.csprojResolveAssemblyReference.cache
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.Form1.resources
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.Properties.Resources.resources
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.csproj.GenerateResource.Cache
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.exe
+c:\users\10525\documents\visual studio 2015\Projects\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.exe.config
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\bin\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.csprojAssemblyReference.cache
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.Form1.resources
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.Properties.Resources.resources
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.csproj.GenerateResource.cache
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.csproj.CoreCompileInputs.cache
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\Max\Downloads\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\DemotInterfaceTaskSpy\obj\Debug\DemotInterfaceTaskSpy.pdb
