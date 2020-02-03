@@ -67,15 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBConnector.cs" />
+    <Compile Include="Monitor.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="TaskSpyService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="TaskSpyService.cs" />
     <Compile Include="TaskSpyService.Designer.cs">
       <DependentUpon>TaskSpyService.cs</DependentUpon>
     </Compile>

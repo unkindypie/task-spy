@@ -162,8 +162,10 @@
             // textBox5
             // 
             this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox5.Location = new System.Drawing.Point(142, 242);
             this.textBox5.Name = "textBox5";
+            this.textBox5.PasswordChar = '*';
             this.textBox5.Size = new System.Drawing.Size(169, 20);
             this.textBox5.TabIndex = 12;
             // 

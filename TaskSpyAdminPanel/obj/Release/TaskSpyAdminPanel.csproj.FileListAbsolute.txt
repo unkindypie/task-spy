@@ -1,0 +1,9 @@
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\bin\Release\DemotInterfaceTaskSpy.exe.config
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\bin\Release\DemotInterfaceTaskSpy.exe
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\bin\Release\DemotInterfaceTaskSpy.pdb
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\DemotInterfaceTaskSpy.Form1.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\DemotInterfaceTaskSpy.Properties.Resources.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\TaskSpyAdminPanel.csproj.GenerateResource.cache
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\TaskSpyAdminPanel.csproj.CoreCompileInputs.cache
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\DemotInterfaceTaskSpy.exe
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\Release\DemotInterfaceTaskSpy.pdb

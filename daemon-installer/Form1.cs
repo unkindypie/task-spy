@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
@@ -56,11 +57,10 @@ namespace daemon_installer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!(textBox1.Text != "" && textBox2.Text.Length > 4
-                && textBox3.Text.Length > 1 && textBox4.Text.Length > 1
+            if (!(textBox1.Text != "" && textBox3.Text.Length > 1 && textBox4.Text.Length > 1
                 && textBox5.Text.Length > 3))
             {
-                MessageBox.Show("Все поля должны быть заполнены!");
+                MessageBox.Show("Все поля должны быть заполнены!(IP можно оставить пустым)");
                 return;
             }
             try
@@ -90,16 +90,26 @@ namespace daemon_installer
                 p.StandardInput.Flush();
                 p.StandardInput.Close();
                 p.Close();
-                //запускаю службу
-                ServiceController controller = new ServiceController("TaskSpyService");
-                if (controller.Status != ServiceControllerStatus.Running)
-                    controller.Start();
-
             } catch(Exception ex)
             {
                 MessageBox.Show("Установка не удалась!", ex.ToString());
+                Close();
+                return;
             }
-            MessageBox.Show("Служба успешно установлена, добавлена в автозапуск и запущена. Теперь за вами следят.");
+            try
+            {
+                ServiceController controller = new ServiceController("TaskSpyService");
+                if (controller.Status != ServiceControllerStatus.Running)
+                {
+                    controller.Start();
+                }
+            }
+            catch
+            {
+
+            }
+          
+            MessageBox.Show("Служба успешно установлена, добавлена в автозапуск. Теперь за вами следят.");
             Close();
         }
     }
