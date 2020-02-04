@@ -1,0 +1,8 @@
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Release\TaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Release\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Release\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Release\TaskSpy.ProjectInstaller.resources
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Release\TaskSpy.ServiceConfig.resources
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Release\TaskSpyService.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Release\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Release\TaskSpy.pdb

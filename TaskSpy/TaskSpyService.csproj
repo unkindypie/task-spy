@@ -67,8 +67,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Monitoring\WindowsServerWorker.cs" />
+    <Compile Include="ProcessModel.cs" />
     <Compile Include="DBConnector.cs" />
-    <Compile Include="Monitor.cs" />
+    <Compile Include="Monitoring\Monitor.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

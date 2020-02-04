@@ -8,3 +8,12 @@ C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpyService.csproj.
 C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpyService.csproj.CoreCompileInputs.cache
 C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.exe
 C:\Users\Fullmetal\source\repos\TaskSpy\TaskSpy\obj\Debug\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Debug\TaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Debug\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\bin\Debug\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpyService.csprojResolveAssemblyReference.cache
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpy.ProjectInstaller.resources
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpy.ServiceConfig.resources
+C:\Users\soft\Desktop\task-spy-master\TaskSpy\obj\Debug\TaskSpyService.csproj.GenerateResource.Cache

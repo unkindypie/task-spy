@@ -41,16 +41,17 @@ namespace TaskSpy
             builder.Password = password;
             connection.ConnectionString = builder.ConnectionString;
         }
-        public long createReport(long totalMemoryLoad, float totalCpuLoad, string localUsername, string machineName, string localIP)
+        public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         {
-            SqlCommand cmd = new SqlCommand($"insert into reports_mutator values ({totalMemoryLoad}, @totalCPULoad, '{localUsername}', '{machineName}','{localIP}')", connection);
+            SqlCommand cmd = new SqlCommand($"insert into reports_mutator values ({totalMemoryLoad}, @totalCPULoad, '{machineName}','{localIP}')", connection);
             cmd.Parameters.AddWithValue("@totalCPULoad", SqlDbType.Float).Value = totalCpuLoad;
             return int.Parse(cmd.ExecuteScalar().ToString());
         }
         public void sendProcess(long reportId, ProcessModel processModel)
         {
             SqlCommand cmd = new SqlCommand($"insert into processes_mutator values ({reportId}, @cpuLoad, {processModel.memoryUsage}, "+
-                $"{processModel.pid}, {processModel.parentPID}, '{processModel.name}', '{processModel.path}', {(processModel.isSystem? 1 : 0)})", connection);
+                $"{processModel.pid}, {processModel.parentPID}, '{processModel.name}', '{processModel.path}'," 
+                + $" {(processModel.isSystem? 1 : 0)}, '{processModel.owner}', {(processModel.isOwnerReal ? 1 : 0)})", connection);
             cmd.Parameters.AddWithValue("@cpuLoad", SqlDbType.Float).Value = processModel.cpuUsage;
             cmd.ExecuteNonQuery();
         }

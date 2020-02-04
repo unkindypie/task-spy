@@ -110,6 +110,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\TaskSpy.vshost.exe" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\TaskSpy.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

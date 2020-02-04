@@ -7,3 +7,12 @@ C:\Users\Fullmetal\source\repos\task-spy\daemon-installer\obj\x64\Release\TaskSp
 C:\Users\Fullmetal\source\repos\task-spy\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csproj.CoreCompileInputs.cache
 C:\Users\Fullmetal\source\repos\task-spy\daemon-installer\obj\x64\Release\daemon_installer.exe
 C:\Users\Fullmetal\source\repos\task-spy\daemon-installer\obj\x64\Release\daemon_installer.pdb
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\bin\x64\Release\daemon_installer.exe.config
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\bin\x64\Release\daemon_installer.exe
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\bin\x64\Release\daemon_installer.pdb
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\obj\x64\Release\daemon_installer.Form1.resources
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\obj\x64\Release\daemon_installer.Properties.Resources.resources
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\obj\x64\Release\daemon_installer.exe
+C:\Users\soft\Desktop\task-spy-master\daemon-installer\obj\x64\Release\daemon_installer.pdb
+C:\Users\Fullmetal\source\repos\task-spy\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csprojAssemblyReference.cache

@@ -1,42 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
-using System.IO;
 using System.Management;
-using System.Threading;
 
-
-namespace TaskSpy
+namespace TaskSpy.Monitoring
 {
-    class ProcessModel
-    {
-        public string name = "<unacessable>";
-        public string path = "<unacessable>";
-        public long memoryUsage; //kb's
-        public float cpuUsage = 0; //percentage
-        public DateTime lastTime = new DateTime();
-        public TimeSpan lastTotalProcessorTime = new TimeSpan();
-        public int parentPID;
-        public int pid;
-        public bool isSystem = false;
-
-        public ProcessModel(string name, long memoryUsage, int pid)
-        {
-            this.name = name;
-            this.memoryUsage = memoryUsage;
-            this.pid = pid;
-        }
-        public override string ToString()
-        {
-            //return $"{pid}n:{name}; p:{path}; m:{memoryUsage}; c:{cpuUsage}";
-            return $"cpu:{cpuUsage}; name:{name}";
-        }
-    }
     //класс для мониторинга процессов
-    class Monitor
+    public partial class Monitor
     {
         private static Dictionary<int, ProcessModel> models = new Dictionary<int, ProcessModel>();
         static TimeSpan curTotoalProcTime;
@@ -72,12 +43,6 @@ namespace TaskSpy
             {
                 return scanCounter;
             }
-        }
-        static private int GetParentProcess(int Id)
-        {
-            int parentPid = -1;
-           
-            return parentPid;
         }
 
         static public List<ProcessModel> ScanProcesses()
@@ -133,10 +98,19 @@ namespace TaskSpy
                             int returnVal = Convert.ToInt32(mo.InvokeMethod("GetOwner", argList));
                             if (returnVal == 0)
                             {
-                                processModel.isSystem = (argList[0].ToLower() == "система" || argList[0].ToLower() == "system");
+                                processModel.isSystem = (argList[0].ToLower() == "система"
+                                    || argList[0].ToLower() == "system"
+                                    || argList[0].ToLower() == "network service"
+                                    || argList[0].ToLower() == "local service");
+
+                                //пользователь процесса
+                                processModel.owner = argList[0];
+                                //определяю, является ли пользователь пользователем какой-то службы или это настоящий пользователь
+                                processModel.isOwnerReal = IsActualUser(Environment.MachineName, processModel.owner);
                             }
                             else processModel.isSystem = true;
                         }
+
                     }
                     catch
                     {

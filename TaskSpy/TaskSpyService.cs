@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Xml.Serialization;
 using System.IO;
+using TaskSpy.Monitoring;
 
 namespace TaskSpy
 {
@@ -84,8 +79,8 @@ namespace TaskSpy
                 $"username:{config.username}, password:{config.password}");
 
             DBConnector.SetCredentials(config.servername, config.ip, config.username, config.password);
-            string windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            var splited = windowsIdentity.Split('\\');
+            var machineName = Environment.MachineName;
+            var userName = Environment.UserName;
             string ip = GetLocalIPAddress();
 
             eventLog1.WriteEntry("TaskSpyService is started.");
@@ -101,8 +96,7 @@ namespace TaskSpy
                     long reportID = DBConnector.Self.createReport(
                         Monitor.TotalMemoryUsage,
                         Monitor.TotalCpuUsage,
-                        splited[1],
-                        splited[0],
+                        machineName,
                         ip
                         );
                     
@@ -121,7 +115,9 @@ namespace TaskSpy
 
         protected override void OnStop()
         {
+            
             eventLog1.WriteEntry("TaskSpyService is stoped.");
+            
         }
     }
 }
