@@ -15,3 +15,14 @@ C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\TaskS
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.csproj.CoreCompileInputs.cache
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.exe
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Release\DemotInterfaceTaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Release\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Release\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.csprojResolveAssemblyReference.cache
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.Form1.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.Properties.Resources.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.LoginForm.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.ProcessesTab.resources

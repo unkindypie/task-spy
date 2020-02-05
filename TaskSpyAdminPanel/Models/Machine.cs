@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskSpyAdminPanel.Models
 {
-    public class Report
+    public class Machine
     {
     }
 }

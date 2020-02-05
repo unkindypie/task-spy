@@ -7,3 +7,17 @@ C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpy
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.CoreCompileInputs.cache
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.exe
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.Form1.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.LoginForm.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ProcessesTab.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.Properties.Resources.resources
+C:\Users\soft\Desktop\task-spy-05\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.GenerateResource.Cache
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csprojAssemblyReference.cache
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.LoginForm.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ProcessTab.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.FieldsHider.resources

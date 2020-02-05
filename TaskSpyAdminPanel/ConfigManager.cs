@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Windows.Forms;
 
+
 namespace TaskSpyAdminPanel.Config
 {
     [Serializable]
@@ -14,8 +15,11 @@ namespace TaskSpyAdminPanel.Config
     {
         public bool showSystemProcesses = false;
         public bool highlightUnwhitelisted = false;
+        public bool showEveryUser = false;
         public int sortBy = 0;
         public int machine = 0;
+        public bool sortFlowAscending = true;
+        
         public StateConfig()
         {
         }
@@ -30,6 +34,7 @@ namespace TaskSpyAdminPanel.Config
     class ConfigManager
     {
         static StateConfig config = new StateConfig();
+        static bool isLoaded = false;
         static public StateConfig Config
         {
             get
@@ -47,7 +52,7 @@ namespace TaskSpyAdminPanel.Config
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(StateConfig));
                 using (FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.xml"
-                        ), FileMode.OpenOrCreate))
+                        ), FileMode.Create))
                 {
                     formatter.Serialize(fs, config);
                 }
@@ -59,6 +64,7 @@ namespace TaskSpyAdminPanel.Config
         }
         static public void Load()
         {
+            if (isLoaded) return;
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(StateConfig));
@@ -69,13 +75,14 @@ namespace TaskSpyAdminPanel.Config
                     )
                 {
                     config = (StateConfig)formatter.Deserialize(fs);
+                    isLoaded = true;
                 }
 
             }
             catch (Exception e)
             {
                 config = new StateConfig();
-                MessageBox.Show(e.ToString());
+                isLoaded = true;
             }
         }
     }

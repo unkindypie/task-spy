@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace TaskSpyAdminPanel.DBWorker
+using TaskSpyAdminPanel.Models;
+using TaskSpyAdminPanel.Config;
+
+namespace TaskSpyAdminPanel.DB
 {
     class DBWorker
     {
@@ -37,7 +42,46 @@ namespace TaskSpyAdminPanel.DBWorker
             builder.InitialCatalog = @"task-spy";
             builder.UserID = userId;
             builder.Password = password;
+            builder.MultipleActiveResultSets = true;
             connection.ConnectionString = builder.ConnectionString;
+
+        }
+        public List<User> fetchUsers()
+        {
+            List<User> users = new List<User>();
+            SqlCommand cmd = new SqlCommand($"select local_username, pseudonym, id from users where is_real = 1", connection);
+            var reader = cmd.ExecuteReader();
+            var table = new DataTable();
+            table.Load(reader);
+            
+            foreach(DataRow row in table.Rows)
+            {
+                users.Add(new User(row["local_username"].ToString(), row["pseudonym"].ToString(), int.Parse(row["id"].ToString()), true));
+            }
+
+            return users;
+        }
+        public DataTable fetchProcesses(long userId, long machineId)
+        {
+            string commandText = $"execute last_user_report {userId}, {(ConfigManager.Config.showEveryUser ? 1 : 0)}, {machineId}";
+            
+            SqlCommand cmd = new SqlCommand(commandText, connection);
+            //MessageBox.Show(commandText);
+            var reader = cmd.ExecuteReader();
+            var table = new DataTable();
+            table.Load(reader);
+            return table;
+        }
+        public async Task<DataTable> fetchProcessesAsync(long userId, long machineId, bool showEveryUser)
+        {
+            string commandText = $"execute last_user_report {userId}, {(showEveryUser? 1 : 0)}, {machineId}";
+
+            SqlCommand cmd = new SqlCommand(commandText, connection);
+            //MessageBox.Show(commandText);
+            var reader = await cmd.ExecuteReaderAsync();
+            var table = new DataTable();
+            table.Load(reader);
+            return table;
         }
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{

@@ -186,10 +186,11 @@ join processEntries on processEntries.id = processes.entry_id
 join reports on reports.id = report_id
 where processes.report_id = (select id from reports where created = (select max(created) from reports));
 
-delete from processes;
-delete from processEntries;
-delete from reports;
-delete from users;
-delete from ips;
-delete from machines;
+--delete from processes;
+--delete from processEntries;
+--delete from reports;
+--delete from users;
+--delete from ips;
+--delete from machines;
 
+select local_username, pseudonym, id from users where is_real = 1;

@@ -74,13 +74,39 @@
     <Compile Include="AdminPanelMainForm.Designer.cs">
       <DependentUpon>AdminPanelMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ProcessesTab.cs" />
+    <Compile Include="ProcessesTab.Designer.cs">
+      <DependentUpon>ProcessesTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProcessTab.Designer.cs">
+      <DependentUpon>ProcessTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AdminPanelMainForm.resx">
       <DependentUpon>AdminPanelMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessesTab.resx">
+      <DependentUpon>ProcessesTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessTab.resx">
+      <DependentUpon>ProcessTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

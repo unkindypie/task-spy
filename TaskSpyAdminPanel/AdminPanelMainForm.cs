@@ -10,40 +10,67 @@ using System.Windows.Forms;
 //мои пространства имен
 using TaskSpyAdminPanel.Models;
 using TaskSpyAdminPanel.Config;
+using TaskSpyAdminPanel.DB;
 
 namespace TaskSpyAdminPanel
 {
     public partial class Form1 : Form
     {
+        LoginForm loginForm;
         void FillUsers()
         {
-
+            
+            if (DBWorker.Self.Connect())
+            {
+                List<User> users = DBWorker.Self.fetchUsers();
+                lbUsers.DataSource = users;
+            }
+            else
+            {
+                MessageBox.Show("Проблемы с подключением к базе данных. Проверьте интернет соеденение.");
+            }
+           
+            
         }
         void OnLaunch()
         {
             //десериализую конфиг и применяю его значения на фильтрах в форме
             ConfigManager.Load();
-            chbHighlightUnwhitelisted.Checked = ConfigManager.Config.highlightUnwhitelisted;
-            chbShowSysProc.Checked = ConfigManager.Config.showSystemProcesses;
-            if(ConfigManager.Config.sortBy < cbSortBy.Items.Count)
-            {
-                cbSortBy.SelectedIndex = ConfigManager.Config.sortBy;
-            }
-            if (ConfigManager.Config.machine < cbCurMachine.Items.Count)
-            {
-                cbCurMachine.SelectedIndex = ConfigManager.Config.machine;
-            }
+
+
         }
         void SaveConfigChanges()
         {
             //сериализую конфигурацию фильтров
-            ConfigManager.Config = new StateConfig(
-                chbShowSysProc.Checked,
-                chbHighlightUnwhitelisted.Checked,
-                cbSortBy.SelectedIndex,
-                cbCurMachine.SelectedIndex
-                );
             ConfigManager.Save();
+        }
+
+        void AddUserTab(User user) {
+            var tabpage = new TabPage();
+            tabpage.Text = $"Процессы пользователя {user.Name}";
+            var processesTab = new ProcessesTab(user);
+            processesTab.Dock = DockStyle.Fill;
+            tabpage.Controls.Add(processesTab);
+            tabControl1.TabPages.Add(tabpage);
+            //переключаюсь на новую вкладку
+            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+            //если это первая октрытая вкладка, то по какой-то причине
+            //событие selected не отрабатывает, так что нужно делать все самому
+            if (tabControl1.TabCount == 1)
+            {
+                processesTab.TabOpened();
+            }
+          
+        }
+
+        void AddProcessTab(TaskSpyAdminPanel.Models.Process process)
+        {
+            var tabpage = new TabPage();
+            tabpage.Text = $"{process}";
+            var processesTab = new ProcessTab();
+            processesTab.Dock = DockStyle.Fill;
+            tabpage.Controls.Add(processesTab);
+            tabControl1.TabPages.Add(tabpage);
         }
 
         public Form1()
@@ -59,29 +86,29 @@ namespace TaskSpyAdminPanel
         private void Form1_Load(object sender, EventArgs e)
         {
             OnLaunch();
+            //loginForm = new LoginForm();
+            //Show();
+            //if (loginForm.ShowDialog() != DialogResult.OK)
+            //{
+            //    Close();
+            //}
+            //DBWorker.SetCredentials("SQL_E1118P1", "10.3.31.8", "E1118P1", "1P8111E");
+            DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
+            FillUsers();
+
+            
 
 
             // This will change the ListBox behaviour, so you can customize the drawing of each item on the list.
             // The fixed mode makes every item on the list to have a fixed size. If you want each item having
             // a different size, you can use DrawMode.OwnerDrawVariable.
-            listBox1.DrawMode = DrawMode.OwnerDrawFixed;
+            lbUsers.DrawMode = DrawMode.OwnerDrawFixed;
 
             // Here we define the height of each item on your list.
-            listBox1.ItemHeight = 40;
+            lbUsers.ItemHeight = 40;
 
             // Here i will just make an example data source, to emulate the control you are trying to reproduce.
-            var dataSet = new List<Tuple<string, string>>();
-            dataSet.Add(new Tuple<string, string>($"A311_{10}", ""));
-            dataSet.Add(new Tuple<string, string>($"A311_{11}", ""));
-            dataSet.Add(new Tuple<string, string>($"A311_{12}", "Кто-то"));
-            dataSet.Add(new Tuple<string, string>($"A311_{13}", "Ламер"));
-            dataSet.Add(new Tuple<string, string>($"A311_{14}", "Еще кто-то"));
-            for (int i = 15; i < 25; i++)
-            {
-                dataSet.Add(new Tuple<string, string>($"A311_{i}", ""));
-            }
-            listBox1.DataSource = dataSet;
-
+          
 
             var table = new DataTable();
             table.Columns.Add("Имя процесса");
@@ -91,13 +118,6 @@ namespace TaskSpyAdminPanel
             table.Columns.Add("Родительский процесс");
             table.Rows.Add("chrome");
             table.Rows.Add("minecraft");
-            dataGridView1.DataSource = table;
-            var tab = tabControl1.TabPages[1];
-            //tabControl1.TabPages.Remove(tab);
-            foreach(Control c in tab.Controls)
-            {
-               // MessageBox.Show(c.Name);
-            }
         }
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -135,21 +155,21 @@ namespace TaskSpyAdminPanel
             e.DrawBackground();
 
             // Here you get the data item associated with the current item being drawed.
-            var dataItem = listBox1.Items[e.Index] as Tuple<string, string>;
+            var user = lbUsers.Items[e.Index] as User;
 
             // Here we will format the font of the part corresponding to the Time text of your list item.
             // You can change to wathever you want - i defined it as a bold font.
             var timeFont = new Font("Microsoft Sans Serif", 9.25f, FontStyle.Bold);
 
             // Here you draw the time text on the top of the list item, using the format you defined.
-            e.Graphics.DrawString(dataItem.Item1, timeFont, Brushes.DarkBlue, e.Bounds.Left + 3, e.Bounds.Top + 5);
+            e.Graphics.DrawString(user.Name, timeFont, Brushes.DarkBlue, e.Bounds.Left + 3, e.Bounds.Top + 5);
 
             // Now we draw the avaliable rooms part. First we define our font.
             var roomsFont = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
-            if(dataItem.Item2 != "")
+            if(user.Pseudonym != "")
             {
                 // And, finally, we draw that text.
-                e.Graphics.DrawString(dataItem.Item2, roomsFont, roomsBrush, e.Bounds.Left + 3, e.Bounds.Top + 18);
+                e.Graphics.DrawString(user.Pseudonym, roomsFont, roomsBrush, e.Bounds.Left + 3, e.Bounds.Top + 18);
             }
 
         }
@@ -162,6 +182,54 @@ namespace TaskSpyAdminPanel
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveConfigChanges();
+        }
+
+        private void lbUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lbUsers_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = this.lbUsers.IndexFromPoint(e.Location);
+            if (index != System.Windows.Forms.ListBox.NoMatches)
+            {
+                AddUserTab(lbUsers.SelectedItem as User);
+            }
+        }
+
+        private void lbUsers_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                AddUserTab(lbUsers.SelectedItem as User);
+            }
+        }
+
+        private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            TabPage page = tabControl1.SelectedTab;
+          
+            if (page != null)
+            {
+                tabControl1.TabPages.Remove(page);
+                if(tabControl1.TabPages.Count != 0)
+                {
+                    tabControl1.SelectedTab = tabControl1.TabPages[tabControl1.TabPages.Count - 1];
+                }
+                
+            }
+        }
+        //подгрузка процессов с бд только при октрытии
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            if(tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0 && 
+                tabControl1.SelectedTab.Controls[0].GetType().ToString() == "TaskSpyAdminPanel.ProcessesTab")
+            {
+                (tabControl1.SelectedTab.Controls[0] as ProcessesTab).TabOpened();
+
+
+            }
         }
     }
 }
