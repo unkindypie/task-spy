@@ -9,6 +9,7 @@ using TaskSpy.Monitoring;
 
 namespace TaskSpy
 {
+    //конфиг для хранения данных аутентификации на sql server
     [Serializable]
     public class ServiceConfig
     {
@@ -59,6 +60,7 @@ namespace TaskSpy
         protected override void OnStart(string[] args)
         {
             ServiceConfig config;
+            //десериализую конфиг для авторизации на сервере
             try
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(ServiceConfig));
@@ -77,13 +79,15 @@ namespace TaskSpy
             eventLog1.WriteEntry($"Config was readed with the " +
                 $"folowing fields: ip:{config.ip}, servername: {config.servername},"+
                 $"username:{config.username}, password:{config.password}");
-
+            //устанавливаю параметры для подключения к серверу
             DBConnector.SetCredentials(config.servername, config.ip, config.username, config.password);
+           
             var machineName = Environment.MachineName;
             var userName = Environment.UserName;
             string ip = GetLocalIPAddress();
 
             eventLog1.WriteEntry("TaskSpyService is started.");
+            //сканирование будет проводиться каждые 10 секунд
             Timer timer = new Timer();
             timer.Interval = 10000;
             timer.Elapsed += new ElapsedEventHandler((object obj, ElapsedEventArgs e)=> {
@@ -93,13 +97,14 @@ namespace TaskSpy
                 //корректного вычисления нагрузки на процессор), то начинаем слать отчеты
                 if (DBConnector.Self.Connect() && Monitor.ScanCounter > 3)
                 {
+                    //делаю отчет
                     long reportID = DBConnector.Self.createReport(
                         Monitor.TotalMemoryUsage,
                         Monitor.TotalCpuUsage,
                         machineName,
                         ip
                         );
-                    
+                    //шлю процессы, привязанные к отчету
                     foreach (ProcessModel p in processes)
                     {
                         DBConnector.Self.sendProcess(reportID, p);

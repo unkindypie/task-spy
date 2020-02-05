@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DemotInterfaceTaskSpy.Properties
+namespace TaskSpyAdminPanel.Properties
 {
 
 

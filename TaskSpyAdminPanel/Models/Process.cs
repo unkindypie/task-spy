@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskSpyAdminPanel.Models
 {
-    class Report
+    class Process
     {
     }
 }

@@ -7,11 +7,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//мои пространства имен
+using TaskSpyAdminPanel.Models;
+using TaskSpyAdminPanel.Config;
 
-namespace DemotInterfaceTaskSpy
+namespace TaskSpyAdminPanel
 {
     public partial class Form1 : Form
     {
+        void FillUsers()
+        {
+
+        }
+        void OnLaunch()
+        {
+            //десериализую конфиг и применяю его значения на фильтрах в форме
+            ConfigManager.Load();
+            chbHighlightUnwhitelisted.Checked = ConfigManager.Config.highlightUnwhitelisted;
+            chbShowSysProc.Checked = ConfigManager.Config.showSystemProcesses;
+            if(ConfigManager.Config.sortBy < cbSortBy.Items.Count)
+            {
+                cbSortBy.SelectedIndex = ConfigManager.Config.sortBy;
+            }
+            if (ConfigManager.Config.machine < cbCurMachine.Items.Count)
+            {
+                cbCurMachine.SelectedIndex = ConfigManager.Config.machine;
+            }
+        }
+        void SaveConfigChanges()
+        {
+            //сериализую конфигурацию фильтров
+            ConfigManager.Config = new StateConfig(
+                chbShowSysProc.Checked,
+                chbHighlightUnwhitelisted.Checked,
+                cbSortBy.SelectedIndex,
+                cbCurMachine.SelectedIndex
+                );
+            ConfigManager.Save();
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -21,9 +55,12 @@ namespace DemotInterfaceTaskSpy
         {
 
         }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
+            OnLaunch();
+
+
             // This will change the ListBox behaviour, so you can customize the drawing of each item on the list.
             // The fixed mode makes every item on the list to have a fixed size. If you want each item having
             // a different size, you can use DrawMode.OwnerDrawVariable.
@@ -85,7 +122,7 @@ namespace DemotInterfaceTaskSpy
             {
                 roomsBrush = Brushes.Gray;
             }
-
+            
             // Looking more at your example, i noticed a gray line at the bottom of each item.
             // Lets reproduce that, too.
             var linePen = new Pen(SystemBrushes.Control);
@@ -120,6 +157,11 @@ namespace DemotInterfaceTaskSpy
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveConfigChanges();
         }
     }
 }
