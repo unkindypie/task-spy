@@ -83,6 +83,33 @@ namespace TaskSpyAdminPanel.DB
             table.Load(reader);
             return table;
         }
+
+        public async Task<List<Machine>> fetchUserMachines(long userId)
+        {
+            string commandText = $"execute get_user_machines {userId}";
+            SqlCommand cmd = new SqlCommand(commandText, connection);
+            var reader = await cmd.ExecuteReaderAsync();
+            var table = new DataTable();
+            var machines = new List<Machine>();
+            
+            table.Load(reader);
+
+            foreach (DataRow row in table.Rows)
+            {
+                machines.Add(new Machine() {
+                    Name = row["name"].ToString(),
+                    Id = long.Parse(row["machine_id"].ToString()),
+                    LastReport = DateTime.Parse(row["created"].ToString())
+                });
+            }
+            //сортирую по времени отчета, чтобы сверху были машины
+            //со свежими отчетами
+            machines = machines.OrderByDescending(m => m.LastReport).ToList();
+
+            return machines;
+
+        }
+
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{
         //    SqlCommand cmd = new SqlCommand($"insert into reports_mutator values ({totalMemoryLoad}, @totalCPULoad, '{machineName}','{localIP}')", connection);

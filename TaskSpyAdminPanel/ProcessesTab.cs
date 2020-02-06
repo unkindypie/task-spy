@@ -14,19 +14,20 @@ using TaskSpyAdminPanel.DB;
 
 namespace TaskSpyAdminPanel
 {
-    public class FieldsHider
+
+    public partial class ProcessesTab : UserControl, ControllableTab
     {
-        public long Id
+        public class FieldsHider
         {
-            get; set;
+            public long Id
+            {
+                get; set;
+            }
+            public bool IsSystem
+            {
+                get; set;
+            }
         }
-        public bool IsSystem
-        {
-            get; set;
-        }
-    }
-    public partial class ProcessesTab : UserControl
-    {
         User user;
         public bool loaded = false;
         DateTime lastLoad;
@@ -42,9 +43,26 @@ namespace TaskSpyAdminPanel
             dbNamesToUI.Add("pid", "PID");
             dbNamesToUI.Add("parent_pid", "Материнский PID");
         }
-
-        public void TabOpened()
+        bool _isActive = false;
+        public bool IsActive
         {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                if(value == false)
+                {
+                    updateTimer.Stop();
+                }
+                _isActive = value;
+            }
+        }
+        public void TabOpenned()
+        {
+            IsActive = true;
+            updateTimer.Start();
             if (!loaded)
             {
                 LoadProcesses();
@@ -58,8 +76,14 @@ namespace TaskSpyAdminPanel
         }
         public async void LoadProcesses()
         {
-            var table = await DBWorker.Self.fetchProcessesAsync(user.Id, 2, chbShowEveryUser.Checked);
-     
+            //загружаю с машины и процессы с бд
+            cbCurMachine.DataSource = await DBWorker.Self.fetchUserMachines(user.Id);
+            var table = await DBWorker.Self.fetchProcessesAsync(
+                user.Id,
+                (cbCurMachine.SelectedItem as Machine).Id,
+                chbShowEveryUser.Checked
+                );
+            //перевожу столбцы
             for(int i = 0; i < table.Columns.Count; i++)
             {
                 if (dbNamesToUI.ContainsKey(table.Columns[i].ColumnName))
@@ -83,6 +107,8 @@ namespace TaskSpyAdminPanel
                     table.Rows.Remove(r);
                 }
             }
+            //прячу id записи и is_system в FieldsHider, который записываю в поле имени, так что
+            //пользователю не заметен id в бд, но он все еще привязан к строке
             hided.Clear();
             for (int i = 0; i < table.Rows.Count; i++)
             {
@@ -107,6 +133,7 @@ namespace TaskSpyAdminPanel
 
             chbShowSysProc.Checked = ConfigManager.Config.showSystemProcesses;
             chbHighlightUnwhitelisted.Checked = ConfigManager.Config.highlightUnwhitelisted;
+            chbShowEveryUser.Checked = ConfigManager.Config.showEveryUser;
             //if (ConfigManager.Config.sortBy < cbSortBy.Items.Count)
             //{
             //    cbSortBy.SelectedIndex = ConfigManager.Config.sortBy;
@@ -142,7 +169,7 @@ namespace TaskSpyAdminPanel
 
         private void cbCurMachine_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ConfigManager.Config.machine = cbCurMachine.SelectedIndex;
+  
         }
 
         private void cbSortBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -166,9 +193,21 @@ namespace TaskSpyAdminPanel
 
         private void processesGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex == -1) return;
             MessageBox.Show(hided[e.RowIndex].Id.ToString());
 
 
         }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            //если вкладка активна, обновляю данные
+            if (IsActive)
+            {
+                LoadProcesses();
+            }
+        }
     }
+
+
 }

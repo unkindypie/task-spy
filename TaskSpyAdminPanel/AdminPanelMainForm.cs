@@ -58,7 +58,7 @@ namespace TaskSpyAdminPanel
             //событие selected не отрабатывает, так что нужно делать все самому
             if (tabControl1.TabCount == 1)
             {
-                processesTab.TabOpened();
+                processesTab.TabOpenned();
             }
           
         }
@@ -226,7 +226,11 @@ namespace TaskSpyAdminPanel
             if(tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0 && 
                 tabControl1.SelectedTab.Controls[0].GetType().ToString() == "TaskSpyAdminPanel.ProcessesTab")
             {
-                (tabControl1.SelectedTab.Controls[0] as ProcessesTab).TabOpened();
+                foreach(TabPage tp in tabControl1.TabPages)
+                {
+                    (tp.Controls[0] as ControllableTab).IsActive = false;
+                }
+                (tabControl1.SelectedTab.Controls[0] as ControllableTab).TabOpenned();
 
 
             }

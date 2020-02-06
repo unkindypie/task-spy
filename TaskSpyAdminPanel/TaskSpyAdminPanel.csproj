@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigManager.cs" />
+    <Compile Include="ControllableTab.cs" />
     <Compile Include="DBWorker\DBWorker.cs" />
     <Compile Include="AdminPanelMainForm.cs">
       <SubType>Form</SubType>
@@ -84,7 +85,9 @@
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="ProcessesTab.cs" />
+    <Compile Include="ProcessesTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ProcessesTab.Designer.cs">
       <DependentUpon>ProcessesTab.cs</DependentUpon>
     </Compile>

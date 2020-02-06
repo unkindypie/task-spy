@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tbLastReportTime = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             this.chbHighlightUnwhitelisted = new System.Windows.Forms.CheckBox();
             this.processesGridView = new System.Windows.Forms.DataGridView();
             this.chbShowEveryUser = new System.Windows.Forms.CheckBox();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.processesGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,6 +123,8 @@
             // 
             // chbShowEveryUser
             // 
+            this.chbShowEveryUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.chbShowEveryUser.AutoSize = true;
             this.chbShowEveryUser.Location = new System.Drawing.Point(412, 412);
             this.chbShowEveryUser.Name = "chbShowEveryUser";
@@ -129,6 +133,11 @@
             this.chbShowEveryUser.Text = "Процессы всех пользователей на ПК";
             this.chbShowEveryUser.UseVisualStyleBackColor = true;
             this.chbShowEveryUser.CheckedChanged += new System.EventHandler(this.chbShowEveryUser_CheckedChanged);
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 7000;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // ProcessesTab
             // 
@@ -163,5 +172,6 @@
         private System.Windows.Forms.CheckBox chbHighlightUnwhitelisted;
         private System.Windows.Forms.DataGridView processesGridView;
         private System.Windows.Forms.CheckBox chbShowEveryUser;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

@@ -4,8 +4,6 @@ use [task-spy];
 alter procedure last_user_report
 	@user_id bigint,
 	@show_every_user bit,
-	@order_by int,
-	@asc bit,
 	@machine_id bigint
 as
 begin
@@ -26,16 +24,30 @@ begin
 		)
 		and (@show_every_user = 1 or (is_real = 0 or users.id = @user_id))
 	)
-	order by 
-	case when @order_by = 1 and @asc = 1 then processEntries.name end ASC,
-	case when @order_by = 1 and @asc = 0 then processEntries.name end DESC,
-	case when @order_by = 2 and @asc = 1 then cpu_load  end ASC,
-	case when @order_by = 2 and @asc = 0 then cpu_load  end DESC,
-	case when @order_by = 3 and @asc = 1 then mem_load end ASC,
-	case when @order_by = 3 and @asc = 0 then mem_load end DESC
 end
 
-execute last_user_report 3, 0, 1, 1, 2
+execute last_user_report 3, 1, 2
+
+execute last_user_report 3, 0, 0, 1, 3
 
 select * from users;
-select * from machines;
+
+create procedure get_user_machines
+	@user_id bigint
+as
+begin
+select distinct machines.name, created, machine_id from machines, reports
+join processes on
+report_id = reports.id
+where user_id = @user_id
+and machine_id = machines.id
+and created = (
+	select max(created) from machines, reports
+	join processes on
+	report_id = reports.id
+	where user_id = @user_id
+	and machine_id = machines.id
+)
+end
+
+execute get_user_machines 6

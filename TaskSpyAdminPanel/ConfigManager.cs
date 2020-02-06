@@ -16,19 +16,19 @@ namespace TaskSpyAdminPanel.Config
         public bool showSystemProcesses = false;
         public bool highlightUnwhitelisted = false;
         public bool showEveryUser = false;
-        public int sortBy = 0;
-        public int machine = 0;
-        public bool sortFlowAscending = true;
-        
+        public string ip = "";
+        public string server = "";
+        public string username = "";
+        public string password = "";
+
         public StateConfig()
         {
         }
-        public StateConfig(bool showSystemProcesses, bool highlightUnwhitelisted, int sortBy, int machine)
+        public StateConfig(bool showSystemProcesses, bool highlightUnwhitelisted, bool showEveryUser)
         {
             this.showSystemProcesses = showSystemProcesses;
             this.highlightUnwhitelisted = highlightUnwhitelisted;
-            this.sortBy = sortBy;
-            this.machine = machine;
+            this.showEveryUser = showEveryUser;
         }
     }
     class ConfigManager
@@ -81,6 +81,7 @@ namespace TaskSpyAdminPanel.Config
             }
             catch (Exception e)
             {
+                MessageBox.Show(e.ToString());
                 config = new StateConfig();
                 isLoaded = true;
             }
