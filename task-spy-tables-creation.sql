@@ -39,7 +39,7 @@ create table users (
 create table reports (
 	id bigint primary key identity(1, 1),
 	machine_id bigint not null,
-	created DATETIME not null,
+	created DATETIME null,
 	total_memory_load bigint,
 	total_cpu_load float,
 	ip_id bigint,
@@ -71,7 +71,7 @@ create table reports_mutator (
 )
 
 
-create trigger reports_mutator_insert on reports_mutator
+alter trigger reports_mutator_insert on reports_mutator
 instead of insert
 as
 begin
@@ -98,7 +98,7 @@ begin
 	end
 
 	insert into reports
-	values (@machine_id, GETDATE(), (select total_memory_load from inserted), 
+	values (@machine_id, null, (select total_memory_load from inserted), 
 	(select total_cpu_load from inserted), @ip_id)
 	SELECT SCOPE_IDENTITY() as id
 end
@@ -116,81 +116,116 @@ create table processes_mutator (
 	is_user_real bit not null,
 )
 
-create trigger processes_mutator_trigger
-on processes_mutator instead of insert
+
+
+
+create procedure per_process_inserted 
+	@report_id bigint,
+	@cpu_load float,
+	@mem_load bigint,
+	@pid bigint,
+	@parent_pid bigint,
+	@name nvarchar(255),
+	@bin_path nvarchar(260),
+	@is_system bit,
+	@local_username nvarchar(20),
+	@is_user_real bit
 as
 begin
 	declare @user_id bigint;
 	set @user_id = 
 	(
-		select id from users, inserted
-		where users.local_username = inserted.local_username
-			and users.is_real = inserted.is_user_real
+		select id from users
+		where users.local_username = @local_username
+			and users.is_real = @is_user_real
 	)
 	if(@user_id is null)
 	begin
 		insert into users
-		values (null, (select local_username from inserted), (select is_user_real from inserted))
+		values (null, @local_username, @is_user_real)
 		set @user_id = (SELECT SCOPE_IDENTITY());
 	end
 	declare @entryId bigint;
 	set @entryId = 
 	(
-		select id from processEntries, inserted
-		where processEntries.bin_path = inserted.bin_path
-		and processEntries.name = inserted.name
+		select id from processEntries
+		where processEntries.bin_path = @bin_path
+		and processEntries.name = @name
 	)
 	if(@entryId is null)
 	begin
 		insert into processEntries
-		values ((select name from inserted), (select bin_path from inserted), 0)
+		values (@name, @bin_path, 0)
 		set @entryId = (SELECT SCOPE_IDENTITY());
 	end
 	
 	insert into processes
 	values (
 		@entryId,
-		(select report_id from inserted),
-		(select cpu_load from inserted),
-		(select mem_load from inserted),
-		(select pid from inserted),
-		(select parent_pid from inserted),
-		(select is_system from inserted),
+		@report_id,
+		@cpu_load,
+		@mem_load,
+		@pid,
+		@parent_pid,
+		@is_system,
 		@user_id
 	)
 end
 
-insert into machines values ('machine23123');
-insert into reports_mutator values (1215451,10.75, 'the machine@323', '121.45.232.12');
+CREATE TYPE ProcTempTable 
+AS TABLE (
+	id int identity(1, 1),
+	report_id bigint not null,
+	cpu_load float,
+	mem_load bigint,
+	pid bigint,
+	parent_pid bigint,
+	name nvarchar(255) not null,
+	bin_path nvarchar(260) not null,
+	is_system bit not null,
+	local_username nvarchar(20) not null,
+	is_user_real bit not null
+	)
 
-insert into processes_mutator values (1, 55.41, 1455, 21, 45, 'chrom!', 'E:\apps\Chrome\chroe.exe', 0, 'vasyan', 0);
 
-select * from ips;
-select * from machines;
-select * from processEntries;
-select * from processes;
-select * from reports;
+alter trigger processes_mutator_trigger
+on processes_mutator instead of insert
+as
+begin
+
+	declare @tempTable as ProcTempTable;
+
+	insert into @tempTable
+	select * from inserted
+
+	declare @id int = 1;
+	while(@id < (select max(id)+1 from @tempTable))
+	begin
+		declare @report_id bigint = (select report_id from @tempTable where id = @id)
+		declare @cpu_load float = (select cpu_load from @tempTable where id = @id)
+		declare @mem_load bigint = (select mem_load from @tempTable where id = @id)
+		declare @pid bigint =(select pid from @tempTable where id = @id)
+		declare @parent_pid bigint = (select parent_pid from @tempTable where id = @id)
+		declare @name nvarchar(255) = (select name from @tempTable where id = @id)
+		declare @bin_path nvarchar(260) = (select bin_path from @tempTable where id = @id)
+		declare @is_system bit = (select is_system from @tempTable where id = @id)
+		declare @local_username nvarchar(20) = (select local_username from @tempTable where id = @id)
+		declare @is_user_real bit = (select is_user_real from @tempTable where id = @id)
+
+		execute per_process_inserted @report_id, @cpu_load, @mem_load, @pid, @parent_pid, @name, @bin_path, @is_system, @local_username, @is_user_real
+
+		set @id = @id + 1;
+	end
+end
 
 
 
+ALTER TABLE
+  reports
+ALTER COLUMN
+  created
+    datetime null;
 
-use [task-spy];
-select * from reports order by created desc;
-select * from users;
-select * from ips;
-select * from machines;
 
-select processEntries.name, users.local_username, created from processes
-join users on user_id = users.id
-join processEntries on processEntries.id = processes.entry_id
-join reports on reports.id = report_id
-where processes.report_id = (select id from reports where created = (select max(created) from reports));
 
---delete from processes;
---delete from processEntries;
---delete from reports;
---delete from users;
---delete from ips;
---delete from machines;
-
-select local_username, pseudonym, id from users where is_real = 1;
+execute last_user_report 6, 0, 2;

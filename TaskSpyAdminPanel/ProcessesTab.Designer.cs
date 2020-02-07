@@ -38,6 +38,7 @@
             this.processesGridView = new System.Windows.Forms.DataGridView();
             this.chbShowEveryUser = new System.Windows.Forms.CheckBox();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.lbProcessCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.processesGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -136,13 +137,23 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 7000;
+            this.updateTimer.Interval = 5000;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
+            // lbProcessCount
+            // 
+            this.lbProcessCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbProcessCount.AutoSize = true;
+            this.lbProcessCount.Location = new System.Drawing.Point(675, 11);
+            this.lbProcessCount.Name = "lbProcessCount";
+            this.lbProcessCount.Size = new System.Drawing.Size(0, 13);
+            this.lbProcessCount.TabIndex = 19;
             // 
             // ProcessesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lbProcessCount);
             this.Controls.Add(this.chbShowEveryUser);
             this.Controls.Add(this.tbLastReportTime);
             this.Controls.Add(this.label3);
@@ -173,5 +184,6 @@
         private System.Windows.Forms.DataGridView processesGridView;
         private System.Windows.Forms.CheckBox chbShowEveryUser;
         private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.Label lbProcessCount;
     }
 }

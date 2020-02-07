@@ -109,6 +109,14 @@ namespace TaskSpyAdminPanel.DB
             return machines;
 
         }
+        public async Task<DateTime> lastReport(long userId, long machineId)
+        {
+            SqlCommand cmd = new SqlCommand($"select max(created) as created " +
+                $"from reports join processes on report_id = reports.id" +
+                $" where user_id = {userId} and machine_id = {machineId}", connection);
+            var result = await cmd.ExecuteScalarAsync();
+            return DateTime.Parse(result.ToString());
+        }
 
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{

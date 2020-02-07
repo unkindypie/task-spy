@@ -47,14 +47,14 @@ namespace TaskSpy
         public TaskSpyService()
         {
             InitializeComponent();
-            eventLog1 = new EventLog();
-            if (!System.Diagnostics.EventLog.SourceExists("MySource"))
-            {
-                System.Diagnostics.EventLog.CreateEventSource(
-                    "MySource", "MyNewLog");
-            }
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyNewLog";
+            //eventLog1 = new EventLog();
+            //if (!System.Diagnostics.EventLog.SourceExists("MySource"))
+            //{
+            //    System.Diagnostics.EventLog.CreateEventSource(
+            //        "MySource", "MyNewLog");
+            //}
+            //eventLog1.Source = "MySource";
+            //eventLog1.Log = "MyNewLog";
         }
 
         protected override void OnStart(string[] args)
@@ -72,13 +72,13 @@ namespace TaskSpy
 
             } catch(Exception e)
             {
-                eventLog1.WriteEntry("Config haven't been readed!");
-                eventLog1.WriteEntry(e.ToString());
+                //eventLog1.WriteEntry("Config haven't been readed!");
+                //eventLog1.WriteEntry(e.ToString());
                 return;
             }
-            eventLog1.WriteEntry($"Config was readed with the " +
-                $"folowing fields: ip:{config.ip}, servername: {config.servername},"+
-                $"username:{config.username}, password:{config.password}");
+            //eventLog1.WriteEntry($"Config was readed with the " +
+            //    $"folowing fields: ip:{config.ip}, servername: {config.servername},"+
+            //    $"username:{config.username}, password:{config.password}");
             //устанавливаю параметры для подключения к серверу
             DBConnector.SetCredentials(config.servername, config.ip, config.username, config.password);
            
@@ -86,7 +86,7 @@ namespace TaskSpy
             var userName = Environment.UserName;
             string ip = GetLocalIPAddress();
 
-            eventLog1.WriteEntry("TaskSpyService is started.");
+            //eventLog1.WriteEntry("TaskSpyService is started.");
             //сканирование будет проводиться каждые 10 секунд
             Timer timer = new Timer();
             timer.Interval = 10000;
@@ -104,14 +104,16 @@ namespace TaskSpy
                         machineName,
                         ip
                         );
-                    //шлю процессы, привязанные к отчету
-                    foreach (ProcessModel p in processes)
-                    {
-                        DBConnector.Self.sendProcess(reportID, p);
-                    }
+                    //шлю процессы, привязанные к отчету в виде одного запроса
+                    //(insert генерируется динамически)
+                    DBConnector.Self.sendProcesses(reportID, processes);
+                    //после того, как все процессы лежат на бд
+                    //отмечаю дату отчета, так что теперь админская панель будет его грузить
+                    DBConnector.Self.approveReport(reportID);
+
                 } else
                 {
-                    eventLog1.WriteEntry("[ERR]TaskSpyService is not connected to db.");
+                    //eventLog1.WriteEntry("[ERR]TaskSpyService is not connected to db.");
                 }
             });
             timer.Start();
@@ -121,7 +123,7 @@ namespace TaskSpy
         protected override void OnStop()
         {
             
-            eventLog1.WriteEntry("TaskSpyService is stoped.");
+            //eventLog1.WriteEntry("TaskSpyService is stoped.");
             
         }
     }

@@ -30,8 +30,10 @@ namespace TaskSpyAdminPanel
         }
         User user;
         public bool loaded = false;
+        bool loading = false;
         DateTime lastLoad;
         Dictionary<int, FieldsHider> hided = new Dictionary<int, FieldsHider>();
+        DateTime lastReport;
 
         static Dictionary<string, string> dbNamesToUI = new Dictionary<string, string>();
         static ProcessesTab()
@@ -65,24 +67,58 @@ namespace TaskSpyAdminPanel
             updateTimer.Start();
             if (!loaded)
             {
-                LoadProcesses();
+                LoadProcesses(true);
                 return;
             }
-            if((DateTime.Now - lastLoad) > new TimeSpan(0, 0, 0, 10))
+            if ((DateTime.Now - lastLoad) > new TimeSpan(0, 0, 0, 10))
             {
-                LoadProcesses();
+                LoadProcesses(true);
             }
-            
+
         }
-        public async void LoadProcesses()
+        public async void LoadProcesses(bool loadMachines)
         {
-            //загружаю с машины и процессы с бд
-            cbCurMachine.DataSource = await DBWorker.Self.fetchUserMachines(user.Id);
+            if (loading) return;
+            loading = true;
+            var machines = await DBWorker.Self.fetchUserMachines(user.Id);
+            if (cbCurMachine.Items.Count > 0)
+            {
+                foreach (Machine m in machines)
+                {
+                    bool exists = false;
+                    foreach (object cm in cbCurMachine.Items)
+                    {
+                        if ((cm as Machine).Id == m.Id)
+                        {
+                            exists = true;
+                        }
+                    }
+                    if (!exists)
+                        cbCurMachine.Items.Add(m);
+                }
+            }
+            else
+            {
+                cbCurMachine.DataSource = machines;
+            }
+            var newReportTime = await DBWorker.Self.lastReport(user.Id,
+                (cbCurMachine.SelectedItem as Machine).Id);
+
+            tbLastReportTime.Text = newReportTime.ToString();
+            if (lastReport == null && lastReport >= newReportTime)
+            {
+                loading = false;
+                return;
+            }
+            lastReport = newReportTime;
+
             var table = await DBWorker.Self.fetchProcessesAsync(
                 user.Id,
                 (cbCurMachine.SelectedItem as Machine).Id,
                 chbShowEveryUser.Checked
                 );
+
+
             //перевожу столбцы
             for(int i = 0; i < table.Columns.Count; i++)
             {
@@ -120,8 +156,34 @@ namespace TaskSpyAdminPanel
             }
             table.Columns.Remove("is_system");
             table.Columns.Remove("id");
-            this.processesGridView.DataSource = table;
+            lbProcessCount.Text = "Процессов: " + table.Rows.Count.ToString();
+
+            //запоминаю параметры сортировки до обновления
+            string sortBy = "Загрузка процессора";
+            ListSortDirection sortOrder = ListSortDirection.Descending;
+            //запоминаю позицию скролла
+            int scroll = processesGridView.FirstDisplayedScrollingRowIndex;
+            if (scroll == -1) scroll = 0;
+   
+            if (processesGridView.SortedColumn != null)
+            {
+                sortBy = processesGridView.SortedColumn.Name;
+                sortOrder = processesGridView.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending
+                    : ListSortDirection.Descending;
+            }
+            //применяю таблицу
+            processesGridView.DataSource = table;
+            
+            //применяю сортировку
+            if (sortBy != "")
+            {
+                processesGridView.Sort(processesGridView.Columns[sortBy], sortOrder);
+            }
+            processesGridView.FirstDisplayedScrollingRowIndex = scroll;
+
+
             lastLoad = DateTime.Now;
+            loading = false;
             if (!loaded) loaded = true;
         }
         public ProcessesTab(User user)
@@ -134,23 +196,8 @@ namespace TaskSpyAdminPanel
             chbShowSysProc.Checked = ConfigManager.Config.showSystemProcesses;
             chbHighlightUnwhitelisted.Checked = ConfigManager.Config.highlightUnwhitelisted;
             chbShowEveryUser.Checked = ConfigManager.Config.showEveryUser;
-            //if (ConfigManager.Config.sortBy < cbSortBy.Items.Count)
-            //{
-            //    cbSortBy.SelectedIndex = ConfigManager.Config.sortBy;
-            //}
-            //if (ConfigManager.Config.machine < cbCurMachine.Items.Count)
-            //{
-            //    cbCurMachine.SelectedIndex = ConfigManager.Config.machine;
-            //}
-       
         }
 
-        public void SetMachines(List<Machine> machines)
-        {
-            cbCurMachine.DataSource = machines;
-        }
-
-        
 
         private void ProcessesTab_Load(object sender, EventArgs e)
         {
@@ -169,7 +216,10 @@ namespace TaskSpyAdminPanel
 
         private void cbCurMachine_SelectedIndexChanged(object sender, EventArgs e)
         {
-  
+            if (loaded)
+            {
+                LoadProcesses(false);
+            }
         }
 
         private void cbSortBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -201,10 +251,11 @@ namespace TaskSpyAdminPanel
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
+
             //если вкладка активна, обновляю данные
-            if (IsActive)
+            if (IsActive && (DateTime.Now - lastLoad) > new TimeSpan(0, 0, 0, 3))
             {
-                LoadProcesses();
+                LoadProcesses(true);
             }
         }
     }

@@ -1,7 +1,7 @@
 use [task-spy];
 
 
-alter procedure last_user_report
+create procedure last_user_report
 	@user_id bigint,
 	@show_every_user bit,
 	@machine_id bigint
@@ -32,22 +32,29 @@ execute last_user_report 3, 0, 0, 1, 3
 
 select * from users;
 
-create procedure get_user_machines
+
+alter procedure get_user_machines
 	@user_id bigint
 as
 begin
-select distinct machines.name, created, machine_id from machines, reports
-join processes on
-report_id = reports.id
-where user_id = @user_id
-and machine_id = machines.id
-and created = (
-	select max(created) from machines, reports
-	join processes on
-	report_id = reports.id
+	select distinct max(created) as created, machines.id as machine_id, machines.name from machines
+	join reports on 
+	machine_id = machines.id
+	join processes 
+	on report_id = reports.id
 	where user_id = @user_id
-	and machine_id = machines.id
-)
+	group by name, machines.id, machines.name
+	order by created desc
 end
 
-execute get_user_machines 6
+
+select * from users;
+select * from machines
+
+execute last_user_report 2, 1, 4;
+
+execute get_user_machines 3
+
+
+delete from reports 
+where created is null

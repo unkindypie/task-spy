@@ -56,6 +56,34 @@ namespace TaskSpy
             cmd.ExecuteNonQuery();
         }
 
+        public void sendProcesses(long reportId, List<ProcessModel> processes)
+        {
+            string commandText = "insert into processes_mutator values";
+            int i = 0;
+            SqlCommand cmd = new SqlCommand();
+            //динамически генерирую один большой insert для всех процессов
+            foreach (ProcessModel p in processes)
+            {
+                commandText += $"({reportId}, @cpuLoad{i}, {p.memoryUsage}, " +
+                $"{p.pid}, {p.parentPID}, '{p.name}', '{p.path}',"
+                + $" {(p.isSystem ? 1 : 0)}, '{p.owner}', {(p.isOwnerReal ? 1 : 0)})";
+                cmd.Parameters.AddWithValue("@cpuLoad" + i, SqlDbType.Float).Value = p.cpuUsage;
+                i++;
+                if(i < processes.Count)
+                {
+                    commandText += ", ";
+                }
+            }
+            cmd.CommandText = commandText;
+            cmd.Connection = connection;
+            cmd.ExecuteNonQuery();
+        }
+        public void approveReport(long reportId)
+        {
+            SqlCommand cmd = new SqlCommand($"update reports set created = GETDATE() where id = {reportId}", connection);
+            cmd.ExecuteNonQuery();
+        }
+
         public static DBConnector Self
         {
             get

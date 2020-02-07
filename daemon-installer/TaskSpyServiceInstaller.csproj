@@ -109,7 +109,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\TaskSpy.exe" />
   </ItemGroup>
