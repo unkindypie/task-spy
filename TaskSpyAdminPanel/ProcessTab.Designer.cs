@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label11 = new System.Windows.Forms.Label();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.graphicGroupBox = new System.Windows.Forms.GroupBox();
@@ -42,13 +43,16 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.labelProcName = new System.Windows.Forms.Label();
+            this.lbProcessName = new System.Windows.Forms.Label();
+            this.chbWhitelisted = new System.Windows.Forms.CheckBox();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label11
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(516, 153);
+            this.label11.Location = new System.Drawing.Point(499, 237);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(25, 13);
             this.label11.TabIndex = 29;
@@ -57,7 +61,7 @@
             // dateTimePickerTo
             // 
             this.dateTimePickerTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePickerTo.Location = new System.Drawing.Point(547, 152);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(530, 236);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(130, 20);
             this.dateTimePickerTo.TabIndex = 27;
@@ -66,9 +70,9 @@
             // 
             this.graphicGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.graphicGroupBox.Location = new System.Drawing.Point(66, 178);
+            this.graphicGroupBox.Location = new System.Drawing.Point(53, 262);
             this.graphicGroupBox.Name = "graphicGroupBox";
-            this.graphicGroupBox.Size = new System.Drawing.Size(624, 293);
+            this.graphicGroupBox.Size = new System.Drawing.Size(607, 293);
             this.graphicGroupBox.TabIndex = 25;
             this.graphicGroupBox.TabStop = false;
             this.graphicGroupBox.Text = "График работы";
@@ -76,7 +80,7 @@
             // dateTimePickerFrom
             // 
             this.dateTimePickerFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(380, 152);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(363, 236);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
             this.dateTimePickerFrom.Size = new System.Drawing.Size(130, 20);
             this.dateTimePickerFrom.TabIndex = 26;
@@ -86,7 +90,7 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(351, 153);
+            this.label10.Location = new System.Drawing.Point(334, 237);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(23, 13);
             this.label10.TabIndex = 28;
@@ -94,7 +98,7 @@
             // 
             // tbMemLoad
             // 
-            this.tbMemLoad.Location = new System.Drawing.Point(223, 83);
+            this.tbMemLoad.Location = new System.Drawing.Point(223, 167);
             this.tbMemLoad.Name = "tbMemLoad";
             this.tbMemLoad.ReadOnly = true;
             this.tbMemLoad.Size = new System.Drawing.Size(186, 20);
@@ -103,7 +107,7 @@
             // 
             // tbCpuLoad
             // 
-            this.tbCpuLoad.Location = new System.Drawing.Point(223, 48);
+            this.tbCpuLoad.Location = new System.Drawing.Point(223, 132);
             this.tbCpuLoad.Name = "tbCpuLoad";
             this.tbCpuLoad.ReadOnly = true;
             this.tbCpuLoad.Size = new System.Drawing.Size(186, 20);
@@ -112,7 +116,7 @@
             // 
             // tbBinPath
             // 
-            this.tbBinPath.Location = new System.Drawing.Point(223, 12);
+            this.tbBinPath.Location = new System.Drawing.Point(223, 96);
             this.tbBinPath.Name = "tbBinPath";
             this.tbBinPath.ReadOnly = true;
             this.tbBinPath.Size = new System.Drawing.Size(186, 20);
@@ -122,7 +126,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(84, 83);
+            this.label8.Location = new System.Drawing.Point(84, 167);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(49, 13);
             this.label8.TabIndex = 23;
@@ -131,7 +135,7 @@
             // linkParentProc
             // 
             this.linkParentProc.AutoSize = true;
-            this.linkParentProc.Location = new System.Drawing.Point(223, 113);
+            this.linkParentProc.Location = new System.Drawing.Point(223, 197);
             this.linkParentProc.Name = "linkParentProc";
             this.linkParentProc.Size = new System.Drawing.Size(42, 13);
             this.linkParentProc.TabIndex = 20;
@@ -141,7 +145,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(84, 113);
+            this.label7.Location = new System.Drawing.Point(84, 197);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(127, 13);
             this.label7.TabIndex = 19;
@@ -150,7 +154,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(84, 51);
+            this.label5.Location = new System.Drawing.Point(84, 135);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 13);
             this.label5.TabIndex = 18;
@@ -159,7 +163,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(84, 15);
+            this.label4.Location = new System.Drawing.Point(84, 99);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(34, 13);
             this.label4.TabIndex = 17;
@@ -175,11 +179,39 @@
             this.labelProcName.TabIndex = 16;
             this.labelProcName.Text = "chrome";
             // 
+            // lbProcessName
+            // 
+            this.lbProcessName.AutoSize = true;
+            this.lbProcessName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbProcessName.Location = new System.Drawing.Point(53, 27);
+            this.lbProcessName.Name = "lbProcessName";
+            this.lbProcessName.Size = new System.Drawing.Size(194, 25);
+            this.lbProcessName.TabIndex = 30;
+            this.lbProcessName.Text = "process_name.exe";
+            // 
+            // chbWhitelisted
+            // 
+            this.chbWhitelisted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbWhitelisted.AutoSize = true;
+            this.chbWhitelisted.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chbWhitelisted.Location = new System.Drawing.Point(620, 33);
+            this.chbWhitelisted.Name = "chbWhitelisted";
+            this.chbWhitelisted.Size = new System.Drawing.Size(99, 19);
+            this.chbWhitelisted.TabIndex = 31;
+            this.chbWhitelisted.Text = "В вайтлисте";
+            this.chbWhitelisted.UseVisualStyleBackColor = true;
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 5000;
+            // 
             // ProcessTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.chbWhitelisted);
+            this.Controls.Add(this.lbProcessName);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.dateTimePickerTo);
             this.Controls.Add(this.graphicGroupBox);
@@ -195,7 +227,8 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.labelProcName);
             this.Name = "ProcessTab";
-            this.Size = new System.Drawing.Size(755, 439);
+            this.Size = new System.Drawing.Size(738, 439);
+            this.Load += new System.EventHandler(this.ProcessTab_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -217,5 +250,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label labelProcName;
+        private System.Windows.Forms.Label lbProcessName;
+        private System.Windows.Forms.CheckBox chbWhitelisted;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

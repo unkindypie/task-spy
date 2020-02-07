@@ -61,26 +61,43 @@ namespace TaskSpyAdminPanel.DB
 
             return users;
         }
-        public DataTable fetchProcesses(long userId, long machineId)
-        {
-            string commandText = $"execute last_user_report {userId}, {(ConfigManager.Config.showEveryUser ? 1 : 0)}, {machineId}";
+
+        //public async Task<List<Process>> fetchProcessesAsync(long userId, long machineId, bool showEveryUser)
+        //{
+        //    string commandText = $"execute last_user_report {userId}, {(showEveryUser ? 1 : 0)}, {machineId}";
+
+        //    SqlCommand cmd = new SqlCommand(commandText, connection);
+        //    //MessageBox.Show(commandText);
+        //    var reader = await cmd.ExecuteReaderAsync();
+        //    var table = new DataTable();
+        //    var processes = new List<Process>();
+        //    table.Load(reader);
+        //    foreach (DataRow r in table.Rows)
+        //    {
+        //        processes.Add(new Process(long.Parse(r["id"].ToString()), bool.Parse(r["is_system"].ToString())) {
+        //            CPU = float.Parse(r["cpu_load"].ToString()),
+        //            Mem = long.Parse(r["mem_load"].ToString()),
+        //            ProcessName = r["procname"].ToString(),
+        //            PID = int.Parse(r["pid"].ToString()),
+        //            ParentPID = int.Parse(r["parent_pid"].ToString()),
+        //        });
+        //    }
             
-            SqlCommand cmd = new SqlCommand(commandText, connection);
-            //MessageBox.Show(commandText);
-            var reader = cmd.ExecuteReader();
-            var table = new DataTable();
-            table.Load(reader);
-            return table;
-        }
-        public async Task<DataTable> fetchProcessesAsync(long userId, long machineId, bool showEveryUser)
+        //    return processes;
+        //}
+
+        public async Task<DataTable> fetchProcessesTableAsync(long userId, long machineId, bool showEveryUser)
         {
-            string commandText = $"execute last_user_report {userId}, {(showEveryUser? 1 : 0)}, {machineId}";
+            string commandText = $"execute last_user_report {userId}, {(showEveryUser ? 1 : 0)}, {machineId}";
+
 
             SqlCommand cmd = new SqlCommand(commandText, connection);
             //MessageBox.Show(commandText);
             var reader = await cmd.ExecuteReaderAsync();
             var table = new DataTable();
+            var processes = new List<Process>();
             table.Load(reader);
+           
             return table;
         }
 

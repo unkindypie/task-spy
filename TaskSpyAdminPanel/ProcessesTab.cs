@@ -32,8 +32,9 @@ namespace TaskSpyAdminPanel
         public bool loaded = false;
         bool loading = false;
         DateTime lastLoad;
-        Dictionary<int, FieldsHider> hided = new Dictionary<int, FieldsHider>();
-        DateTime lastReport;
+        Dictionary<KeyValuePair<int, int>, long> pidToID = new Dictionary<KeyValuePair<int, int>, long>();
+        DateTime lastReport = new DateTime();
+        static public Action<Process> AddProcessTab;
 
         static Dictionary<string, string> dbNamesToUI = new Dictionary<string, string>();
         static ProcessesTab()
@@ -41,11 +42,14 @@ namespace TaskSpyAdminPanel
             dbNamesToUI.Add("procname", "Имя процесса");
             dbNamesToUI.Add("username", "Пользователь");
             dbNamesToUI.Add("cpu_load", "Загрузка процессора");
-            dbNamesToUI.Add("mem_load", "ОЗУ");
+            dbNamesToUI.Add("mem_load", "Физическая память");
             dbNamesToUI.Add("pid", "PID");
             dbNamesToUI.Add("parent_pid", "Материнский PID");
+            dbNamesToUI.Add("is_system", "Системный");
         }
         bool _isActive = false;
+    
+
         public bool IsActive
         {
             get
@@ -105,22 +109,36 @@ namespace TaskSpyAdminPanel
                 (cbCurMachine.SelectedItem as Machine).Id);
 
             tbLastReportTime.Text = newReportTime.ToString();
-            if (lastReport == null && lastReport >= newReportTime)
+
+            //если нет свежего отчета, то ничего не обновляю
+            if (lastReport != new DateTime() && lastReport >= newReportTime)
             {
                 loading = false;
                 return;
             }
             lastReport = newReportTime;
-
-            var table = await DBWorker.Self.fetchProcessesAsync(
+            //загружаю новый отчет
+            var table = await DBWorker.Self.fetchProcessesTableAsync(
                 user.Id,
                 (cbCurMachine.SelectedItem as Machine).Id,
                 chbShowEveryUser.Checked
                 );
-
+            //прячу идентификаторы
+            pidToID.Clear();
+            foreach (DataRow r in table.Rows)
+            {
+                pidToID.Add(
+                    new KeyValuePair<int, int>(
+                        int.Parse(r["pid"].ToString()),
+                        int.Parse(r["parent_pid"].ToString())
+                        ),
+                    int.Parse(r["id"].ToString())
+                    );
+            }
+            //table.Columns.Remove("id");
 
             //перевожу столбцы
-            for(int i = 0; i < table.Columns.Count; i++)
+            for (int i = 0; i < table.Columns.Count; i++)
             {
                 if (dbNamesToUI.ContainsKey(table.Columns[i].ColumnName))
                 {
@@ -138,28 +156,17 @@ namespace TaskSpyAdminPanel
                         deleteThem.Add(table.Rows[i]);
                     }
                 }
-                foreach(DataRow r in deleteThem)
+                foreach (DataRow r in deleteThem)
                 {
                     table.Rows.Remove(r);
                 }
             }
-            //прячу id записи и is_system в FieldsHider, который записываю в поле имени, так что
-            //пользователю не заметен id в бд, но он все еще привязан к строке
-            hided.Clear();
-            for (int i = 0; i < table.Rows.Count; i++)
-            {
-                hided.Add(i, new FieldsHider()
-                {
-                    Id = long.Parse(table.Rows[i]["id"].ToString()),
-                    IsSystem = (bool)table.Rows[i]["is_system"]
-                });
-            }
-            table.Columns.Remove("is_system");
-            table.Columns.Remove("id");
+
             lbProcessCount.Text = "Процессов: " + table.Rows.Count.ToString();
 
             //запоминаю параметры сортировки до обновления
-            string sortBy = "Загрузка процессора";
+            //string sortBy = "Загрузка процессора";
+            string sortBy = dbNamesToUI["cpu_load"];
             ListSortDirection sortOrder = ListSortDirection.Descending;
             //запоминаю позицию скролла
             int scroll = processesGridView.FirstDisplayedScrollingRowIndex;
@@ -168,9 +175,10 @@ namespace TaskSpyAdminPanel
             if (processesGridView.SortedColumn != null)
             {
                 sortBy = processesGridView.SortedColumn.Name;
-                sortOrder = processesGridView.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending
-                    : ListSortDirection.Descending;
+                sortOrder = (processesGridView.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending
+                    : ListSortDirection.Descending);
             }
+
             //применяю таблицу
             processesGridView.DataSource = table;
             
@@ -179,9 +187,18 @@ namespace TaskSpyAdminPanel
             {
                 processesGridView.Sort(processesGridView.Columns[sortBy], sortOrder);
             }
-            processesGridView.FirstDisplayedScrollingRowIndex = scroll;
+            if (processesGridView.FirstDisplayedScrollingRowIndex != -1)
+            {
+                processesGridView.FirstDisplayedScrollingRowIndex = scroll;
+            }
+            //processesGridView.AutoResizeColumns();
+            processesGridView.AutoResizeRows();
 
+            processesGridView.Columns.Remove("id");
 
+            //прячу id записи и is_system в FieldsHider, который записываю в поле имени, так что
+            //пользователю не заметен id в бд, но он все еще привязан к строке
+           
             lastLoad = DateTime.Now;
             loading = false;
             if (!loaded) loaded = true;
@@ -190,14 +207,13 @@ namespace TaskSpyAdminPanel
         {
             InitializeComponent();
             this.user = user;
-
+            lbProcessCount.ForeColor = Color.White;
             ConfigManager.Load();
 
             chbShowSysProc.Checked = ConfigManager.Config.showSystemProcesses;
             chbHighlightUnwhitelisted.Checked = ConfigManager.Config.highlightUnwhitelisted;
             chbShowEveryUser.Checked = ConfigManager.Config.showEveryUser;
         }
-
 
         private void ProcessesTab_Load(object sender, EventArgs e)
         {
@@ -218,6 +234,7 @@ namespace TaskSpyAdminPanel
         {
             if (loaded)
             {
+                lastReport = new DateTime();
                 LoadProcesses(false);
             }
         }
@@ -244,14 +261,27 @@ namespace TaskSpyAdminPanel
         private void processesGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex == -1) return;
-            MessageBox.Show(hided[e.RowIndex].Id.ToString());
+            var pair = new KeyValuePair<int, int>(
+                int.Parse(processesGridView[dbNamesToUI["pid"], e.RowIndex].Value.ToString()),
+                int.Parse(processesGridView[dbNamesToUI["parent_pid"], e.RowIndex].Value.ToString())
+                );
+            if(AddProcessTab != null)
+            {
+                AddProcessTab(new Process
+                {
+                    Id = pidToID[pair],
+                    ProcessName = processesGridView[dbNamesToUI["procname"], e.RowIndex].Value.ToString(),
+                    CPU = float.Parse(processesGridView[dbNamesToUI["cpu_load"], e.RowIndex].Value.ToString()),
+                    Mem = long.Parse(processesGridView[dbNamesToUI["mem_load"], e.RowIndex].Value.ToString()),
+                    OwnerName = user.Name
+                });
+            }
 
 
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
-
             //если вкладка активна, обновляю данные
             if (IsActive && (DateTime.Now - lastLoad) > new TimeSpan(0, 0, 0, 3))
             {

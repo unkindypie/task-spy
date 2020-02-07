@@ -33,6 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lbUsers = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tbUsrSearch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -71,11 +73,13 @@
             // 
             // lbUsers
             // 
-            this.lbUsers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbUsers.FormattingEnabled = true;
-            this.lbUsers.Location = new System.Drawing.Point(0, 0);
+            this.lbUsers.Location = new System.Drawing.Point(0, 45);
             this.lbUsers.Name = "lbUsers";
-            this.lbUsers.Size = new System.Drawing.Size(170, 465);
+            this.lbUsers.Size = new System.Drawing.Size(170, 420);
             this.lbUsers.TabIndex = 6;
             this.lbUsers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             this.lbUsers.SelectedIndexChanged += new System.EventHandler(this.lbUsers_SelectedIndexChanged);
@@ -87,22 +91,44 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(12, 27);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.tbUsrSearch);
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.lbUsers);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1MinSize = 50;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel2MinSize = 700;
             this.splitContainer1.Size = new System.Drawing.Size(954, 465);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 7;
+            // 
+            // tbUsrSearch
+            // 
+            this.tbUsrSearch.Location = new System.Drawing.Point(3, 19);
+            this.tbUsrSearch.Name = "tbUsrSearch";
+            this.tbUsrSearch.Size = new System.Drawing.Size(164, 20);
+            this.tbUsrSearch.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Пользователи";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // tabControl1
             // 
@@ -147,6 +173,8 @@
         private System.Windows.Forms.ListBox lbUsers;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TextBox tbUsrSearch;
+        private System.Windows.Forms.Label label2;
     }
 }
 

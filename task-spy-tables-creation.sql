@@ -1,23 +1,37 @@
 use [task-spy];
 
-drop table processes;
-drop table reports;
-drop table processEntries;
-drop table users;
-drop table ips;
-drop table machines;
+--drop table processes;
+--drop table reports;
+--drop table processEntries;
+--drop table users;
+--drop table ips;
+--drop table machines;
 
-drop trigger reports_mutator_insert;
-drop table reports_mutator;
-drop trigger processes_mutator_trigger;
-drop table processes_mutator;
+--drop trigger reports_mutator_insert;
+--drop table reports_mutator;
+--drop trigger processes_mutator_trigger;
+--drop table processes_mutator;
+
+
+create table bin_paths
+(
+	id bigint primary key identity(1, 1),
+	bin_path nvarchar(260) not null
+)
+create table process_names
+(
+	id bigint primary key identity(1, 1),
+	name nvarchar(255) not null
+)
 
 create table processEntries
 (
 	id bigint primary key identity(1, 1),
-	name nvarchar(255) not null,
-	bin_path nvarchar(260) not null,
 	in_whitelist bit not null,
+	bin_path_id bigint not null,
+	process_name_id bigint not null,
+    foreign key (bin_path_id) references bin_paths(id),
+    foreign key (process_name_id) references process_names(id)
 )
 
 create table ips (
@@ -70,8 +84,8 @@ create table reports_mutator (
 	ip varchar(16) not null,
 )
 
-
-alter trigger reports_mutator_insert on reports_mutator
+go
+create trigger reports_mutator_insert on reports_mutator
 instead of insert
 as
 begin
@@ -115,10 +129,7 @@ create table processes_mutator (
 	local_username nvarchar(20) not null,
 	is_user_real bit not null,
 )
-
-
-
-
+go
 create procedure per_process_inserted 
 	@report_id bigint,
 	@cpu_load float,
@@ -145,17 +156,45 @@ begin
 		values (null, @local_username, @is_user_real)
 		set @user_id = (SELECT SCOPE_IDENTITY());
 	end
+
+	declare @bin_path_id bigint;
+	declare @process_name_id bigint;
+
+	set @process_name_id = 
+	(
+		select id from process_names
+		where name = @name
+	)
+	if(@process_name_id is null)
+	begin
+		insert into process_names
+		values (@name)
+		set @process_name_id = (SELECT SCOPE_IDENTITY());
+	end
+
+	set @bin_path_id = 
+	(
+		select id from bin_paths
+		where bin_path = @bin_path
+	)
+	if(@bin_path_id is null)
+	begin
+		insert into bin_paths
+		values (@bin_path)
+		set @bin_path_id = (SELECT SCOPE_IDENTITY());
+	end
+
 	declare @entryId bigint;
 	set @entryId = 
 	(
 		select id from processEntries
-		where processEntries.bin_path = @bin_path
-		and processEntries.name = @name
+		where processEntries.bin_path_id = @bin_path_id
+		and processEntries.process_name_id = @process_name_id
 	)
 	if(@entryId is null)
 	begin
 		insert into processEntries
-		values (@name, @bin_path, 0)
+		values (0, @bin_path_id, @process_name_id)
 		set @entryId = (SELECT SCOPE_IDENTITY());
 	end
 	
@@ -186,9 +225,9 @@ AS TABLE (
 	local_username nvarchar(20) not null,
 	is_user_real bit not null
 	)
+go
 
-
-alter trigger processes_mutator_trigger
+create trigger processes_mutator_trigger
 on processes_mutator instead of insert
 as
 begin
@@ -217,15 +256,53 @@ begin
 		set @id = @id + 1;
 	end
 end
+go
 
 
 
-ALTER TABLE
-  reports
-ALTER COLUMN
-  created
-    datetime null;
+--ALTER TABLE
+--  reports
+--ALTER COLUMN
+--  created
+--    datetime null;
 
 
 
-execute last_user_report 6, 0, 2;
+--execute last_user_report 6, 0, 2;
+
+
+
+
+--alter table processEntries
+--add bin_path_id bigint null;
+
+--alter table processEntries
+--add process_name_id bigint null;
+
+--insert into bin_paths
+--select distinct bin_path from processEntries;
+
+--insert into process_names
+--select distinct name from processEntries;
+
+--select * from processEntries;
+
+--UPDATE processEntries
+--SET process_name_id = process_names.id
+--FROM processEntries
+--    INNER JOIN process_names
+--    ON process_names.name = processEntries.name
+
+
+--UPDATE processEntries
+--SET bin_path_id = bin_paths.id
+--FROM processEntries
+--    INNER JOIN bin_paths
+--    ON bin_paths.bin_path = processEntries.bin_path
+
+--ALTER TABLE processEntries DROP COLUMN bin_path;
+--ALTER TABLE processEntries DROP COLUMN name;
+
+
+--ALTER TABLE processEntries add foreign key (bin_path_id) references bin_paths(id)
+--ALTER TABLE processEntries add foreign key (process_name_id) references process_names(id)

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using TaskSpyAdminPanel.Models;
 using TaskSpyAdminPanel.Config;
 using TaskSpyAdminPanel.DB;
+using System.Runtime.InteropServices;
 
 namespace TaskSpyAdminPanel
 {
@@ -19,7 +20,7 @@ namespace TaskSpyAdminPanel
         LoginForm loginForm;
         void FillUsers()
         {
-            
+
             if (DBWorker.Self.Connect())
             {
                 List<User> users = DBWorker.Self.fetchUsers();
@@ -29,8 +30,8 @@ namespace TaskSpyAdminPanel
             {
                 MessageBox.Show("Проблемы с подключением к базе данных. Проверьте интернет соеденение.");
             }
-           
-            
+
+
         }
         void OnLaunch()
         {
@@ -60,29 +61,39 @@ namespace TaskSpyAdminPanel
             {
                 processesTab.TabOpenned();
             }
-          
+
         }
 
-        void AddProcessTab(TaskSpyAdminPanel.Models.Process process)
+        void AddProcessTab(Process process)
         {
             var tabpage = new TabPage();
-            tabpage.Text = $"{process}";
-            var processesTab = new ProcessTab();
+            tabpage.Text = $"{process.ProcessName} от {process.OwnerName}";
+            var processesTab = new ProcessTab(process);
             processesTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(processesTab);
             tabControl1.TabPages.Add(tabpage);
+
+            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+            if (tabControl1.TabCount == 1)
+            {
+                processesTab.TabOpenned();
+            }
         }
 
         public Form1()
         {
             InitializeComponent();
+            //коллбек, который будет открывать вкладку с еденичным процессом
+            ProcessesTab.AddProcessTab = AddProcessTab;
+            tbUsrSearch.SetPlaceholder("Поиск");
+            lbUsers.IntegralHeight = false;
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             OnLaunch();
@@ -96,7 +107,7 @@ namespace TaskSpyAdminPanel
             DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
             FillUsers();
 
-            
+
 
 
             // This will change the ListBox behaviour, so you can customize the drawing of each item on the list.
@@ -108,7 +119,7 @@ namespace TaskSpyAdminPanel
             lbUsers.ItemHeight = 40;
 
             // Here i will just make an example data source, to emulate the control you are trying to reproduce.
-          
+
 
             var table = new DataTable();
             table.Columns.Add("Имя процесса");
@@ -121,6 +132,7 @@ namespace TaskSpyAdminPanel
         }
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (lbUsers.Items.Count == 0) return;
             // This variable will hold the color of the bottom text - the one saying the count of 
             // the avaliable rooms in your example.
             Brush roomsBrush;
@@ -142,7 +154,7 @@ namespace TaskSpyAdminPanel
             {
                 roomsBrush = Brushes.Gray;
             }
-            
+
             // Looking more at your example, i noticed a gray line at the bottom of each item.
             // Lets reproduce that, too.
             var linePen = new Pen(SystemBrushes.Control);
@@ -166,7 +178,7 @@ namespace TaskSpyAdminPanel
 
             // Now we draw the avaliable rooms part. First we define our font.
             var roomsFont = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
-            if(user.Pseudonym != "")
+            if (user.Pseudonym != "")
             {
                 // And, finally, we draw that text.
                 e.Graphics.DrawString(user.Pseudonym, roomsFont, roomsBrush, e.Bounds.Left + 3, e.Bounds.Top + 18);
@@ -186,7 +198,7 @@ namespace TaskSpyAdminPanel
 
         private void lbUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void lbUsers_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -200,7 +212,7 @@ namespace TaskSpyAdminPanel
 
         private void lbUsers_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 AddUserTab(lbUsers.SelectedItem as User);
             }
@@ -209,24 +221,26 @@ namespace TaskSpyAdminPanel
         private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TabPage page = tabControl1.SelectedTab;
-          
+            
             if (page != null)
             {
-                tabControl1.TabPages.Remove(page);
-                if(tabControl1.TabPages.Count != 0)
+                if (tabControl1.SelectedIndex - 1 < tabControl1.TabPages.Count
+                    && tabControl1.SelectedIndex - 1 > 0)
                 {
-                    tabControl1.SelectedTab = tabControl1.TabPages[tabControl1.TabPages.Count - 1];
+                    tabControl1.SelectedTab = tabControl1.TabPages[tabControl1.SelectedIndex - 1];
                 }
-                
+                tabControl1.TabPages.Remove(page);
+
+
             }
         }
         //подгрузка процессов с бд только при октрытии
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            if(tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0 && 
+            if (tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0 &&
                 tabControl1.SelectedTab.Controls[0].GetType().ToString() == "TaskSpyAdminPanel.ProcessesTab")
             {
-                foreach(TabPage tp in tabControl1.TabPages)
+                foreach (TabPage tp in tabControl1.TabPages)
                 {
                     (tp.Controls[0] as ControllableTab).IsActive = false;
                 }
@@ -235,5 +249,21 @@ namespace TaskSpyAdminPanel
 
             }
         }
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
+    public static class TextBoxExtension
+    {
+        private const int EM_SETCUEBANNER = 0x1501;
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)]string lParam);
+
+        public static void SetPlaceholder(this TextBox box, string text)
+        {
+            SendMessage(box.Handle, EM_SETCUEBANNER, 0, text);
+        }
+
+    } 
 }

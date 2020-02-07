@@ -52,3 +52,12 @@ C:\Users\soft\Desktop\task-spy-06\TaskSpy\obj\x64\Release\TaskSpy.ServiceConfig.
 C:\Users\soft\Desktop\task-spy-06\TaskSpy\obj\x64\Release\TaskSpyService.csproj.GenerateResource.Cache
 C:\Users\soft\Desktop\task-spy-06\TaskSpy\obj\x64\Release\TaskSpy.exe
 C:\Users\soft\Desktop\task-spy-06\TaskSpy\obj\x64\Release\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\bin\x64\Release\TaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\bin\x64\Release\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\bin\x64\Release\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpyService.csprojResolveAssemblyReference.cache
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpy.ProjectInstaller.resources
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpy.ServiceConfig.resources
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpyService.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-07\TaskSpy\obj\x64\Release\TaskSpy.pdb

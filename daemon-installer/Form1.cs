@@ -12,6 +12,8 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml.Serialization;
 using System.ServiceProcess;
+using System.Configuration.Install;
+using System.Collections.Specialized;
 
 namespace daemon_installer
 {
@@ -74,25 +76,28 @@ namespace daemon_installer
                 {
                     formatter.Serialize(fs, config);
                 }
-
-                //запускаю процесс, инпут которого будет отпрвляться в cmd
-                Process p = new Process();
-                p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.RedirectStandardInput = true;
-                p.StartInfo.CreateNoWindow = true;
-                p.Start();
-                //ставлю службу с помощью InstallUtil
-                p.StandardInput.WriteLine(@"cd " + textBox1.Text.Replace(@"\\", @"\"));
-                p.StandardInput.WriteLine(@"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil TaskSpy.exe");
-                //MessageBox.Show(p.StandardOutput.ReadToEnd());
-                p.StandardInput.Flush();
-                p.StandardInput.Close();
-                p.Close();
+                //установка
+                tbLog.Text += $"Конфиг файл сериализован по пути {textBox1.Text}"+ Environment.NewLine;
+                string serviceName = "TaskSpyService";
+                tbLog.Text = "Пошла установка."+ Environment.NewLine;
+                var installer = new ServiceProcessInstaller
+                {
+                    Account = ServiceAccount.LocalSystem
+                };
+                var serviceInstaller = new ServiceInstaller();
+                String[] cmdline = { @"/assemblypath=" + textBox1.Text + "\\TaskSpy.exe" };
+                var context = new InstallContext("service_install.log", cmdline);
+                serviceInstaller.Context = context;
+                serviceInstaller.DisplayName = serviceName;
+                serviceInstaller.ServiceName = serviceName;
+                serviceInstaller.Description = "Big Brother is watching you.";
+                serviceInstaller.StartType = ServiceStartMode.Automatic;
+                serviceInstaller.Parent = installer;
+                serviceInstaller.Install(new ListDictionary());
+                tbLog.Text += "Готово. Служба успешно установлена и прописана в автозапуск." + Environment.NewLine;
             } catch(Exception ex)
             {
-                MessageBox.Show("Установка не удалась!", ex.ToString());
+                MessageBox.Show("Установка успешно не удалась!" + ex.ToString());
                 Close();
                 return;
             }
@@ -103,14 +108,15 @@ namespace daemon_installer
                 {
                     controller.Start();
                 }
+                tbLog.Text += "Служба запущена. Теперь за вами следят.";
             }
             catch
             {
 
             }
           
-            MessageBox.Show("Служба успешно установлена, добавлена в автозапуск. Теперь за вами следят.");
-            Close();
+            //MessageBox.Show("Служба успешно установлена, добавлена в автозапуск. Теперь за вами следят.");
+           
         }
     }
 }
