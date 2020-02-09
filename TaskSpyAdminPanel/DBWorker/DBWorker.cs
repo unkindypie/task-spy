@@ -134,6 +134,36 @@ namespace TaskSpyAdminPanel.DB
             var result = await cmd.ExecuteScalarAsync();
             return DateTime.Parse(result.ToString());
         }
+        public async Task<Process> fetchProcessAsync(int pid, long machineId)
+        {
+            SqlCommand cmd = new SqlCommand($"execute get_process {pid}, {machineId}", connection);
+            var reader = await cmd.ExecuteReaderAsync();
+            var table = new DataTable();
+            table.Load(reader);
+            var row = table.Rows[0];
+            return new Process()
+            {
+                ProcessName = row["name"].ToString(),
+                BinPath = row["bin_path"].ToString(),
+                CPU = float.Parse(row["cpu_load"].ToString()),
+                Mem = long.Parse(row["mem_load"].ToString()),
+                PID  = int.Parse(row["pid"].ToString()),
+                ParentPID = int.Parse(row["parent_pid"].ToString()),
+                IsSystem = bool.Parse(row["is_system"].ToString()),
+                InWhitelist = bool.Parse(row["in_whitelist"].ToString()),
+                Report = new Report { Created = (DateTime)row["created"] },
+                User = new User { Name = row["local_username"].ToString() },
+                Id = long.Parse(row["id"].ToString()),
+            };
+        }
+        public void whitelistProcess(long processId, bool value) {
+            if (self.Connect())
+            {
+                SqlCommand cmd = new SqlCommand($"execute set_proc_whitelist {processId}, {(value ? 1 : 0)}", connection);
+                cmd.ExecuteNonQuery();
+            }
+
+        }
 
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{
@@ -162,7 +192,7 @@ namespace TaskSpyAdminPanel.DB
             }
         }
 
-        public bool Connect()
+        public bool Connect(bool showConnectionAlert = true)
         {
             if (connection.State != System.Data.ConnectionState.Open)
             {
@@ -170,6 +200,11 @@ namespace TaskSpyAdminPanel.DB
             }
             if (connection.State != System.Data.ConnectionState.Open)
             {
+                if (showConnectionAlert)
+                {
+                    MessageBox.Show("Не удается соедениться с сервером. ");
+                }
+            
                 return false;
             }
             return true;

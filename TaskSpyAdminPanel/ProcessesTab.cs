@@ -32,7 +32,7 @@ namespace TaskSpyAdminPanel
         public bool loaded = false;
         bool loading = false;
         DateTime lastLoad;
-        Dictionary<KeyValuePair<int, int>, long> pidToID = new Dictionary<KeyValuePair<int, int>, long>();
+        Dictionary<KeyValuePair<int, int>, Process> pidToID = new Dictionary<KeyValuePair<int, int>, Process>();
         DateTime lastReport = new DateTime();
         static public Action<Process> AddProcessTab;
 
@@ -84,6 +84,7 @@ namespace TaskSpyAdminPanel
         {
             if (loading) return;
             loading = true;
+            //загружаю список пк пользователя
             var machines = await DBWorker.Self.fetchUserMachines(user.Id);
             if (cbCurMachine.Items.Count > 0)
             {
@@ -132,10 +133,20 @@ namespace TaskSpyAdminPanel
                         int.Parse(r["pid"].ToString()),
                         int.Parse(r["parent_pid"].ToString())
                         ),
-                    int.Parse(r["id"].ToString())
+                    new Process() {
+                        Id = int.Parse(r["id"].ToString()),
+                        Mem = long.Parse(r["mem_load"].ToString()),
+                        CPU = float.Parse(r["cpu_load"].ToString()),
+                        ProcessName = r["procname"].ToString(),
+                        User = new User() { Name = r["username"].ToString() },
+                        PID = int.Parse(r["pid"].ToString()),
+                        BinPath = "Загрузка...",
+                        //ActualUserID = long.Parse(r["user_id"].ToString()),
+                        Machine = cbCurMachine.SelectedItem as Machine
+                    }
                     );
             }
-            //table.Columns.Remove("id");
+            //table.Columns.Remove("user_id");
 
             //перевожу столбцы
             for (int i = 0; i < table.Columns.Count; i++)
@@ -182,6 +193,13 @@ namespace TaskSpyAdminPanel
             //применяю таблицу
             processesGridView.DataSource = table;
             
+            //foreach(DataGridViewRow r in processesGridView.Rows)
+            //{
+            //    r.Cells[dbNamesToUI["mem_load"]].Value = DBNull.Value;
+            //    r.Cells[dbNamesToUI["mem_load"]].ValueType = typeof(String);
+            //    r.Cells[dbNamesToUI["mem_load"]].Value = long.Parse(r.Cells[dbNamesToUI["mem_load"]].Value.ToString()).ToString("N0");
+            //}
+
             //применяю сортировку
             if (sortBy != "")
             {
@@ -261,20 +279,14 @@ namespace TaskSpyAdminPanel
         private void processesGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex == -1) return;
+            //пара pid/материнский pid для поиска процесса в словаре
             var pair = new KeyValuePair<int, int>(
                 int.Parse(processesGridView[dbNamesToUI["pid"], e.RowIndex].Value.ToString()),
                 int.Parse(processesGridView[dbNamesToUI["parent_pid"], e.RowIndex].Value.ToString())
                 );
             if(AddProcessTab != null)
             {
-                AddProcessTab(new Process
-                {
-                    Id = pidToID[pair],
-                    ProcessName = processesGridView[dbNamesToUI["procname"], e.RowIndex].Value.ToString(),
-                    CPU = float.Parse(processesGridView[dbNamesToUI["cpu_load"], e.RowIndex].Value.ToString()),
-                    Mem = long.Parse(processesGridView[dbNamesToUI["mem_load"], e.RowIndex].Value.ToString()),
-                    OwnerName = user.Name
-                });
+                AddProcessTab(pidToID[pair]);
             }
 
 

@@ -28,9 +28,9 @@ namespace TaskSpyAdminPanel
             if(textBox2.Text != "" && textBox3.Text != "" && textBox4.Text != "")
             {
                 DBWorker.SetCredentials(textBox4.Text, textBox1.Text, textBox2.Text, textBox3.Text);
-                if (!DBWorker.Self.Connect())
+                if (!DBWorker.Self.Connect(false))
                 {
-                    MessageBox.Show("Невреный логин или пароль. А может сервер упал?");
+                    MessageBox.Show($"Невозможно подключится к серверу {textBox4.Text}. Проверьте данные, которые вы ввели.");
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace TaskSpyAdminPanel
             }
             else
             {
-                MessageBox.Show("Все поля кроме IP должны быть заполнены.");
+                MessageBox.Show("Все поля кроме IP должны обязательно быть заполннеными.");
             }
         }
 

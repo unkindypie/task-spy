@@ -21,6 +21,14 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
+        public bool InWhitelist
+        {
+            get; set;
+        }
+        public Report Report
+        {
+            get; set;
+        }
         public float CPU
         {
             get; set;
@@ -41,7 +49,7 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
-        public string OwnerName
+        public User User
         {
             get; set;
         }
@@ -53,6 +61,11 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
+        public Machine Machine
+        {
+            get; set;
+        }
+       
 
     }
 }

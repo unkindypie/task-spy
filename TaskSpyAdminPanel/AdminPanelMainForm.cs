@@ -21,10 +21,11 @@ namespace TaskSpyAdminPanel
         void FillUsers()
         {
 
-            if (DBWorker.Self.Connect())
+            if (DBWorker.Self.Connect(false))
             {
                 List<User> users = DBWorker.Self.fetchUsers();
                 lbUsers.DataSource = users;
+
             }
             else
             {
@@ -67,7 +68,7 @@ namespace TaskSpyAdminPanel
         void AddProcessTab(Process process)
         {
             var tabpage = new TabPage();
-            tabpage.Text = $"{process.ProcessName} от {process.OwnerName}";
+            tabpage.Text = $"{process.ProcessName} из {process.Machine.Name}";
             var processesTab = new ProcessTab(process);
             processesTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(processesTab);
@@ -85,6 +86,9 @@ namespace TaskSpyAdminPanel
             InitializeComponent();
             //коллбек, который будет открывать вкладку с еденичным процессом
             ProcessesTab.AddProcessTab = AddProcessTab;
+            //для того, чтобы отрывать материнские процессы
+            ProcessTab.AddProcessTab = AddProcessTab;
+
             tbUsrSearch.SetPlaceholder("Поиск");
             lbUsers.IntegralHeight = false;
         }
@@ -107,8 +111,9 @@ namespace TaskSpyAdminPanel
             DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
             FillUsers();
 
-
-
+            var menu = new ContextMenuStrip();
+            
+       
 
             // This will change the ListBox behaviour, so you can customize the drawing of each item on the list.
             // The fixed mode makes every item on the list to have a fixed size. If you want each item having
@@ -237,8 +242,7 @@ namespace TaskSpyAdminPanel
         //подгрузка процессов с бд только при октрытии
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            if (tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0 &&
-                tabControl1.SelectedTab.Controls[0].GetType().ToString() == "TaskSpyAdminPanel.ProcessesTab")
+            if (tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0)
             {
                 foreach (TabPage tp in tabControl1.TabPages)
                 {
@@ -252,6 +256,20 @@ namespace TaskSpyAdminPanel
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+        //открывает контекстное меню по ПКМ на пользователя в списке
+        private void lbUsers_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var user = lbUsers.Items[lbUsers.IndexFromPoint(e.Location)] as User;
+                cmsUser.Items.Clear();
+                var item = new UserPseudonymMenuItem(user);
+
+                cmsUser.Items.Add(item);
+                cmsUser.Show(lbUsers, new Point(e.X, e.Y));
+     
+            }
         }
     }
     public static class TextBoxExtension

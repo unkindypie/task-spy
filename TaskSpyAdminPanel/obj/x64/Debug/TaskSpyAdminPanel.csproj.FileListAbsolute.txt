@@ -56,3 +56,4 @@ C:\Users\soft\Desktop\task-spy-07\TaskSpyAdminPanel\obj\x64\Debug\DemotInterface
 C:\Users\soft\Desktop\task-spy-07\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.GenerateResource.Cache
 C:\Users\soft\Desktop\task-spy-07\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.exe
 C:\Users\soft\Desktop\task-spy-07\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ToolStripTextControl.resources

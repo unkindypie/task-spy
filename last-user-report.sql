@@ -43,3 +43,54 @@ begin
 	group by name, machines.id, machines.name
 	order by created desc
 end
+go;
+alter procedure get_process
+ @pid int,
+ @machine_id bigint
+as
+begin
+select process_names.name, bin_path, ROUND(cpu_load, 2) 'cpu_load', 
+mem_load, parent_pid, pid, created, is_system, in_whitelist, users.local_username, users.is_real, processes.id from processes 
+join reports
+on report_id = reports.id
+join processEntries
+on processEntries.id = entry_id
+join process_names 
+on processEntries.process_name_id = process_names.id
+join bin_paths
+on bin_paths.id = bin_path_id
+join users
+on user_id = users.id
+where created = (
+	select max(created) from processes 
+	join reports
+	on report_id = reports.id
+	where pid = @pid and machine_id = @machine_id
+) and pid = @pid and machine_id = @machine_id
+end
+go;
+
+alter procedure set_proc_whitelist
+ @processId bigint,
+ @value bit
+as
+begin
+	declare @entry_id bigint = (
+		select processEntries.id
+		from processes
+		join processEntries
+		on processEntries.id = entry_id	
+		where processes.id = @processId
+	);
+	update processEntries set in_whitelist = @value
+	where id = @entry_id
+end
+execute get_process 106, 3624, 1
+
+
+
+
+select * from processEntries
+join process_names
+on process_name_id = process_names.id
+

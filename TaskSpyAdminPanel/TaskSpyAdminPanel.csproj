@@ -99,6 +99,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextBoxToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripTextControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ToolStripTextControl.Designer.cs">
+      <DependentUpon>ToolStripTextControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AdminPanelMainForm.resx">
       <DependentUpon>AdminPanelMainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +129,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ToolStripTextControl.resx">
+      <DependentUpon>ToolStripTextControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

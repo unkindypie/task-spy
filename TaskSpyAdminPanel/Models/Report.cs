@@ -8,5 +8,13 @@ namespace TaskSpyAdminPanel.Models
 {
     public class Report
     {
+        public long Id
+        {
+            get; set;
+        }
+        public DateTime Created
+        {
+            get; set;
+        }
     }
 }
