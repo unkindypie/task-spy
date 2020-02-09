@@ -85,12 +85,14 @@ begin
 	update processEntries set in_whitelist = @value
 	where id = @entry_id
 end
-execute get_process 106, 3624, 1
-
-
-
-
-select * from processEntries
-join process_names
-on process_name_id = process_names.id
-
+go;
+--create procedure update_pseudonym
+--	@userId bigint,
+--	@pseudonym nvarchar(16)
+--as
+--begin
+--	update users
+--	set pseudonym = @pseudonym
+--	where id = @userId
+--end
+--go;

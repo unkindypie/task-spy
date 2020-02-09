@@ -20,19 +20,16 @@ namespace TaskSpyAdminPanel
         LoginForm loginForm;
         void FillUsers()
         {
-
             if (DBWorker.Self.Connect(false))
             {
                 List<User> users = DBWorker.Self.fetchUsers();
                 lbUsers.DataSource = users;
-
+                //menuStrip1.Visible = false;
             }
             else
             {
                 MessageBox.Show("Проблемы с подключением к базе данных. Проверьте интернет соеденение.");
             }
-
-
         }
         void OnLaunch()
         {
@@ -80,7 +77,7 @@ namespace TaskSpyAdminPanel
                 processesTab.TabOpenned();
             }
         }
-
+        private UserPseudonymMenuItem userPseudonymForm;
         public Form1()
         {
             InitializeComponent();
@@ -91,6 +88,10 @@ namespace TaskSpyAdminPanel
 
             tbUsrSearch.SetPlaceholder("Поиск");
             lbUsers.IntegralHeight = false;
+
+            //менюшка на пкм по юзеру
+            userPseudonymForm = new UserPseudonymMenuItem(FillUsers);
+            cmsUser.Items.Add(userPseudonymForm);
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -262,11 +263,11 @@ namespace TaskSpyAdminPanel
         {
             if (e.Button == MouseButtons.Right)
             {
-                var user = lbUsers.Items[lbUsers.IndexFromPoint(e.Location)] as User;
-                cmsUser.Items.Clear();
-                var item = new UserPseudonymMenuItem(user);
-
-                cmsUser.Items.Add(item);
+                var index = lbUsers.IndexFromPoint(e.Location);
+                if (index == -1) return;
+                var user = lbUsers.Items[index] as User;
+        
+                userPseudonymForm.SetUser(user);
                 cmsUser.Show(lbUsers, new Point(e.X, e.Y));
      
             }

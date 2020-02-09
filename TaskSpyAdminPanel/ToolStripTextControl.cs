@@ -15,19 +15,36 @@ namespace TaskSpyAdminPanel
 {
     public partial class ToolStripTextControl : UserControl
     {
-        public User user;
+        private User user;
+        public Action Refresh;
         public ToolStripTextControl()
         {
             InitializeComponent();
 
             //tbPseudonym.SetPlaceholder("Ввод");
         }
+        
+        public User User
+        {
+            get
+            {
+                return user;
+            }
+            set
+            {
+                user = value;
+                tbPseudonym.Text = user.Pseudonym;
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (DBWorker.Self.Connect() && tbPseudonym.Text != "")
+            if (DBWorker.Self.Connect() && tbPseudonym.Text != "" && user != null)
             {
-
+                DBWorker.Self.setPseudonym(user.Id, tbPseudonym.Text);
+                //this.Hide();
+                Refresh();
+                //Visible = false;
             }
         }
     }

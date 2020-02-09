@@ -164,6 +164,16 @@ namespace TaskSpyAdminPanel.DB
             }
 
         }
+        public void setPseudonym(long userId, string pseudonym)
+        {
+            if (self.Connect())
+            {
+                string commandText =
+                      $" update users set pseudonym = '{pseudonym}' where id = {userId}";
+                SqlCommand cmd = new SqlCommand(commandText, connection);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{

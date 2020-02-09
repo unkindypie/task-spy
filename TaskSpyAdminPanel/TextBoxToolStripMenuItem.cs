@@ -14,11 +14,15 @@ namespace TaskSpyAdminPanel
     public class UserPseudonymMenuItem : ToolStripControlHost
     {
         public ToolStripTextControl control;
-
-        public UserPseudonymMenuItem(User user) : base(new ToolStripTextControl())
+        public void SetUser(User user)
+        {
+            this.control.User = user;
+        }
+        public UserPseudonymMenuItem(Action refresh) : base(new ToolStripTextControl())
         {
             this.control = this.Control as ToolStripTextControl;
-            control.user = user;
+            control.Refresh = refresh;
+ 
         }
 
     }
