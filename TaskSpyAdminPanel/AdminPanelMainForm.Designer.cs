@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.cmsUser = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -122,6 +123,7 @@
             this.tbUsrSearch.Name = "tbUsrSearch";
             this.tbUsrSearch.Size = new System.Drawing.Size(164, 20);
             this.tbUsrSearch.TabIndex = 8;
+            this.tbUsrSearch.TextChanged += new System.EventHandler(this.tbUsrSearch_TextChanged);
             // 
             // label2
             // 
@@ -147,7 +149,12 @@
             // cmsUser
             // 
             this.cmsUser.Name = "cmsUser";
-            this.cmsUser.Size = new System.Drawing.Size(181, 26);
+            this.cmsUser.Size = new System.Drawing.Size(61, 4);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 15000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -184,6 +191,7 @@
         private System.Windows.Forms.TextBox tbUsrSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ContextMenuStrip cmsUser;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

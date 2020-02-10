@@ -18,13 +18,15 @@ namespace TaskSpyAdminPanel
     public partial class Form1 : Form
     {
         LoginForm loginForm;
-        void FillUsers()
+        async void FillUsers()
         {
             if (DBWorker.Self.Connect(false))
             {
-                List<User> users = DBWorker.Self.fetchUsers();
+                //загружаю реальных пользователей с бд, соответствующих строке поиска
+                List<User> users = await DBWorker.Self.fetchUsers(tbUsrSearch.Text);
+                //добавляю только пользователей, которых не было ранее
+
                 lbUsers.DataSource = users;
-                //menuStrip1.Visible = false;
             }
             else
             {
@@ -35,7 +37,7 @@ namespace TaskSpyAdminPanel
         {
             //десериализую конфиг и применяю его значения на фильтрах в форме
             ConfigManager.Load();
-
+            timer1.Start();
 
         }
         void SaveConfigChanges()
@@ -89,8 +91,13 @@ namespace TaskSpyAdminPanel
             tbUsrSearch.SetPlaceholder("Поиск");
             lbUsers.IntegralHeight = false;
 
+            Action refresh = () => {
+                cmsUser.Visible = false;
+                
+            };
+            refresh += FillUsers;
             //менюшка на пкм по юзеру
-            userPseudonymForm = new UserPseudonymMenuItem(FillUsers);
+            userPseudonymForm = new UserPseudonymMenuItem(refresh);
             cmsUser.Items.Add(userPseudonymForm);
         }
 
@@ -102,39 +109,24 @@ namespace TaskSpyAdminPanel
         private void Form1_Load(object sender, EventArgs e)
         {
             OnLaunch();
-            //loginForm = new LoginForm();
-            //Show();
-            //if (loginForm.ShowDialog() != DialogResult.OK)
-            //{
-            //    Close();
-            //}
+            loginForm = new LoginForm();
+            Show();
+            if (loginForm.ShowDialog() != DialogResult.OK)
+            {
+                DBWorker.Self.Disconect();
+                Close();
+                return;
+            }
+     
             //DBWorker.SetCredentials("SQL_E1118P1", "10.3.31.8", "E1118P1", "1P8111E");
-            DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
+            //DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
+            //DBWorker.SetCredentials("DESKTOP-6DIF51U\\SQL_S2", "", "sa", "baddev02");
             FillUsers();
 
-            var menu = new ContextMenuStrip();
+            //var menu = new ContextMenuStrip();
             
-       
-
-            // This will change the ListBox behaviour, so you can customize the drawing of each item on the list.
-            // The fixed mode makes every item on the list to have a fixed size. If you want each item having
-            // a different size, you can use DrawMode.OwnerDrawVariable.
             lbUsers.DrawMode = DrawMode.OwnerDrawFixed;
-
-            // Here we define the height of each item on your list.
             lbUsers.ItemHeight = 40;
-
-            // Here i will just make an example data source, to emulate the control you are trying to reproduce.
-
-
-            var table = new DataTable();
-            table.Columns.Add("Имя процесса");
-            table.Columns.Add("Нагрузка на процессор");
-            table.Columns.Add("Память");
-            table.Columns.Add("Нагрузка на сеть");
-            table.Columns.Add("Родительский процесс");
-            table.Rows.Add("chrome");
-            table.Rows.Add("minecraft");
         }
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -268,9 +260,22 @@ namespace TaskSpyAdminPanel
                 var user = lbUsers.Items[index] as User;
         
                 userPseudonymForm.SetUser(user);
+    
                 cmsUser.Show(lbUsers, new Point(e.X, e.Y));
-     
+                cmsUser.Visible = true;
+               
+
             }
+        }
+
+        private void tbUsrSearch_TextChanged(object sender, EventArgs e)
+        {
+            FillUsers();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            
         }
     }
     public static class TextBoxExtension

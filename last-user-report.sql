@@ -1,14 +1,14 @@
 use [task-spy];
 
 go
-alter procedure last_user_report
+create procedure last_user_report
 	@user_id bigint,
 	@show_every_user bit,
 	@machine_id bigint
 as
 begin
 	select process_names.name as procname, local_username 'username',
-	ROUND(cpu_load, 1) 'cpu_load', mem_load, pid, parent_pid, is_system, processes.id from processes
+	ROUND(cpu_load, 1) 'cpu_load', mem_load, pid, parent_pid, is_system, processes.id, in_whitelist from processes
 	join processEntries
 	on processEntries.id = entry_id
 	join users on users.id = processes.user_id
@@ -44,33 +44,33 @@ begin
 	order by created desc
 end
 go;
-alter procedure get_process
+create procedure get_process
  @pid int,
  @machine_id bigint
 as
 begin
-select process_names.name, bin_path, ROUND(cpu_load, 2) 'cpu_load', 
-mem_load, parent_pid, pid, created, is_system, in_whitelist, users.local_username, users.is_real, processes.id from processes 
-join reports
-on report_id = reports.id
-join processEntries
-on processEntries.id = entry_id
-join process_names 
-on processEntries.process_name_id = process_names.id
-join bin_paths
-on bin_paths.id = bin_path_id
-join users
-on user_id = users.id
-where created = (
-	select max(created) from processes 
+	select process_names.name, bin_path, ROUND(cpu_load, 2) 'cpu_load', 
+	mem_load, parent_pid, pid, created, is_system, in_whitelist, users.local_username, users.is_real, processes.id from processes 
 	join reports
 	on report_id = reports.id
-	where pid = @pid and machine_id = @machine_id
-) and pid = @pid and machine_id = @machine_id
+	join processEntries
+	on processEntries.id = entry_id
+	join process_names 
+	on processEntries.process_name_id = process_names.id
+	join bin_paths
+	on bin_paths.id = bin_path_id
+	join users
+	on user_id = users.id
+	where created = (
+		select max(created) from processes 
+		join reports
+		on report_id = reports.id
+		where pid = @pid and machine_id = @machine_id
+	) and pid = @pid and machine_id = @machine_id
 end
 go;
 
-alter procedure set_proc_whitelist
+create procedure set_proc_whitelist
  @processId bigint,
  @value bit
 as
@@ -96,3 +96,5 @@ go;
 --	where id = @userId
 --end
 --go;
+select * from users;
+select * from reports;

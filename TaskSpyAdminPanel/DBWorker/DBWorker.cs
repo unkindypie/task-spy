@@ -46,11 +46,12 @@ namespace TaskSpyAdminPanel.DB
             connection.ConnectionString = builder.ConnectionString;
 
         }
-        public List<User> fetchUsers()
+        public async Task<List<User>> fetchUsers(string searchString)
         {
             List<User> users = new List<User>();
-            SqlCommand cmd = new SqlCommand($"select local_username, pseudonym, id from users where is_real = 1", connection);
-            var reader = cmd.ExecuteReader();
+            SqlCommand cmd = new SqlCommand($"select local_username, pseudonym, id from users " +
+                $"where is_real = 1{(searchString != ""? $" and local_username like '%{searchString}%'":"")}", connection);
+            var reader = await cmd.ExecuteReaderAsync();
             var table = new DataTable();
             table.Load(reader);
             
@@ -175,6 +176,7 @@ namespace TaskSpyAdminPanel.DB
             }
         }
 
+       
         //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
         //{
         //    SqlCommand cmd = new SqlCommand($"insert into reports_mutator values ({totalMemoryLoad}, @totalCPULoad, '{machineName}','{localIP}')", connection);
@@ -201,12 +203,28 @@ namespace TaskSpyAdminPanel.DB
                 return self;
             }
         }
-
         public bool Connect(bool showConnectionAlert = true)
         {
             if (connection.State != System.Data.ConnectionState.Open)
             {
                 connection.Open();
+            }
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                if (showConnectionAlert)
+                {
+                    MessageBox.Show("Не удается соедениться с сервером. ");
+                }
+
+                return false;
+            }
+            return true;
+        }
+        public async Task<bool> ConnectAsync(bool showConnectionAlert = true)
+        {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                await connection.OpenAsync();
             }
             if (connection.State != System.Data.ConnectionState.Open)
             {

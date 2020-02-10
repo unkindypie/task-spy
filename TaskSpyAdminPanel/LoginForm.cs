@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
 
 using TaskSpyAdminPanel.DB;
+using TaskSpyAdminPanel.Config;
 
 namespace TaskSpyAdminPanel
 {
@@ -21,17 +23,49 @@ namespace TaskSpyAdminPanel
         public LoginForm()
         {
             InitializeComponent();
+
+            textBox4.Text = ConfigManager.Config.server;
+            textBox1.Text = ConfigManager.Config.ip;
+            textBox2.Text = ConfigManager.Config.username;
+            textBox3.Text = ConfigManager.Config.password;
+            if (textBox4.Text != "")
+            {
+                checkBox1.Checked = true;
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            if(textBox2.Text != "" && textBox3.Text != "" && textBox4.Text != "")
+            //валидация ip
+            bool isIpValid = false;
+            if(textBox1.Text == "")
+            {
+                isIpValid = true;
+            } else
+            {
+                try
+                {
+                    IPAddress.Parse(textBox1.Text);
+                    isIpValid = true;
+                }
+                catch { }
+            }
+ 
+
+            if(isIpValid && textBox2.Text != "" && textBox3.Text != "" && textBox4.Text != "")
             {
                 DBWorker.SetCredentials(textBox4.Text, textBox1.Text, textBox2.Text, textBox3.Text);
-                if (!DBWorker.Self.Connect(false))
+                bool connected = false;
+                try
                 {
-                    MessageBox.Show($"Невозможно подключится к серверу {textBox4.Text}. Проверьте данные, которые вы ввели.");
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+                    connected = await DBWorker.Self.ConnectAsync(false);
+                } catch
+                {
+                   
                 }
+                if(!connected) MessageBox.Show($"Невозможно подключится к серверу {textBox4.Text}. Проверьте данные, которые вы ввели.");
+
                 else
                 {
                     serverName = textBox4.Text;
@@ -39,13 +73,29 @@ namespace TaskSpyAdminPanel
                     userName = textBox2.Text;
                     password = textBox3.Text;
 
+                    if (checkBox1.Checked)
+                    {
+                        ConfigManager.Config.server = textBox4.Text;
+                        ConfigManager.Config.ip = textBox1.Text;
+                        ConfigManager.Config.username = textBox2.Text;
+                        ConfigManager.Config.password = textBox3.Text;
+                    }
+
                     this.DialogResult = DialogResult.OK;
                     Close();
                 }
             }
             else
             {
-                MessageBox.Show("Все поля кроме IP должны обязательно быть заполннеными.");
+                if (!isIpValid)
+                {
+                    MessageBox.Show("IP не валидный!");
+                }
+                else
+                {
+                    MessageBox.Show("Все должны обязательно быть заполннеными. IP может быть оставлен пустым, если сервер в нем не нуждается.");
+                }
+               
             }
         }
 
@@ -56,7 +106,7 @@ namespace TaskSpyAdminPanel
 
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.DialogResult = DialogResult.No;
+
         }
     }
 }

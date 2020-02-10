@@ -56,9 +56,18 @@ namespace TaskSpy
             //eventLog1.Source = "MySource";
             //eventLog1.Log = "MyNewLog";
         }
-
+        bool debug = true;
+        StreamWriter logger;
+        private void WriteLog(string log)
+        {
+            if (logger == null || !debug) return;
+            logger.WriteLine($"[{DateTime.Now}] {log};");
+        }
         protected override void OnStart(string[] args)
         {
+            logger = new StreamWriter(
+             new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "service-log.txt"), FileMode.OpenOrCreate)
+             );
             ServiceConfig config;
             //десериализую конфиг для авторизации на сервере
             try
@@ -69,6 +78,8 @@ namespace TaskSpy
                         Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.xml"
                         ), FileMode.Open
                     ));
+                WriteLog($"Deserialized config: IP: {config.ip}; Server: {config.servername}; User:{config.username}; Password:{config.password}");
+
 
             } catch(Exception e)
             {
@@ -76,6 +87,10 @@ namespace TaskSpy
                 //eventLog1.WriteEntry(e.ToString());
                 return;
             }
+
+         
+           
+
             //eventLog1.WriteEntry($"Config was readed with the " +
             //    $"folowing fields: ip:{config.ip}, servername: {config.servername},"+
             //    $"username:{config.username}, password:{config.password}");
@@ -90,9 +105,14 @@ namespace TaskSpy
             //сканирование будет проводиться каждые 10 секунд
             Timer timer = new Timer();
             timer.Interval = 10000;
+            if (!DBConnector.Self.Connect())
+            {
+                WriteLog($"[ERR] No connection to db!");
+            }
             timer.Elapsed += new ElapsedEventHandler((object obj, ElapsedEventArgs e)=> {
                 //сканирую запущенные процессы
                 var processes = Monitor.ScanProcesses();
+                WriteLog($"Scanned {processes.Count} processes.");
                 //если есть подключение к бд и сканнер отработал 3 раза (необходимо для
                 //корректного вычисления нагрузки на процессор), то начинаем слать отчеты
                 if (DBConnector.Self.Connect() && Monitor.ScanCounter > 3)

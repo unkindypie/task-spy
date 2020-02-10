@@ -42,9 +42,7 @@ namespace TaskSpyAdminPanel
             if (DBWorker.Self.Connect() && tbPseudonym.Text != "" && user != null)
             {
                 DBWorker.Self.setPseudonym(user.Id, tbPseudonym.Text);
-                //this.Hide();
                 Refresh();
-                //Visible = false;
             }
         }
     }

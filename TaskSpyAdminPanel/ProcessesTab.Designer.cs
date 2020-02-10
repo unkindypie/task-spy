@@ -127,8 +127,8 @@
             this.processesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.processesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Rubik", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -143,6 +143,7 @@
             this.processesGridView.Size = new System.Drawing.Size(759, 358);
             this.processesGridView.TabIndex = 9;
             this.processesGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.processesGridView_CellDoubleClick);
+            this.processesGridView.Sorted += new System.EventHandler(this.processesGridView_Sorted);
             // 
             // chbShowEveryUser
             // 

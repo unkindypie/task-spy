@@ -41,3 +41,13 @@ C:\Users\soft\Desktop\task-spy-06\daemon-installer\obj\x64\Release\daemon_instal
 C:\Users\soft\Desktop\task-spy-06\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csproj.GenerateResource.Cache
 C:\Users\soft\Desktop\task-spy-06\daemon-installer\obj\x64\Release\daemon_installer.exe
 C:\Users\soft\Desktop\task-spy-06\daemon-installer\obj\x64\Release\daemon_installer.pdb
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\bin\x64\Release\daemon_installer.exe.config
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\bin\x64\Release\daemon_installer.exe
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\bin\x64\Release\daemon_installer.pdb
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\daemon_installer.Form1.resources
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\daemon_installer.Properties.Resources.resources
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csproj.GenerateResource.cache
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csproj.CoreCompileInputs.cache
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\daemon_installer.exe
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\daemon_installer.pdb
+C:\Users\Max\Desktop\TaskSpy\daemon-installer\obj\x64\Release\TaskSpyServiceInstaller.csprojAssemblyReference.cache

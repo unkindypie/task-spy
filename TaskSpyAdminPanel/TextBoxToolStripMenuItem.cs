@@ -22,7 +22,7 @@ namespace TaskSpyAdminPanel
         {
             this.control = this.Control as ToolStripTextControl;
             control.Refresh = refresh;
- 
+            
         }
 
     }

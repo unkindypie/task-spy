@@ -3,6 +3,8 @@ use [task-spy];
 --drop table processes;
 --drop table reports;
 --drop table processEntries;
+--drop table bin_paths;
+--drop table process_names;
 --drop table users;
 --drop table ips;
 --drop table machines;
@@ -84,8 +86,10 @@ create table reports_mutator (
 	ip varchar(16) not null,
 )
 
+insert into reports_mutator values (1515, 15, 'effe', '12.2121.465');
+
 go
-create trigger reports_mutator_insert on reports_mutator
+alter trigger reports_mutator_insert on reports_mutator
 instead of insert
 as
 begin
@@ -210,8 +214,8 @@ begin
 		@user_id
 	)
 end
-
-CREATE TYPE ProcTempTable 
+go;
+create TYPE ProcTempTable 
 AS TABLE (
 	id int identity(1, 1),
 	report_id bigint not null,
@@ -225,7 +229,8 @@ AS TABLE (
 	local_username nvarchar(20) not null,
 	is_user_real bit not null
 	)
-go
+
+
 
 create trigger processes_mutator_trigger
 on processes_mutator instead of insert
@@ -258,7 +263,7 @@ begin
 end
 go
 
-
+select * from reports;
 
 --ALTER TABLE
 --  reports
@@ -302,7 +307,15 @@ go
 
 --ALTER TABLE processEntries DROP COLUMN bin_path;
 --ALTER TABLE processEntries DROP COLUMN name;
-
-
 --ALTER TABLE processEntries add foreign key (bin_path_id) references bin_paths(id)
 --ALTER TABLE processEntries add foreign key (process_name_id) references process_names(id)
+
+
+
+
+--select * from reports;
+
+--insert into processes_mutator values (10405, 10, 212321, 2634, 454, 'test-proc', 'c/path/to/proc.exe', 0, 'owner', 0);
+
+--select * from users
+--where local_username like '%ir%'
