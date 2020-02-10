@@ -86,26 +86,16 @@ begin
 	where id = @entry_id
 end
 go;
---create procedure update_pseudonym
---	@userId bigint,
---	@pseudonym nvarchar(16)
---as
---begin
---	update users
---	set pseudonym = @pseudonym
---	where id = @userId
---end
---go;
 
 
-update processEntries
-set in_whitelist = 1
-from processEntries
-join processes
-on entry_id = processEntries.id
-where user_id = 105
 
 
-select top 1 processEntries.id from processEntries, processes
-where entry_id = processEntries.id 
-	and user_id = 105 and in_whitelist = 0
+declare	@user_id bigint = 105;
+declare @show_every_user bit = 1;
+declare @machine_id bigint = 1;
+
+select distinct reports.id, created from processes
+	join reports on processes.report_id = reports.id
+	join users on users.id = processes.user_id
+where (@show_every_user = 1 or (is_real = 0 or users.id = @user_id)) 
+	and user_id = @user_id and reports.machine_id = @machine_id
