@@ -21,6 +21,7 @@ namespace TaskSpyAdminPanel
         {
             InitializeComponent();
 
+            tbPseudonym.Focus();
             //tbPseudonym.SetPlaceholder("Ввод");
         }
         
@@ -39,12 +40,10 @@ namespace TaskSpyAdminPanel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (DBWorker.Self.Connect() && tbPseudonym.Text != "" && user != null)
+            if (DBWorker.Self.Connect() && tbPseudonym.Text.Length < 15 && user != null)
             {
                 DBWorker.Self.setPseudonym(user.Id, tbPseudonym.Text);
-                //this.Hide();
                 Refresh();
-                //Visible = false;
             }
         }
     }

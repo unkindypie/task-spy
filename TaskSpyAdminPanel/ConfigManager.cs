@@ -16,6 +16,7 @@ namespace TaskSpyAdminPanel.Config
         public bool showSystemProcesses = false;
         public bool highlightUnwhitelisted = false;
         public bool showEveryUser = false;
+
         public string ip = "";
         public string server = "";
         public string username = "";
@@ -81,7 +82,7 @@ namespace TaskSpyAdminPanel.Config
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                //MessageBox.Show(e.ToString());
                 config = new StateConfig();
                 isLoaded = true;
             }

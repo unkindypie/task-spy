@@ -42,7 +42,12 @@
             this.chbShowEveryUser = new System.Windows.Forms.CheckBox();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.lbProcessCount = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.открытьПроцессToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.processesGridView)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbLastReportTime
@@ -127,8 +132,8 @@
             this.processesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.processesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Maroon;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Rubik", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -143,6 +148,8 @@
             this.processesGridView.Size = new System.Drawing.Size(759, 358);
             this.processesGridView.TabIndex = 9;
             this.processesGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.processesGridView_CellDoubleClick);
+            this.processesGridView.Sorted += new System.EventHandler(this.processesGridView_Sorted);
+            this.processesGridView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.processesGridView_MouseClick);
             // 
             // chbShowEveryUser
             // 
@@ -171,6 +178,34 @@
             this.lbProcessCount.Size = new System.Drawing.Size(0, 13);
             this.lbProcessCount.TabIndex = 19;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.открытьПроцессToolStripMenuItem,
+            this.добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem,
+            this.удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(322, 70);
+            // 
+            // открытьПроцессToolStripMenuItem
+            // 
+            this.открытьПроцессToolStripMenuItem.Name = "открытьПроцессToolStripMenuItem";
+            this.открытьПроцессToolStripMenuItem.Size = new System.Drawing.Size(321, 22);
+            this.открытьПроцессToolStripMenuItem.Text = "Открыть процесс";
+            this.открытьПроцессToolStripMenuItem.Click += new System.EventHandler(this.открытьПроцессToolStripMenuItem_Click);
+            // 
+            // добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem
+            // 
+            this.добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem.Name = "добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem";
+            this.добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem.Size = new System.Drawing.Size(321, 22);
+            this.добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem.Text = "Добавить выделенные процессы в вайтлист";
+            // 
+            // удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem
+            // 
+            this.удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem.Name = "удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem";
+            this.удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem.Size = new System.Drawing.Size(321, 22);
+            this.удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem.Text = "Удалить выделенные процессы из вайтлиста";
+            // 
             // ProcessesTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,6 +226,7 @@
             this.Enter += new System.EventHandler(this.ProcessesTab_Enter);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.ProcessesTab_Layout);
             ((System.ComponentModel.ISupportInitialize)(this.processesGridView)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,5 +244,9 @@
         private System.Windows.Forms.CheckBox chbShowEveryUser;
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.Label lbProcessCount;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem открытьПроцессToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem добавитьВыделенныеПроцессыВВайтлистToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem удалитьВыделенныеПроцессыИзВайтлистаToolStripMenuItem;
     }
 }

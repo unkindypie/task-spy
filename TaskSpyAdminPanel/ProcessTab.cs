@@ -38,6 +38,10 @@ namespace TaskSpyAdminPanel
         public async void LoadProcess()
         {
             if (loading) return;
+            if (!loaded)
+            {
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+            }
             loading = true;
             if (DBWorker.Self.Connect())
             {
@@ -46,6 +50,7 @@ namespace TaskSpyAdminPanel
                 {
                     loading = false;
                     if (!loaded) loaded = true;
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                     return;
                 }
                 this.process = newProcess;
@@ -53,7 +58,11 @@ namespace TaskSpyAdminPanel
             }
             chbWhitelisted.Enabled = true;
             loading = false;
-            if (!loaded) loaded = true;
+            if (!loaded)
+            {
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                loaded = true;
+            }
             try
             {
                 parentProcess = await DBWorker.Self.fetchProcessAsync(process.ParentPID, machine.Id);

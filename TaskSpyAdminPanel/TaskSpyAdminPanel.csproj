@@ -99,6 +99,18 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportSelectorTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReportSelectorTab.Designer.cs">
+      <DependentUpon>ReportSelectorTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReportView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReportView.Designer.cs">
+      <DependentUpon>ReportView.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextBoxToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -129,6 +141,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ReportSelectorTab.resx">
+      <DependentUpon>ReportSelectorTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportView.resx">
+      <DependentUpon>ReportView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ToolStripTextControl.resx">
       <DependentUpon>ToolStripTextControl.cs</DependentUpon>
     </EmbeddedResource>

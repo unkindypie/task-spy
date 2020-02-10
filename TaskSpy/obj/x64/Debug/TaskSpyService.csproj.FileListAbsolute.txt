@@ -11,7 +11,6 @@ C:\Users\Max\Desktop\TaskSpy\TaskSpy\bin\x64\Debug\TaskSpy.exe.config
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\bin\x64\Debug\TaskSpy.exe
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\bin\x64\Debug\TaskSpy.pdb
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpy.ProjectInstaller.resources
-C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpy.TaskSpyService.resources
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpyService.csproj.GenerateResource.cache
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpyService.csproj.CoreCompileInputs.cache
 C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpy.exe
@@ -43,3 +42,14 @@ C:\Users\soft\Desktop\task-spy\TaskSpy\obj\x64\Debug\TaskSpy.ServiceConfig.resou
 C:\Users\soft\Desktop\task-spy\TaskSpy\obj\x64\Debug\TaskSpyService.csproj.GenerateResource.Cache
 C:\Users\soft\Desktop\task-spy\TaskSpy\obj\x64\Debug\TaskSpy.exe
 C:\Users\soft\Desktop\task-spy\TaskSpy\obj\x64\Debug\TaskSpy.pdb
+C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpyService.csprojAssemblyReference.cache
+C:\Users\Max\Desktop\TaskSpy\TaskSpy\obj\x64\Debug\TaskSpy.ServiceConfig.resources
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\bin\x64\Debug\TaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\bin\x64\Debug\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\bin\x64\Debug\TaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpyService.csprojResolveAssemblyReference.cache
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpy.ProjectInstaller.resources
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpy.ServiceConfig.resources
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpyService.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpy.exe
+C:\Users\soft\Desktop\task-spy-10\TaskSpy\obj\x64\Debug\TaskSpy.pdb
