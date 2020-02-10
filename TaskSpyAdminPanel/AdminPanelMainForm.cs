@@ -25,10 +25,6 @@ namespace TaskSpyAdminPanel
                 //загружаю реальных пользователей с бд, соответствующих строке поиска
                 List<User> users = await DBWorker.Self.fetchUsers(tbUsrSearch.Text);
                 //добавляю только пользователей, которых не было ранее
-<<<<<<< HEAD
-=======
-
->>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
                 lbUsers.DataSource = users;
             }
             else
@@ -99,6 +95,11 @@ namespace TaskSpyAdminPanel
             }
         }
 
+        //делегаты ивентов контекстного меню для списка пользователей
+        EventHandler addToWhitelist;
+        EventHandler removeFromWhitelist;
+        EventHandler openReportTab;
+
         private UserPseudonymMenuItem userPseudonymForm;
         public Form1()
         {
@@ -119,6 +120,10 @@ namespace TaskSpyAdminPanel
             //менюшка на пкм по юзеру
             userPseudonymForm = new UserPseudonymMenuItem(refresh);
             cmsUser.Items.Add(userPseudonymForm);
+
+            cmsUser.Items[0].Click += addToWhitelist;
+            cmsUser.Items[1].Click += removeFromWhitelist;
+            cmsUser.Items[2].Click += openReportTab;
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -280,24 +285,22 @@ namespace TaskSpyAdminPanel
                 if (index == -1) return;
                 var user = lbUsers.Items[index] as User;    
                 userPseudonymForm.SetUser(user);
-<<<<<<< HEAD
 
-                cmsUser.Items[0].Click += (object o, EventArgs e_) =>
+
+                
+                addToWhitelist += (object o, EventArgs e_) =>
                 {
                     DBWorker.Self.whitelistAllUserProcesses(user.Id, true);
                 };
-                cmsUser.Items[1].Click += (object o, EventArgs e_) =>
+                removeFromWhitelist += (object o, EventArgs e_) =>
                 {
                     DBWorker.Self.whitelistAllUserProcesses(user.Id, false);
                 };
-                cmsUser.Items[2].Click += (object o, EventArgs e_) =>
+                openReportTab += (object o, EventArgs e_) =>
                 {
                     AddReportSelectorTab(user);
                 };
 
-=======
-    
->>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
                 cmsUser.Show(lbUsers, new Point(e.X, e.Y));
                 cmsUser.Visible = true;
                
@@ -314,7 +317,6 @@ namespace TaskSpyAdminPanel
         {
             
         }
-<<<<<<< HEAD
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -325,8 +327,6 @@ namespace TaskSpyAdminPanel
         {
 
         }
-=======
->>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
     }
     public static class TextBoxExtension
     {

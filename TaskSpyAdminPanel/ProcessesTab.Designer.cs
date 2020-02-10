@@ -149,10 +149,7 @@
             this.processesGridView.TabIndex = 9;
             this.processesGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.processesGridView_CellDoubleClick);
             this.processesGridView.Sorted += new System.EventHandler(this.processesGridView_Sorted);
-<<<<<<< HEAD
             this.processesGridView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.processesGridView_MouseClick);
-=======
->>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
             // 
             // chbShowEveryUser
             // 

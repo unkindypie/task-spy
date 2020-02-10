@@ -71,7 +71,6 @@ C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskS
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe.config
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.pdb
-<<<<<<< HEAD
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe.config
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.exe
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.pdb
@@ -87,5 +86,3 @@ C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPa
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.GenerateResource.Cache
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ReportSelectorTab.resources
 C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ReportView.resources
-=======
->>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
