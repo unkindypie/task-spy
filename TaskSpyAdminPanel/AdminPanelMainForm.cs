@@ -25,6 +25,10 @@ namespace TaskSpyAdminPanel
                 //загружаю реальных пользователей с бд, соответствующих строке поиска
                 List<User> users = await DBWorker.Self.fetchUsers(tbUsrSearch.Text);
                 //добавляю только пользователей, которых не было ранее
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
                 lbUsers.DataSource = users;
             }
             else
@@ -276,6 +280,7 @@ namespace TaskSpyAdminPanel
                 if (index == -1) return;
                 var user = lbUsers.Items[index] as User;    
                 userPseudonymForm.SetUser(user);
+<<<<<<< HEAD
 
                 cmsUser.Items[0].Click += (object o, EventArgs e_) =>
                 {
@@ -290,6 +295,9 @@ namespace TaskSpyAdminPanel
                     AddReportSelectorTab(user);
                 };
 
+=======
+    
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
                 cmsUser.Show(lbUsers, new Point(e.X, e.Y));
                 cmsUser.Visible = true;
                
@@ -306,6 +314,7 @@ namespace TaskSpyAdminPanel
         {
             
         }
+<<<<<<< HEAD
 
         private void tabControl1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -316,6 +325,8 @@ namespace TaskSpyAdminPanel
         {
 
         }
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
     }
     public static class TextBoxExtension
     {

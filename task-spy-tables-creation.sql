@@ -229,6 +229,11 @@ AS TABLE (
 	local_username nvarchar(20) not null,
 	is_user_real bit not null
 	)
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
 
 
 
@@ -318,7 +323,11 @@ select * from reports;
 --insert into processes_mutator values (10405, 10, 212321, 2634, 454, 'test-proc', 'c/path/to/proc.exe', 0, 'owner', 0);
 
 --select * from users
+<<<<<<< HEAD
 --where local_username like '%ir%'
 
 
 select max(created) from reports;
+=======
+--where local_username like '%ir%'
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543

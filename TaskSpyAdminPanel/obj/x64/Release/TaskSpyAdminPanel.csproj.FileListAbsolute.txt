@@ -71,6 +71,9 @@ C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.csproj.CoreCompileInputs.cache
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.exe
 C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.pdb
+<<<<<<< HEAD
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\bin\x64\Release\DemotInterfaceTaskSpy.exe.config
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.exe
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.pdb
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543

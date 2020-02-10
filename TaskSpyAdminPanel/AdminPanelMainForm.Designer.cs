@@ -38,10 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.cmsUser = new System.Windows.Forms.ContextMenuStrip(this.components);
+<<<<<<< HEAD
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.диспетчерОтчетовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+=======
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -158,6 +162,7 @@
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem,
             this.диспетчерОтчетовToolStripMenuItem});
             this.cmsUser.Name = "cmsUser";
+<<<<<<< HEAD
             this.cmsUser.Size = new System.Drawing.Size(349, 92);
             // 
             // добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem
@@ -171,11 +176,15 @@
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem.Name = "удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem";
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem.Text = "Удалить все процессы пользователя из вайтлиста";
+=======
+            this.cmsUser.Size = new System.Drawing.Size(61, 4);
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
             // 
             // timer1
             // 
             this.timer1.Interval = 15000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+<<<<<<< HEAD
             // 
             // диспетчерОтчетовToolStripMenuItem
             // 
@@ -183,6 +192,8 @@
             this.диспетчерОтчетовToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.диспетчерОтчетовToolStripMenuItem.Text = "Диспетчер отчетов";
             this.диспетчерОтчетовToolStripMenuItem.Click += new System.EventHandler(this.диспетчерОтчетовToolStripMenuItem_Click);
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
             // 
             // Form1
             // 
@@ -221,9 +232,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ContextMenuStrip cmsUser;
         private System.Windows.Forms.Timer timer1;
+<<<<<<< HEAD
         private System.Windows.Forms.ToolStripMenuItem добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem диспетчерОтчетовToolStripMenuItem;
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
     }
 }
 

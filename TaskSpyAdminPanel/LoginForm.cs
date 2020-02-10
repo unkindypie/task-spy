@@ -107,11 +107,14 @@ namespace TaskSpyAdminPanel
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {
 
+<<<<<<< HEAD
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
 
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
         }
     }
 }

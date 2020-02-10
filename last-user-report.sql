@@ -1,7 +1,7 @@
 use [task-spy];
 
 go
-alter procedure last_user_report
+create procedure last_user_report
 	@user_id bigint,
 	@show_every_user bit,
 	@machine_id bigint
@@ -96,6 +96,7 @@ go;
 --	where id = @userId
 --end
 --go;
+<<<<<<< HEAD
 
 
 update processEntries
@@ -109,3 +110,7 @@ where user_id = 105
 select top 1 processEntries.id from processEntries, processes
 where entry_id = processEntries.id 
 	and user_id = 105 and in_whitelist = 0
+=======
+select * from users;
+select * from reports;
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543

@@ -110,9 +110,13 @@ namespace TaskSpyAdminPanel
             }
             var newReportTime = await DBWorker.Self.lastReport(user.Id,
                 (cbCurMachine.SelectedItem as Machine).Id);
+<<<<<<< HEAD
 
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
 
+=======
+           
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
             tbLastReportTime.Text = newReportTime.ToString();
 
             //если нет свежего отчета, то ничего не обновляю
@@ -246,6 +250,7 @@ namespace TaskSpyAdminPanel
 
                 if (!pidsToProcess[pair].InWhitelist)
                 {
+<<<<<<< HEAD
                     r.DefaultCellStyle.BackColor = Color.FromArgb(245, 159, 183);
                     r.DefaultCellStyle.ForeColor = Color.White;
                     r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
@@ -254,6 +259,11 @@ namespace TaskSpyAdminPanel
                     r.DefaultCellStyle.ForeColor = Color.Black;
                     r.DefaultCellStyle.BackColor = Control.DefaultBackColor;
                     r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Regular);
+=======
+                    r.DefaultCellStyle.BackColor = Color.LightPink;
+                    r.DefaultCellStyle.ForeColor = Color.White;
+                    r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
                 }
             }
         }
@@ -376,6 +386,7 @@ namespace TaskSpyAdminPanel
                 hightlightUnwightlisted();
             }
         }
+<<<<<<< HEAD
 
         async void whitelistSelectedProcesses(bool mode)
         {
@@ -430,6 +441,8 @@ namespace TaskSpyAdminPanel
                 AddProcessTab(pidsToProcess[pair]);
             }
         }
+=======
+>>>>>>> 4f9d2d1baff8746623f54778c3c9090d9d966543
     }
 
 
