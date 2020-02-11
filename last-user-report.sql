@@ -87,15 +87,73 @@ begin
 end
 go;
 
+--declare	@user_id bigint = 105;
+--declare @show_every_user bit = 1;
+--declare @machine_id bigint = 1;
+
+--select distinct reports.id, created from processes
+--	join reports on processes.report_id = reports.id
+--	join users on users.id = processes.user_id
+--where (@show_every_user = 1 or (is_real = 0 or users.id = @user_id)) 
+--	and user_id = @user_id and reports.machine_id = @machine_id
 
 
+create type ReportTempTable
+as table (
+	created datetime,
+	id bigint,
+	total_cpu_load int,
+	total_memory_load bigint,
+	machine nvarchar(255),
+	ip varchar(16),
+	has_unwhitelisted bit,
+	process_count int
+)
 
-declare	@user_id bigint = 105;
-declare @show_every_user bit = 1;
-declare @machine_id bigint = 1;
+use [task-spy];
+declare @dt datetime = (
+select created from reports where id = 12400
+)
+declare @userid bigint = 105;
+declare @machineid bigint = 1;
 
-select distinct reports.id, created from processes
-	join reports on processes.report_id = reports.id
-	join users on users.id = processes.user_id
-where (@show_every_user = 1 or (is_real = 0 or users.id = @user_id)) 
-	and user_id = @user_id and reports.machine_id = @machine_id
+declare @reports ReportTempTable;
+
+insert into @reports
+select distinct created, reports.id, total_cpu_load, total_memory_load, machines.name 'machine', ips.ip, null, null from reports
+join processes
+on user_id = @userid
+join machines
+on machine_id = machines.id
+join ips
+on ips.id = ip_id
+where created > @dt and machine_id = @machineid
+
+select * from @reports
+declare @id bigint = (select min(id) from @reports);
+declare @end bigint = (select max(id) from @reports);
+while (@id <= @end)
+begin
+	update @reports
+	set process_count = (
+		select count(*) from processes
+		where report_id = @id
+	)
+	if((
+		select top 1 in_whitelist from processes
+		join processEntries
+		on entry_id = processEntries.id
+		where report_id = @id and in_whitelist = 0
+	) = 0)
+		begin
+			update @reports
+			set has_unwhitelisted = 0
+		end
+	else
+		begin
+		update @reports
+			set has_unwhitelisted = 1
+		end
+	set @id = @id + 1;
+end
+select * from @reports

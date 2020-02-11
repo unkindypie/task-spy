@@ -16,5 +16,25 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
+        public long Mem
+        {
+            get; set;
+        }
+        public int CPU
+        {
+            get; set;
+        }
+        public bool InWhitelist
+        {
+            get; set;
+        }
+        public int ProcessCount
+        {
+            get; set;
+        }
+        public string IP
+        {
+            get; set;
+        }
     }
 }

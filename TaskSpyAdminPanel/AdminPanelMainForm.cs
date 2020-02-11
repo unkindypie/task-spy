@@ -95,11 +95,6 @@ namespace TaskSpyAdminPanel
             }
         }
 
-        //делегаты ивентов контекстного меню для списка пользователей
-        EventHandler addToWhitelist;
-        EventHandler removeFromWhitelist;
-        EventHandler openReportTab;
-
         private UserPseudonymMenuItem userPseudonymForm;
         public Form1()
         {
@@ -121,9 +116,19 @@ namespace TaskSpyAdminPanel
             userPseudonymForm = new UserPseudonymMenuItem(refresh);
             cmsUser.Items.Add(userPseudonymForm);
 
-            cmsUser.Items[0].Click += addToWhitelist;
-            cmsUser.Items[1].Click += removeFromWhitelist;
-            cmsUser.Items[2].Click += openReportTab;
+
+            cmsUser.Items[0].Click += (object o, EventArgs e_) =>
+            {
+                DBWorker.Self.whitelistAllUserProcesses(userUnderClick.Id, true);
+            };
+            cmsUser.Items[1].Click += (object o, EventArgs e_) =>
+            {
+                DBWorker.Self.whitelistAllUserProcesses(userUnderClick.Id, false);
+            };
+            cmsUser.Items[2].Click += (object o, EventArgs e_) =>
+            {
+                AddReportSelectorTab(userUnderClick);
+            };
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -275,7 +280,7 @@ namespace TaskSpyAdminPanel
         {
 
         }
-
+        User userUnderClick;
         //открывает контекстное меню по ПКМ на пользователя в списке
         private void lbUsers_MouseUp(object sender, MouseEventArgs e)
         {
@@ -286,20 +291,7 @@ namespace TaskSpyAdminPanel
                 var user = lbUsers.Items[index] as User;    
                 userPseudonymForm.SetUser(user);
 
-
-                
-                addToWhitelist += (object o, EventArgs e_) =>
-                {
-                    DBWorker.Self.whitelistAllUserProcesses(user.Id, true);
-                };
-                removeFromWhitelist += (object o, EventArgs e_) =>
-                {
-                    DBWorker.Self.whitelistAllUserProcesses(user.Id, false);
-                };
-                openReportTab += (object o, EventArgs e_) =>
-                {
-                    AddReportSelectorTab(user);
-                };
+                userUnderClick = user;
 
                 cmsUser.Show(lbUsers, new Point(e.X, e.Y));
                 cmsUser.Visible = true;

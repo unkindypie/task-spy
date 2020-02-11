@@ -63,13 +63,13 @@ namespace TaskSpyAdminPanel
         //dummy loading...
         private void button1_Click(object sender, EventArgs e)
         {
-            flpReports.Controls.Add(new ReportView());
+            flpReports.Controls.Add(new ReportView(new Report()));
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
        
-  
+     
         }
         //dummy loading check...
         private void flpReports_Scroll(object sender, ScrollEventArgs e)
@@ -79,11 +79,12 @@ namespace TaskSpyAdminPanel
                 //если мы внизу, то нужно качать новые отчеты
                 var scrollDelta = flpReports.VerticalScroll.Maximum - 
                     (flpReports.VerticalScroll.Value + reportHeight);
+                button1.Text = (scrollDelta / flpReports.ClientRectangle.Height).ToString();
                 if ((scrollDelta / flpReports.ClientRectangle.Height) == 0)
                 {
                     //количество панелек репортов на экран
                     var reportsPerScreen = (flpReports.ClientRectangle.Width / reportWidth) * (flpReports.ClientRectangle.Height / reportHeight);
-                    MessageBox.Show($"Time to load {reportsPerScreen} reports");
+                    //MessageBox.Show($"Time to load {reportsPerScreen} reports");
                 }
 
             }
