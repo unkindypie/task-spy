@@ -15,5 +15,7 @@ namespace TaskSpyAdminPanel
             set;
         }
         void TabOpenned();
+        void Refresh();
+        void OnTabClose();
     }
 }

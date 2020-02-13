@@ -74,3 +74,6 @@ C:\Users\Max\Desktop\TaskSpy\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTas
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\bin\x64\Release\DemotInterfaceTaskSpy.exe.config
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.exe
 C:\Users\soft\Desktop\task-spy-10\TaskSpyAdminPanel\obj\x64\Release\DemotInterfaceTaskSpy.pdb
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.ReportSelectorTab.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.ReportView.resources
+C:\Users\Fullmetal\source\repos\task-spy\TaskSpyAdminPanel\obj\x64\Release\TaskSpyAdminPanel.ToolStripTextControl.resources

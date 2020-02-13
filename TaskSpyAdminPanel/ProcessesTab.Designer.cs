@@ -61,11 +61,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(191, 12);
+            this.label3.Location = new System.Drawing.Point(201, 12);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 13);
+            this.label3.Size = new System.Drawing.Size(79, 13);
             this.label3.TabIndex = 16;
-            this.label3.Text = "Последний отчет:";
+            this.label3.Text = "Время отчета:";
             // 
             // label2
             // 

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using TaskSpyAdminPanel.Config;
 using TaskSpyAdminPanel.Models;
 using TaskSpyAdminPanel.DB;
+using System.Data.SqlClient;
 
 namespace TaskSpyAdminPanel
 {
@@ -68,24 +69,23 @@ namespace TaskSpyAdminPanel
         public void TabOpenned()
         {
             IsActive = true;
-            
-            updateTimer.Start();
+
+            //включаю автоподгрузку
+            if (dynamic)
+            {
+                updateTimer.Start();
+            }  
+          
             if (!loaded)
             {
 
                 LoadProcesses(true);
-                return;
-            }
-            if ((DateTime.Now - lastLoad) > new TimeSpan(0, 0, 0, 3))
-            {
-                LoadProcesses(true);
             }
 
         }
-        public async void LoadProcesses(bool loadMachines, bool checkTime = true)
+
+        public async Task<DataTable> GetProcessesWithAutoload(bool loadMachines, bool checkTime = true)
         {
-            if (loading) return;
-            loading = true;
             //загружаю список пк пользователя
             var machines = await DBWorker.Self.fetchUserMachines(user.Id);
             if (cbCurMachine.Items.Count > 0)
@@ -120,15 +120,46 @@ namespace TaskSpyAdminPanel
             {
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                 loading = false;
-                return;
+                return null;
             }
             lastReport = newReportTime;
             //загружаю новый отчет
-            var table = await DBWorker.Self.fetchProcessesTableAsync(
+            return await DBWorker.Self.fetchProcessesTableAsync(
                 user.Id,
                 (cbCurMachine.SelectedItem as Machine).Id,
                 chbShowEveryUser.Checked
                 );
+            
+        }
+
+        public async void LoadProcesses(bool loadMachines, bool checkTime = true)
+        {
+            if (loading) return;
+            loading = true;
+            System.Diagnostics.Debug.WriteLine("Load processes call from " + user.Name);
+            DataTable table;
+            if (dynamic)
+            {
+                try
+                {
+                    table = await GetProcessesWithAutoload(loadMachines, checkTime);
+                } catch (SqlException ex)
+                {
+                    if (ex.Number == -2)
+                    {
+                        MessageBox.Show("Кажется, что сервер плохо справляется с нагрузкой.");
+                    }
+                    return;
+                }
+                
+            } else
+            {
+                table = await DBWorker.Self.getReport(user.Id, staticReport.Id, staticMachine.Id, chbShowEveryUser.Checked);
+                tbLastReportTime.Text = staticReport.Created.ToString();
+                if(cbCurMachine.Items.Count == 0) cbCurMachine.Items.Add(staticReport.MachineName);
+            }
+           
+            if (table == null) return;
             //прячу идентификаторы
             pidsToProcess.Clear();
             foreach (DataRow r in table.Rows)
@@ -191,7 +222,7 @@ namespace TaskSpyAdminPanel
             if (processesGridView.SortedColumn != null)
             {
                 sortBy = processesGridView.SortedColumn.Name;
-                sortOrder = (processesGridView.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending
+                sortOrder = (processesGridView.SortOrder == System.Windows.Forms.SortOrder.Ascending ? ListSortDirection.Ascending
                     : ListSortDirection.Descending);
             }
 
@@ -219,9 +250,6 @@ namespace TaskSpyAdminPanel
 
             processesGridView.Columns.Remove("id");
 
-
-
-
             //прячу id записи и is_system в FieldsHider, который записываю в поле имени, так что
             //пользователю не заметен id в бд, но он все еще привязан к строке
            
@@ -247,8 +275,8 @@ namespace TaskSpyAdminPanel
                 if (!pidsToProcess[pair].InWhitelist)
                 {
                     r.DefaultCellStyle.BackColor = Color.FromArgb(245, 159, 183);
-                    r.DefaultCellStyle.ForeColor = Color.White;
-                    r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
+                    r.DefaultCellStyle.ForeColor = Color.Black;
+                   // r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
                 } else
                 {
                     r.DefaultCellStyle.ForeColor = Color.Black;
@@ -257,10 +285,13 @@ namespace TaskSpyAdminPanel
                 }
             }
         }
-
-        public ProcessesTab(User user)
+        bool dynamic;
+        Report staticReport;
+        Machine staticMachine;
+        public ProcessesTab(User user, Report report, Machine machine)
         {
             InitializeComponent();
+            this.dynamic = true;
             this.user = user;
             lbProcessCount.ForeColor = Color.Black;
             //гружу конфиг
@@ -282,6 +313,15 @@ namespace TaskSpyAdminPanel
                 hightlightUnwightlisted();
             };
 
+            if(report != null && machine != null)
+            {
+                this.dynamic = false;
+                this.staticReport = report;
+                this.staticMachine = machine;
+                cbCurMachine.Items.Add(machine);
+                cbCurMachine.SelectedIndex = 0;
+                cbCurMachine.Enabled = false;
+            }
         }
 
         private void ProcessesTab_Load(object sender, EventArgs e)
@@ -291,8 +331,12 @@ namespace TaskSpyAdminPanel
        
         private void chbShowSysProc_CheckedChanged(object sender, EventArgs e)
         {
-            ConfigManager.Config.showSystemProcesses = chbShowSysProc.Checked;
-            LoadProcesses(false, false);
+            if (loaded)
+            {
+                ConfigManager.Config.showSystemProcesses = chbShowSysProc.Checked;
+                LoadProcesses(false, false);
+            }
+          
         }
 
         private void chbHighlightUnwhitelisted_CheckedChanged(object sender, EventArgs e)
@@ -329,8 +373,12 @@ namespace TaskSpyAdminPanel
         }
         private void chbShowEveryUser_CheckedChanged(object sender, EventArgs e)
         {
-            ConfigManager.Config.showEveryUser = chbShowEveryUser.Checked;
-            LoadProcesses(false, false);
+            if (loaded)
+            {
+                ConfigManager.Config.showEveryUser = chbShowEveryUser.Checked;
+                LoadProcesses(false, false);
+            }
+          
         }
 
         private void ProcessesTab_Enter(object sender, EventArgs e)
@@ -394,16 +442,27 @@ namespace TaskSpyAdminPanel
                 );
                 var process = pidsToProcess[pair];
 
+
+                //единожды меняю все в бд
                 if (mode && !process.InWhitelist)
                 {
                     DBWorker.Self.whitelistProcess(process.Id, true);
                     process.InWhitelist = true;
                 }
-                else if(!mode && process.InWhitelist)
+                else if (!mode && process.InWhitelist)
                 {
                     DBWorker.Self.whitelistProcess(process.Id, false);
                     process.InWhitelist = false;
                 }
+
+                //меняю цвет процессов с одинаковыми путями и названиями
+                foreach (Process p in pidsToProcess.Values) {
+                    if(p.BinPath == process.BinPath && p.ProcessName == process.ProcessName && p.InWhitelist != mode)
+                    {
+                        p.InWhitelist = mode;
+                    }
+                }
+                
             }
         }
         //добавление выделенных процессов в вайтлист
@@ -429,6 +488,16 @@ namespace TaskSpyAdminPanel
                 //открываю вкладку процесса
                 AddProcessTab(pidsToProcess[pair]);
             }
+        }
+
+        public void Refresh()
+        {
+            
+        }
+
+        public void OnTabClose()
+        {
+            updateTimer.Stop();
         }
     }
 

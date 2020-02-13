@@ -24,7 +24,7 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
-        public bool InWhitelist
+        public bool HasUnwhitelisted
         {
             get; set;
         }
@@ -36,5 +36,10 @@ namespace TaskSpyAdminPanel.Models
         {
             get; set;
         }
+        public string MachineName
+        {
+            get; set;
+        }
+
     }
 }

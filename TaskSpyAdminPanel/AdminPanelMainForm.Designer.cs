@@ -31,6 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.действияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обновитьСписокПользователейToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.вкладкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обновитьАктивнуюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.закрытьАктивнуюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.lbUsers = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -40,8 +44,10 @@
             this.cmsUser = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.диспетчерОтчетовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -53,7 +59,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.действияToolStripMenuItem});
+            this.действияToolStripMenuItem,
+            this.вкладкиToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(966, 24);
@@ -62,10 +69,42 @@
             // 
             // действияToolStripMenuItem
             // 
+            this.действияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.обновитьСписокПользователейToolStripMenuItem});
             this.действияToolStripMenuItem.Name = "действияToolStripMenuItem";
-            this.действияToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.действияToolStripMenuItem.Text = "Действия";
+            this.действияToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.действияToolStripMenuItem.Text = "Пользователи";
             this.действияToolStripMenuItem.Click += new System.EventHandler(this.действияToolStripMenuItem_Click);
+            // 
+            // обновитьСписокПользователейToolStripMenuItem
+            // 
+            this.обновитьСписокПользователейToolStripMenuItem.Name = "обновитьСписокПользователейToolStripMenuItem";
+            this.обновитьСписокПользователейToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.обновитьСписокПользователейToolStripMenuItem.Text = "Обновить список пользователей";
+            this.обновитьСписокПользователейToolStripMenuItem.Click += new System.EventHandler(this.обновитьСписокПользователейToolStripMenuItem_Click);
+            // 
+            // вкладкиToolStripMenuItem
+            // 
+            this.вкладкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.обновитьАктивнуюToolStripMenuItem,
+            this.закрытьАктивнуюToolStripMenuItem});
+            this.вкладкиToolStripMenuItem.Name = "вкладкиToolStripMenuItem";
+            this.вкладкиToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.вкладкиToolStripMenuItem.Text = "Вкладки";
+            // 
+            // обновитьАктивнуюToolStripMenuItem
+            // 
+            this.обновитьАктивнуюToolStripMenuItem.Name = "обновитьАктивнуюToolStripMenuItem";
+            this.обновитьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.обновитьАктивнуюToolStripMenuItem.Text = "Обновить активную";
+            this.обновитьАктивнуюToolStripMenuItem.Click += new System.EventHandler(this.обновитьToolStripMenuItem_Click);
+            // 
+            // закрытьАктивнуюToolStripMenuItem
+            // 
+            this.закрытьАктивнуюToolStripMenuItem.Name = "закрытьАктивнуюToolStripMenuItem";
+            this.закрытьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.закрытьАктивнуюToolStripMenuItem.Text = "Закрыть активную";
+            this.закрытьАктивнуюToolStripMenuItem.Click += new System.EventHandler(this.закрытьАктивнуюToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -88,6 +127,8 @@
             this.lbUsers.Name = "lbUsers";
             this.lbUsers.Size = new System.Drawing.Size(170, 420);
             this.lbUsers.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.lbUsers, "Список пользователей.  Двойной щелчок для открытия текущего отчета, ПКМ для просм" +
+        "отра возможных опций.");
             this.lbUsers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             this.lbUsers.SelectedIndexChanged += new System.EventHandler(this.lbUsers_SelectedIndexChanged);
             this.lbUsers.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lbUsers_KeyUp);
@@ -156,9 +197,10 @@
             this.cmsUser.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem,
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem,
-            this.диспетчерОтчетовToolStripMenuItem});
+            this.диспетчерОтчетовToolStripMenuItem,
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem});
             this.cmsUser.Name = "cmsUser";
-            this.cmsUser.Size = new System.Drawing.Size(349, 92);
+            this.cmsUser.Size = new System.Drawing.Size(349, 114);
             // 
             // добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem
             // 
@@ -172,17 +214,24 @@
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem.Text = "Удалить все процессы пользователя из вайтлиста";
             // 
-            // timer1
-            // 
-            this.timer1.Interval = 15000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // диспетчерОтчетовToolStripMenuItem
             // 
             this.диспетчерОтчетовToolStripMenuItem.Name = "диспетчерОтчетовToolStripMenuItem";
             this.диспетчерОтчетовToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.диспетчерОтчетовToolStripMenuItem.Text = "Диспетчер отчетов";
             this.диспетчерОтчетовToolStripMenuItem.Click += new System.EventHandler(this.диспетчерОтчетовToolStripMenuItem_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 15000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // смотретьПроцессыВРеальномВремениToolStripMenuItem
+            // 
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Name = "смотретьПроцессыВРеальномВремениToolStripMenuItem";
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Text = "Смотреть процессы в реальном времени";
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Click += new System.EventHandler(this.смотретьПроцессыВРеальномВремениToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -224,6 +273,12 @@
         private System.Windows.Forms.ToolStripMenuItem добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem диспетчерОтчетовToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обновитьСписокПользователейToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem вкладкиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обновитьАктивнуюToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem закрытьАктивнуюToolStripMenuItem;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem смотретьПроцессыВРеальномВремениToolStripMenuItem;
     }
 }
 

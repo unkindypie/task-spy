@@ -63,34 +63,11 @@ namespace TaskSpyAdminPanel.DB
             return users;
         }
 
-        //public async Task<List<Process>> fetchProcessesAsync(long userId, long machineId, bool showEveryUser)
-        //{
-        //    string commandText = $"execute last_user_report {userId}, {(showEveryUser ? 1 : 0)}, {machineId}";
-
-        //    SqlCommand cmd = new SqlCommand(commandText, connection);
-        //    //MessageBox.Show(commandText);
-        //    var reader = await cmd.ExecuteReaderAsync();
-        //    var table = new DataTable();
-        //    var processes = new List<Process>();
-        //    table.Load(reader);
-        //    foreach (DataRow r in table.Rows)
-        //    {
-        //        processes.Add(new Process(long.Parse(r["id"].ToString()), bool.Parse(r["is_system"].ToString())) {
-        //            CPU = float.Parse(r["cpu_load"].ToString()),
-        //            Mem = long.Parse(r["mem_load"].ToString()),
-        //            ProcessName = r["procname"].ToString(),
-        //            PID = int.Parse(r["pid"].ToString()),
-        //            ParentPID = int.Parse(r["parent_pid"].ToString()),
-        //        });
-        //    }
-            
-        //    return processes;
-        //}
+      
 
         public async Task<DataTable> fetchProcessesTableAsync(long userId, long machineId, bool showEveryUser)
         {
             string commandText = $"execute last_user_report {userId}, {(showEveryUser ? 1 : 0)}, {machineId}";
-
 
             SqlCommand cmd = new SqlCommand(commandText, connection);
             //MessageBox.Show(commandText);
@@ -101,6 +78,22 @@ namespace TaskSpyAdminPanel.DB
            
             return table;
         }
+
+
+        public async Task<DataTable> getReport(long userId, long reportId, long machineId, bool showEveryUser)
+        {
+            string commandText = $"execute get_report {userId}, {machineId}, {(showEveryUser ? 1 : 0)}, {reportId}";
+
+            SqlCommand cmd = new SqlCommand(commandText, connection);
+
+            var reader = await cmd.ExecuteReaderAsync();
+            var table = new DataTable();
+            var processes = new List<Process>();
+            table.Load(reader);
+
+            return table;
+        }
+
 
         public async Task<List<Machine>> fetchUserMachines(long userId)
         {
@@ -135,6 +128,24 @@ namespace TaskSpyAdminPanel.DB
             var result = await cmd.ExecuteScalarAsync();
             return DateTime.Parse(result.ToString());
         }
+
+        public async Task<DateTime> lastReport(long userId)
+        {
+            SqlCommand cmd = new SqlCommand($"select max(created) as created " +
+                $"from reports join processes on report_id = reports.id" +
+                $" where user_id = {userId}", connection);
+            var result = await cmd.ExecuteScalarAsync();
+            return DateTime.Parse(result.ToString());
+        }
+        public async Task<DateTime> firstReport(long userId)
+        {
+            SqlCommand cmd = new SqlCommand($"select min(created) as created " +
+                $"from reports join processes on report_id = reports.id" +
+                $" where user_id = {userId}", connection);
+            var result = await cmd.ExecuteScalarAsync();
+            return DateTime.Parse(result.ToString());
+        }
+
         public async Task<Process> fetchProcessAsync(int pid, long machineId)
         {
             SqlCommand cmd = new SqlCommand($"execute get_process {pid}, {machineId}", connection);
@@ -193,33 +204,71 @@ namespace TaskSpyAdminPanel.DB
             return table.Rows.Count > 0;
         }
 
-        public void setPseudonym(long userId, string pseudonym)
+        public async void setPseudonym(long userId, string pseudonym)
         {
             if (self.Connect())
             {
                 string commandText =
                       $" update users set pseudonym = '{pseudonym}' where id = {userId}";
                 SqlCommand cmd = new SqlCommand(commandText, connection);
-                cmd.ExecuteNonQuery();
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
-       
-        //public long createReport(long totalMemoryLoad, float totalCpuLoad, string machineName, string localIP)
-        //{
-        //    SqlCommand cmd = new SqlCommand($"insert into reports_mutator values ({totalMemoryLoad}, @totalCPULoad, '{machineName}','{localIP}')", connection);
-        //    cmd.Parameters.AddWithValue("@totalCPULoad", SqlDbType.Float).Value = totalCpuLoad;
-        //    return int.Parse(cmd.ExecuteScalar().ToString());
-        //}
-        //public void sendProcess(long reportId, ProcessModel processModel)
-        //{
-        //    SqlCommand cmd = new SqlCommand($"insert into processes_mutator values ({reportId}, @cpuLoad, {processModel.memoryUsage}, " +
-        //        $"{processModel.pid}, {processModel.parentPID}, '{processModel.name}', '{processModel.path}',"
-        //        + $" {(processModel.isSystem ? 1 : 0)}, '{processModel.owner}', {(processModel.isOwnerReal ? 1 : 0)})", connection);
-        //    cmd.Parameters.AddWithValue("@cpuLoad", SqlDbType.Float).Value = processModel.cpuUsage;
-        //    cmd.ExecuteNonQuery();
-        //}
+        public async Task<List<Report>> getReportList(DateTime from, long userId, int length, bool includeFrom = false, DateTime to = new DateTime(), bool showOnlyUnwhutelisted = false)
+        {
+            bool isToNull = to == new DateTime();
+            string commandText =
+                     $"execute get_report_list @from, {userId}," +
+                     $" {length}, {(includeFrom ? 1 : 0)}, {(isToNull? "null" : $"@to")}, {(showOnlyUnwhutelisted ? 1: 0)}";
+            SqlCommand cmd = new SqlCommand(commandText, connection);
+            cmd.Parameters.Add("@from", SqlDbType.DateTime);
+            cmd.Parameters["@from"].Value = from;
+            if (!isToNull)
+            {
+                cmd.Parameters.Add("@to", SqlDbType.DateTime);
+                cmd.Parameters["@to"].Value = to;
+            }
+            SqlDataReader reader;
+            try
+            {
+                reader = await cmd.ExecuteReaderAsync();
+            } catch
+            {
+                MessageBox.Show("Отчетов не найдено.");
+                return null;
+            }
+           
+            var reports = new List<Report>();
+            var table = new DataTable();
+            table.Load(reader);
 
+            foreach (DataRow row in table.Rows)
+            {
+                reports.Add(new Report()
+                {
+                    MachineName = row["machine"].ToString(),
+                    Id = long.Parse(row["id"].ToString()),
+                    Created = DateTime.Parse(row["created"].ToString()),
+                    CPU = int.Parse(row["total_cpu_load"].ToString()),
+                    Mem = long.Parse(row["total_memory_load"].ToString()),
+                    IP = row["ip"].ToString(),
+                    HasUnwhitelisted = bool.Parse(row["has_unwhitelisted"].ToString()),
+                    ProcessCount = int.Parse(row["process_count"].ToString()),
+                });
+            }
+            return reports;
+        }
+        public async void setWhitelistReport(long reportId, bool value)
+        {
+            if (self.Connect())
+            {
+                var commandText = $"execute whitelist_report {reportId}, {(value ? 1 : 0)}";
+                SqlCommand cmd = new SqlCommand(commandText, connection);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+        
         public static DBWorker Self
         {
             get

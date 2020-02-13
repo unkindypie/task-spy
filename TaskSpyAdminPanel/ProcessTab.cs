@@ -140,5 +140,15 @@ namespace TaskSpyAdminPanel
             DBWorker.Self.whitelistProcess(process.Id, chbWhitelisted.Checked);
 
         }
+
+        public void Refresh()
+        {
+           
+        }
+
+        public void OnTabClose()
+        {
+            updateTimer.Stop();
+        }
     }
 }
