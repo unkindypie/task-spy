@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.действияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обновитьСписокПользователейToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,9 +46,9 @@
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.диспетчерОтчетовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.смотретьПроцессыВРеальномВремениToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.смотретьПроцессыВРеальномВремениToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -58,12 +59,15 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.menuStrip1.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.действияToolStripMenuItem,
             this.вкладкиToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(966, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1013, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -71,15 +75,20 @@
             // 
             this.действияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.обновитьСписокПользователейToolStripMenuItem});
+            this.действияToolStripMenuItem.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.действияToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.действияToolStripMenuItem.Name = "действияToolStripMenuItem";
-            this.действияToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.действияToolStripMenuItem.Size = new System.Drawing.Size(102, 20);
             this.действияToolStripMenuItem.Text = "Пользователи";
             this.действияToolStripMenuItem.Click += new System.EventHandler(this.действияToolStripMenuItem_Click);
             // 
             // обновитьСписокПользователейToolStripMenuItem
             // 
+            this.обновитьСписокПользователейToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.обновитьСписокПользователейToolStripMenuItem.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.обновитьСписокПользователейToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.обновитьСписокПользователейToolStripMenuItem.Name = "обновитьСписокПользователейToolStripMenuItem";
-            this.обновитьСписокПользователейToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.обновитьСписокПользователейToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
             this.обновитьСписокПользователейToolStripMenuItem.Text = "Обновить список пользователей";
             this.обновитьСписокПользователейToolStripMenuItem.Click += new System.EventHandler(this.обновитьСписокПользователейToolStripMenuItem_Click);
             // 
@@ -88,21 +97,27 @@
             this.вкладкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.обновитьАктивнуюToolStripMenuItem,
             this.закрытьАктивнуюToolStripMenuItem});
+            this.вкладкиToolStripMenuItem.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.вкладкиToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.вкладкиToolStripMenuItem.Name = "вкладкиToolStripMenuItem";
-            this.вкладкиToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.вкладкиToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.вкладкиToolStripMenuItem.Text = "Вкладки";
             // 
             // обновитьАктивнуюToolStripMenuItem
             // 
+            this.обновитьАктивнуюToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.обновитьАктивнуюToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.обновитьАктивнуюToolStripMenuItem.Name = "обновитьАктивнуюToolStripMenuItem";
-            this.обновитьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.обновитьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.обновитьАктивнуюToolStripMenuItem.Text = "Обновить активную";
             this.обновитьАктивнуюToolStripMenuItem.Click += new System.EventHandler(this.обновитьToolStripMenuItem_Click);
             // 
             // закрытьАктивнуюToolStripMenuItem
             // 
+            this.закрытьАктивнуюToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.закрытьАктивнуюToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.закрытьАктивнуюToolStripMenuItem.Name = "закрытьАктивнуюToolStripMenuItem";
-            this.закрытьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.закрытьАктивнуюToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.закрытьАктивнуюToolStripMenuItem.Text = "Закрыть активную";
             this.закрытьАктивнуюToolStripMenuItem.Click += new System.EventHandler(this.закрытьАктивнуюToolStripMenuItem_Click);
             // 
@@ -111,9 +126,9 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1, -136);
+            this.label1.Location = new System.Drawing.Point(1, -146);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
+            this.label1.Size = new System.Drawing.Size(90, 14);
             this.label1.TabIndex = 2;
             this.label1.Text = "Пользователи";
             // 
@@ -122,10 +137,14 @@
             this.lbUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.lbUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbUsers.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lbUsers.FormattingEnabled = true;
-            this.lbUsers.Location = new System.Drawing.Point(0, 45);
+            this.lbUsers.ItemHeight = 14;
+            this.lbUsers.Location = new System.Drawing.Point(0, 48);
             this.lbUsers.Name = "lbUsers";
-            this.lbUsers.Size = new System.Drawing.Size(170, 420);
+            this.lbUsers.Size = new System.Drawing.Size(127, 504);
             this.lbUsers.TabIndex = 6;
             this.toolTip1.SetToolTip(this.lbUsers, "Список пользователей.  Двойной щелчок для открытия текущего отчета, ПКМ для просм" +
         "отра возможных опций.");
@@ -141,7 +160,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(12, 27);
+            this.splitContainer1.Location = new System.Drawing.Point(14, 29);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -158,24 +177,32 @@
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2MinSize = 700;
-            this.splitContainer1.Size = new System.Drawing.Size(954, 465);
-            this.splitContainer1.SplitterDistance = 170;
+            this.splitContainer1.Size = new System.Drawing.Size(999, 548);
+            this.splitContainer1.SplitterDistance = 130;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 7;
             // 
             // tbUsrSearch
             // 
-            this.tbUsrSearch.Location = new System.Drawing.Point(3, 19);
+            this.tbUsrSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbUsrSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tbUsrSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbUsrSearch.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.tbUsrSearch.Location = new System.Drawing.Point(3, 20);
             this.tbUsrSearch.Name = "tbUsrSearch";
-            this.tbUsrSearch.Size = new System.Drawing.Size(164, 20);
+            this.tbUsrSearch.Size = new System.Drawing.Size(126, 21);
             this.tbUsrSearch.TabIndex = 8;
             this.tbUsrSearch.TextChanged += new System.EventHandler(this.tbUsrSearch_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.Size = new System.Drawing.Size(90, 14);
             this.label2.TabIndex = 7;
             this.label2.Text = "Пользователи";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -183,11 +210,13 @@
             // tabControl1
             // 
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(780, 465);
+            this.tabControl1.Size = new System.Drawing.Size(864, 548);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             this.tabControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseClick);
             this.tabControl1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDoubleClick);
@@ -200,7 +229,7 @@
             this.диспетчерОтчетовToolStripMenuItem,
             this.смотретьПроцессыВРеальномВремениToolStripMenuItem});
             this.cmsUser.Name = "cmsUser";
-            this.cmsUser.Size = new System.Drawing.Size(349, 114);
+            this.cmsUser.Size = new System.Drawing.Size(349, 92);
             // 
             // добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem
             // 
@@ -221,11 +250,6 @@
             this.диспетчерОтчетовToolStripMenuItem.Text = "Диспетчер отчетов";
             this.диспетчерОтчетовToolStripMenuItem.Click += new System.EventHandler(this.диспетчерОтчетовToolStripMenuItem_Click);
             // 
-            // timer1
-            // 
-            this.timer1.Interval = 15000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // смотретьПроцессыВРеальномВремениToolStripMenuItem
             // 
             this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Name = "смотретьПроцессыВРеальномВремениToolStripMenuItem";
@@ -233,15 +257,23 @@
             this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Text = "Смотреть процессы в реальном времени";
             this.смотретьПроцессыВРеальномВремениToolStripMenuItem.Click += new System.EventHandler(this.смотретьПроцессыВРеальномВремениToolStripMenuItem_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 15000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(966, 504);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.ClientSize = new System.Drawing.Size(1013, 590);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
+            this.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(970, 500);
+            this.MinimumSize = new System.Drawing.Size(1029, 608);
             this.Name = "Form1";
             this.Text = "Task Spy - Big Brother\'s panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

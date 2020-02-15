@@ -50,9 +50,20 @@ namespace TaskSpyAdminPanel
             ConfigManager.Save();
         }
 
+        TabPage createNiceTab()
+        {
+            var tab = new TabPage();
+            tab.BackColor = ColorPalette.LightDark;
+            tab.ForeColor = ColorPalette.FontColor;
+            tab.BorderStyle = BorderStyle.None;
+            
+
+            return tab;
+        }
+
         void AddUserTab(User user, Report report, Machine machine) {
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-            var tabpage = new TabPage();
+            var tabpage = createNiceTab();
             tabpage.Text = $"Процессы пользователя {user.Name}";
             var processesTab = new ProcessesTab(user, report, machine);
             processesTab.Dock = DockStyle.Fill;
@@ -70,7 +81,7 @@ namespace TaskSpyAdminPanel
 
         void AddProcessTab(Process process)
         {
-            var tabpage = new TabPage();
+            var tabpage = createNiceTab();
             tabpage.Text = $"{process.ProcessName} из {process.Machine.Name}";
             var processesTab = new ProcessTab(process);
             processesTab.Dock = DockStyle.Fill;
@@ -86,7 +97,7 @@ namespace TaskSpyAdminPanel
 
         void AddReportSelectorTab(User user)
         {
-            var tabpage = new TabPage();
+            var tabpage = createNiceTab();
             tabpage.Text = $"Диспетчер отчетов пользователя {user.Name}";
             var reportsTab = new ReportSelectorTab(user, AddUserTab);
             reportsTab.Dock = DockStyle.Fill;
@@ -138,6 +149,18 @@ namespace TaskSpyAdminPanel
             {
                 AddUserTab(userUnderClick, null, null);
             };
+
+            //var myTabControl = new MyTabControl();
+            //myTabControl.Font = tabControl1.Font;
+            //myTabControl.Location = tabControl1.Location;
+            //myTabControl.Size = tabControl1.Size;
+            //myTabControl.MinimumSize = tabControl1.MinimumSize;
+
+            //myTabControl.Selected += tabControl1_Selected;
+            //myTabControl.MouseDoubleClick += tabControl1_MouseDoubleClick;
+            Controls.Remove(tabControl1);
+            //Controls.Add(myTabControl);
+
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,15 +189,17 @@ namespace TaskSpyAdminPanel
             
             lbUsers.DrawMode = DrawMode.OwnerDrawFixed;
             lbUsers.ItemHeight = 40;
+            
+           
 
-         
+
         }
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (lbUsers.Items.Count == 0) return;
             Brush roomsBrush;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-          
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
                 e = new DrawItemEventArgs(e.Graphics, e.Font, e.Bounds,
@@ -193,9 +218,9 @@ namespace TaskSpyAdminPanel
             e.Graphics.DrawLine(linePen, lineStartPoint, lineEndPoint);
             e.DrawBackground();
             var user = lbUsers.Items[e.Index] as User;
-            var timeFont = new Font("Microsoft Sans Serif", 9.25f, FontStyle.Bold);
+            var timeFont = new Font("HelveticaNeueCyr", 10.25f, FontStyle.Bold);
             e.Graphics.DrawString(user.Name, timeFont, Brushes.DarkBlue, e.Bounds.Left + 3, e.Bounds.Top + 5);
-            var roomsFont = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+            var roomsFont = new Font("HelveticaNeueCyr", 9.25f, FontStyle.Regular);
             if (user.Pseudonym != "")
             {
                 e.Graphics.DrawString(user.Pseudonym, roomsFont, roomsBrush, e.Bounds.Left + 3, e.Bounds.Top + 18);
@@ -338,6 +363,31 @@ namespace TaskSpyAdminPanel
         private void смотретьПроцессыВРеальномВремениToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            // This event is called once for each tab button in your tab control
+
+            // First paint the background with a color based on the current tab
+
+            // e.Index is the index of the tab in the TabPages collection.
+            switch (e.Index)
+            {
+                case 0:
+                    e.Graphics.FillRectangle(new SolidBrush(Color.Red), e.Bounds);
+                    break;
+                case 1:
+                    e.Graphics.FillRectangle(new SolidBrush(Color.Blue), e.Bounds);
+                    break;
+                default:
+                    break;
+            }
+
+            // Then draw the current tab button text 
+            Rectangle paddedBounds = e.Bounds;
+            paddedBounds.Inflate(-2, -2);
+            e.Graphics.DrawString(tabControl1.TabPages[e.Index].Text, this.Font, SystemBrushes.HighlightText, paddedBounds);
         }
     }
     public static class TextBoxExtension

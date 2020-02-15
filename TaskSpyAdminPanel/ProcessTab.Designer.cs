@@ -58,7 +58,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(436, 304);
+            this.label11.Location = new System.Drawing.Point(564, 304);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(25, 13);
             this.label11.TabIndex = 29;
@@ -67,7 +67,7 @@
             // dateTimePickerTo
             // 
             this.dateTimePickerTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePickerTo.Location = new System.Drawing.Point(467, 303);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(595, 303);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(130, 20);
             this.dateTimePickerTo.TabIndex = 27;
@@ -79,7 +79,7 @@
             this.graphicGroupBox.Controls.Add(this.graphicScroll);
             this.graphicGroupBox.Location = new System.Drawing.Point(58, 329);
             this.graphicGroupBox.Name = "graphicGroupBox";
-            this.graphicGroupBox.Size = new System.Drawing.Size(539, 294);
+            this.graphicGroupBox.Size = new System.Drawing.Size(667, 294);
             this.graphicGroupBox.TabIndex = 25;
             this.graphicGroupBox.TabStop = false;
             this.graphicGroupBox.Text = "График работы";
@@ -90,13 +90,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.graphicScroll.Location = new System.Drawing.Point(0, 274);
             this.graphicScroll.Name = "graphicScroll";
-            this.graphicScroll.Size = new System.Drawing.Size(539, 17);
+            this.graphicScroll.Size = new System.Drawing.Size(667, 17);
             this.graphicScroll.TabIndex = 0;
             // 
             // dateTimePickerFrom
             // 
             this.dateTimePickerFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(300, 303);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(428, 303);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
             this.dateTimePickerFrom.Size = new System.Drawing.Size(130, 20);
             this.dateTimePickerFrom.TabIndex = 26;
@@ -106,7 +106,7 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(271, 304);
+            this.label10.Location = new System.Drawing.Point(399, 304);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(23, 13);
             this.label10.TabIndex = 28;
@@ -205,7 +205,7 @@
             this.chbWhitelisted.AutoSize = true;
             this.chbWhitelisted.Enabled = false;
             this.chbWhitelisted.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chbWhitelisted.Location = new System.Drawing.Point(552, 34);
+            this.chbWhitelisted.Location = new System.Drawing.Point(680, 34);
             this.chbWhitelisted.Name = "chbWhitelisted";
             this.chbWhitelisted.Size = new System.Drawing.Size(99, 19);
             this.chbWhitelisted.TabIndex = 31;
@@ -241,7 +241,7 @@
             this.chbIsSytem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbIsSytem.AutoSize = true;
             this.chbIsSytem.Enabled = false;
-            this.chbIsSytem.Location = new System.Drawing.Point(552, 69);
+            this.chbIsSytem.Location = new System.Drawing.Point(680, 69);
             this.chbIsSytem.Name = "chbIsSytem";
             this.chbIsSytem.Size = new System.Drawing.Size(84, 17);
             this.chbIsSytem.TabIndex = 34;
@@ -290,8 +290,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.labelProcName);
+            this.MinimumSize = new System.Drawing.Size(832, 503);
             this.Name = "ProcessTab";
-            this.Size = new System.Drawing.Size(670, 439);
+            this.Size = new System.Drawing.Size(832, 503);
             this.Load += new System.EventHandler(this.ProcessTab_Load);
             this.graphicGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);

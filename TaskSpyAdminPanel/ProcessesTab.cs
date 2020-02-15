@@ -274,14 +274,15 @@ namespace TaskSpyAdminPanel
 
                 if (!pidsToProcess[pair].InWhitelist)
                 {
-                    r.DefaultCellStyle.BackColor = Color.FromArgb(245, 159, 183);
-                    r.DefaultCellStyle.ForeColor = Color.Black;
-                   // r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
+                    r.DefaultCellStyle.BackColor = Color.FromArgb(156, 67, 71);
+                    r.DefaultCellStyle.ForeColor = Color.White;
+                    r.DefaultCellStyle.Font = new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold);
+                    // r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
                 } else
                 {
-                    r.DefaultCellStyle.ForeColor = Color.Black;
-                    r.DefaultCellStyle.BackColor = Control.DefaultBackColor;
-                    r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Regular);
+                    r.DefaultCellStyle.ForeColor = ColorPalette.FontColor;
+                    r.DefaultCellStyle.BackColor = ColorPalette.Light;
+                    r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
                 }
             }
         }
@@ -351,9 +352,9 @@ namespace TaskSpyAdminPanel
                 foreach (DataGridViewRow r in processesGridView.Rows)
                 {
 
-                    r.DefaultCellStyle.ForeColor = Color.Black;
-                    r.DefaultCellStyle.BackColor = Control.DefaultBackColor;
-                    r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Regular);
+                    r.DefaultCellStyle.ForeColor = ColorPalette.FontColor;
+                    r.DefaultCellStyle.BackColor = ColorPalette.Light;
+                    r.DefaultCellStyle.Font = new Font("HelveticaNeueCyr", 8.25f, FontStyle.Regular);
                 }
             }
         }

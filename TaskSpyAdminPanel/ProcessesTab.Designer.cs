@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbLastReportTime = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,36 +53,45 @@
             // 
             // tbLastReportTime
             // 
-            this.tbLastReportTime.Location = new System.Drawing.Point(296, 8);
+            this.tbLastReportTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tbLastReportTime.Font = new System.Drawing.Font("HelveticaNeueCyr", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbLastReportTime.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.tbLastReportTime.Location = new System.Drawing.Point(373, 8);
             this.tbLastReportTime.Name = "tbLastReportTime";
             this.tbLastReportTime.ReadOnly = true;
-            this.tbLastReportTime.Size = new System.Drawing.Size(113, 20);
+            this.tbLastReportTime.Size = new System.Drawing.Size(143, 21);
             this.tbLastReportTime.TabIndex = 17;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(201, 12);
+            this.label3.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(278, 11);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(79, 13);
+            this.label3.Size = new System.Drawing.Size(89, 14);
             this.label3.TabIndex = 16;
             this.label3.Text = "Время отчета:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 12);
+            this.label2.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(8, 11);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.Size = new System.Drawing.Size(59, 14);
             this.label2.TabIndex = 15;
             this.label2.Text = "Машина:";
             // 
             // cbCurMachine
             // 
+            this.cbCurMachine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.cbCurMachine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbCurMachine.Font = new System.Drawing.Font("HelveticaNeueCyr", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbCurMachine.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.cbCurMachine.FormattingEnabled = true;
-            this.cbCurMachine.Location = new System.Drawing.Point(64, 8);
+            this.cbCurMachine.Location = new System.Drawing.Point(73, 7);
             this.cbCurMachine.Name = "cbCurMachine";
-            this.cbCurMachine.Size = new System.Drawing.Size(121, 21);
+            this.cbCurMachine.Size = new System.Drawing.Size(161, 22);
             this.cbCurMachine.TabIndex = 14;
             this.cbCurMachine.SelectedIndexChanged += new System.EventHandler(this.cbCurMachine_SelectedIndexChanged);
             // 
@@ -90,9 +100,16 @@
             this.chbShowSysProc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chbShowSysProc.AutoSize = true;
-            this.chbShowSysProc.Location = new System.Drawing.Point(259, 412);
+            this.chbShowSysProc.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.chbShowSysProc.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.chbShowSysProc.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.chbShowSysProc.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.chbShowSysProc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbShowSysProc.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chbShowSysProc.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.chbShowSysProc.Location = new System.Drawing.Point(313, 476);
             this.chbShowSysProc.Name = "chbShowSysProc";
-            this.chbShowSysProc.Size = new System.Drawing.Size(137, 17);
+            this.chbShowSysProc.Size = new System.Drawing.Size(151, 18);
             this.chbShowSysProc.TabIndex = 11;
             this.chbShowSysProc.Text = "Системные процессы";
             this.chbShowSysProc.UseVisualStyleBackColor = true;
@@ -103,9 +120,12 @@
             this.chbHighlightUnwhitelisted.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chbHighlightUnwhitelisted.AutoSize = true;
-            this.chbHighlightUnwhitelisted.Location = new System.Drawing.Point(17, 412);
+            this.chbHighlightUnwhitelisted.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbHighlightUnwhitelisted.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chbHighlightUnwhitelisted.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.chbHighlightUnwhitelisted.Location = new System.Drawing.Point(20, 476);
             this.chbHighlightUnwhitelisted.Name = "chbHighlightUnwhitelisted";
-            this.chbHighlightUnwhitelisted.Size = new System.Drawing.Size(236, 17);
+            this.chbHighlightUnwhitelisted.Size = new System.Drawing.Size(264, 18);
             this.chbHighlightUnwhitelisted.TabIndex = 10;
             this.chbHighlightUnwhitelisted.Text = "Подсвечивать процессы не из вайтлиста";
             this.chbHighlightUnwhitelisted.UseVisualStyleBackColor = true;
@@ -115,37 +135,52 @@
             // 
             this.processesGridView.AllowUserToAddRows = false;
             this.processesGridView.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.processesGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.processesGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.White;
+            this.processesGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             this.processesGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.processesGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.processesGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.processesGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.processesGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.processesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.processesGridView.DefaultCellStyle = dataGridViewCellStyle3;
-            this.processesGridView.Location = new System.Drawing.Point(7, 39);
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.processesGridView.DefaultCellStyle = dataGridViewCellStyle11;
+            this.processesGridView.Location = new System.Drawing.Point(8, 36);
             this.processesGridView.Name = "processesGridView";
             this.processesGridView.ReadOnly = true;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processesGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            this.processesGridView.RowHeadersVisible = false;
             this.processesGridView.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.processesGridView.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.processesGridView.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.processesGridView.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.processesGridView.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.processesGridView.Size = new System.Drawing.Size(759, 358);
+            this.processesGridView.Size = new System.Drawing.Size(821, 428);
             this.processesGridView.TabIndex = 9;
             this.processesGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.processesGridView_CellDoubleClick);
             this.processesGridView.Sorted += new System.EventHandler(this.processesGridView_Sorted);
@@ -156,9 +191,12 @@
             this.chbShowEveryUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chbShowEveryUser.AutoSize = true;
-            this.chbShowEveryUser.Location = new System.Drawing.Point(412, 412);
+            this.chbShowEveryUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbShowEveryUser.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chbShowEveryUser.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.chbShowEveryUser.Location = new System.Drawing.Point(487, 476);
             this.chbShowEveryUser.Name = "chbShowEveryUser";
-            this.chbShowEveryUser.Size = new System.Drawing.Size(217, 17);
+            this.chbShowEveryUser.Size = new System.Drawing.Size(241, 18);
             this.chbShowEveryUser.TabIndex = 18;
             this.chbShowEveryUser.Text = "Процессы всех пользователей на ПК";
             this.chbShowEveryUser.UseVisualStyleBackColor = true;
@@ -173,9 +211,10 @@
             // 
             this.lbProcessCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbProcessCount.AutoSize = true;
-            this.lbProcessCount.Location = new System.Drawing.Point(675, 11);
+            this.lbProcessCount.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbProcessCount.Location = new System.Drawing.Point(719, 10);
             this.lbProcessCount.Name = "lbProcessCount";
-            this.lbProcessCount.Size = new System.Drawing.Size(0, 13);
+            this.lbProcessCount.Size = new System.Drawing.Size(0, 14);
             this.lbProcessCount.TabIndex = 19;
             // 
             // contextMenuStrip1
@@ -208,9 +247,9 @@
             // 
             // ProcessesTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Controls.Add(this.lbProcessCount);
             this.Controls.Add(this.chbShowEveryUser);
             this.Controls.Add(this.tbLastReportTime);
@@ -220,8 +259,11 @@
             this.Controls.Add(this.chbShowSysProc);
             this.Controls.Add(this.chbHighlightUnwhitelisted);
             this.Controls.Add(this.processesGridView);
+            this.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.MinimumSize = new System.Drawing.Size(832, 503);
             this.Name = "ProcessesTab";
-            this.Size = new System.Drawing.Size(772, 439);
+            this.Size = new System.Drawing.Size(832, 503);
             this.Load += new System.EventHandler(this.ProcessesTab_Load);
             this.Enter += new System.EventHandler(this.ProcessesTab_Enter);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.ProcessesTab_Layout);
