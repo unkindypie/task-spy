@@ -52,11 +52,11 @@ namespace TaskSpyAdminPanel
             lbMachine.Text = "Машина: " + report.MachineName;
             if(report.HasUnwhitelisted)
             {
-                BackColor = Color.FromArgb(247, 186, 186);
+                BackColor = ColorPalette.Red;
             }
             else
             {
-                BackColor = Control.DefaultBackColor;
+                BackColor = ColorPalette.Light;
             }
         }
 
@@ -70,18 +70,18 @@ namespace TaskSpyAdminPanel
         {
             if (report.HasUnwhitelisted)
             {
-                BackColor = Color.FromArgb(247, 186, 186);
+                BackColor = ColorPalette.Red;
                
             }
             else
             {
-                BackColor = Control.DefaultBackColor;
+                BackColor = ColorPalette.Light;
             }
         }
 
         private void ReportView_MouseMove(object sender, MouseEventArgs e)
         {
-            BackColor = Color.FromArgb(202, 220, 250);
+            BackColor = Color.CornflowerBlue;
         }
 
         private void ReportView_MouseDoubleClick(object sender, MouseEventArgs e)

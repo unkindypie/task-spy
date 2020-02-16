@@ -258,3 +258,41 @@ begin
 	on entry_id = processEntries.id
 	where report_id = @report_id
 end
+
+
+select * from processEntries
+join process_names on process_names.id = process_name_id
+join bin_paths on bin_path_id = bin_paths.id
+order by name
+
+select * from processes where entry_id = 137
+
+create procedure get_process_history
+	@user_id bigint,
+	@process_id bigint,
+	@machine_id bigint
+--	@from datetime,
+--	@to datetime
+as
+begin
+	declare @entry_id bigint = (select entry_id from processes where id = @process_id);
+
+	select created, sum(cpu_load) cpu_load--, sum(mem_load) mem_load 
+	from processes
+	join processEntries
+	on entry_id = processEntries.id
+	join reports on report_id = reports.id
+	where created is not null and machine_id = @machine_id and  --created <= @to and created >= @from and
+	(
+		select top 1 user_id from processes
+		where processes.report_id = reports.id
+		and user_id = @user_id
+	)  is not null
+	and entry_id = @entry_id
+	group by created
+	order by created
+end
+
+
+--execute get_process_history 105, 4306402, 1
+

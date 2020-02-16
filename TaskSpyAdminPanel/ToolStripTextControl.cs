@@ -22,6 +22,7 @@ namespace TaskSpyAdminPanel
             InitializeComponent();
 
             tbPseudonym.Focus();
+            BackColor = ColorPalette.Dark;
             //tbPseudonym.SetPlaceholder("Ввод");
         }
         
@@ -42,6 +43,7 @@ namespace TaskSpyAdminPanel
         {
             if (DBWorker.Self.Connect() && tbPseudonym.Text.Length < 15 && user != null)
             {
+                user.Pseudonym = tbPseudonym.Text;
                 DBWorker.Self.setPseudonym(user.Id, tbPseudonym.Text);
                 Refresh();
             }

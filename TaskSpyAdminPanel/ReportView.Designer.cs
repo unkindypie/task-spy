@@ -44,7 +44,11 @@
             // 
             // tbCreated
             // 
+            this.tbCreated.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tbCreated.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbCreated.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbCreated.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbCreated.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.tbCreated.Location = new System.Drawing.Point(5, 5);
             this.tbCreated.Name = "tbCreated";
             this.tbCreated.ReadOnly = true;
@@ -61,11 +65,12 @@
             // 
             this.lProcesses.AutoSize = true;
             this.lProcesses.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lProcesses.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lProcesses.Location = new System.Drawing.Point(5, 25);
             this.lProcesses.Margin = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.lProcesses.Name = "lProcesses";
             this.lProcesses.Padding = new System.Windows.Forms.Padding(10, 27, 10, 10);
-            this.lProcesses.Size = new System.Drawing.Size(86, 50);
+            this.lProcesses.Size = new System.Drawing.Size(87, 49);
             this.lProcesses.TabIndex = 4;
             this.lProcesses.Text = "Процессов:";
             // 
@@ -73,11 +78,12 @@
             // 
             this.lCpu.AutoSize = true;
             this.lCpu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lCpu.Location = new System.Drawing.Point(5, 75);
+            this.lCpu.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lCpu.Location = new System.Drawing.Point(5, 74);
             this.lCpu.Margin = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.lCpu.Name = "lCpu";
             this.lCpu.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
-            this.lCpu.Size = new System.Drawing.Size(52, 27);
+            this.lCpu.Size = new System.Drawing.Size(51, 26);
             this.lCpu.TabIndex = 5;
             this.lCpu.Text = "CPU:";
             // 
@@ -85,11 +91,12 @@
             // 
             this.lMem.AutoSize = true;
             this.lMem.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lMem.Location = new System.Drawing.Point(5, 102);
+            this.lMem.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lMem.Location = new System.Drawing.Point(5, 100);
             this.lMem.Margin = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.lMem.Name = "lMem";
             this.lMem.Padding = new System.Windows.Forms.Padding(10, 7, 10, 10);
-            this.lMem.Size = new System.Drawing.Size(69, 30);
+            this.lMem.Size = new System.Drawing.Size(67, 29);
             this.lMem.TabIndex = 6;
             this.lMem.Text = "Память:";
             // 
@@ -97,9 +104,11 @@
             // 
             this.chbInWhitelist.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbInWhitelist.AutoSize = true;
-            this.chbInWhitelist.Location = new System.Drawing.Point(81, 31);
+            this.chbInWhitelist.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbInWhitelist.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.chbInWhitelist.Location = new System.Drawing.Point(85, 31);
             this.chbInWhitelist.Name = "chbInWhitelist";
-            this.chbInWhitelist.Size = new System.Drawing.Size(88, 17);
+            this.chbInWhitelist.Size = new System.Drawing.Size(84, 16);
             this.chbInWhitelist.TabIndex = 8;
             this.chbInWhitelist.Text = "В вайтлисте";
             this.chbInWhitelist.UseVisualStyleBackColor = true;
@@ -123,10 +132,11 @@
             // 
             this.lbMachine.AutoSize = true;
             this.lbMachine.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lbMachine.Location = new System.Drawing.Point(5, 132);
+            this.lbMachine.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbMachine.Location = new System.Drawing.Point(5, 129);
             this.lbMachine.Name = "lbMachine";
             this.lbMachine.Padding = new System.Windows.Forms.Padding(10, 4, 10, 3);
-            this.lbMachine.Size = new System.Drawing.Size(71, 20);
+            this.lbMachine.Size = new System.Drawing.Size(71, 19);
             this.lbMachine.TabIndex = 10;
             this.lbMachine.Text = "Машина:";
             this.lbMachine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -135,11 +145,12 @@
             // 
             this.lIp.AutoSize = true;
             this.lIp.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lIp.Location = new System.Drawing.Point(5, 153);
+            this.lIp.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lIp.Location = new System.Drawing.Point(5, 154);
             this.lIp.Margin = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.lIp.Name = "lIp";
             this.lIp.Padding = new System.Windows.Forms.Padding(40, 5, 10, 7);
-            this.lIp.Size = new System.Drawing.Size(132, 25);
+            this.lIp.Size = new System.Drawing.Size(130, 24);
             this.lIp.TabIndex = 11;
             this.lIp.Text = "121.121.45.544";
             // 
@@ -147,6 +158,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.lIp);
             this.Controls.Add(this.lbMachine);
@@ -155,6 +167,7 @@
             this.Controls.Add(this.lCpu);
             this.Controls.Add(this.lProcesses);
             this.Controls.Add(this.tbCreated);
+            this.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.Name = "ReportView";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(177, 183);

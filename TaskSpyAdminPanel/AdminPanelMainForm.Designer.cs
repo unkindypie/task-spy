@@ -41,7 +41,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbUsrSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.cmsUser = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +51,6 @@
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.cmsUser.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +65,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1013, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1043, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -175,9 +173,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.toolTip1.SetToolTip(this.splitContainer1.Panel2, "Для закрытия вкладки кликните по ней дважды.");
             this.splitContainer1.Panel2MinSize = 700;
-            this.splitContainer1.Size = new System.Drawing.Size(999, 548);
+            this.splitContainer1.Size = new System.Drawing.Size(1029, 548);
             this.splitContainer1.SplitterDistance = 130;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 7;
@@ -189,9 +187,9 @@
             this.tbUsrSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.tbUsrSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbUsrSearch.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.tbUsrSearch.Location = new System.Drawing.Point(3, 20);
+            this.tbUsrSearch.Location = new System.Drawing.Point(0, 20);
             this.tbUsrSearch.Name = "tbUsrSearch";
-            this.tbUsrSearch.Size = new System.Drawing.Size(126, 21);
+            this.tbUsrSearch.Size = new System.Drawing.Size(129, 21);
             this.tbUsrSearch.TabIndex = 8;
             this.tbUsrSearch.TextChanged += new System.EventHandler(this.tbUsrSearch_TextChanged);
             // 
@@ -207,28 +205,16 @@
             this.label2.Text = "Пользователи";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(864, 548);
-            this.tabControl1.TabIndex = 0;
-            this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
-            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
-            this.tabControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseClick);
-            this.tabControl1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDoubleClick);
-            // 
             // cmsUser
             // 
+            this.cmsUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.cmsUser.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem,
             this.удалитьВсеПроцессыПользователяИзВайтлистаToolStripMenuItem,
             this.диспетчерОтчетовToolStripMenuItem,
             this.смотретьПроцессыВРеальномВремениToolStripMenuItem});
             this.cmsUser.Name = "cmsUser";
+            this.cmsUser.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.cmsUser.Size = new System.Drawing.Size(349, 92);
             // 
             // добавитьВсеПроцессыПользователяВВайтлистToolStripMenuItem
@@ -262,14 +248,20 @@
             this.timer1.Interval = 15000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // toolTip1
+            // 
+            this.toolTip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.toolTip1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(1013, 590);
+            this.ClientSize = new System.Drawing.Size(1043, 590);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -282,7 +274,6 @@
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.cmsUser.ResumeLayout(false);
@@ -297,7 +288,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lbUsers;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TextBox tbUsrSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ContextMenuStrip cmsUser;

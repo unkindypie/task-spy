@@ -5,26 +5,24 @@ using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using System.Drawing.Drawing2D;
 
 namespace TaskSpyAdminPanel
 {
-    /// <summary>
-    /// Summary description for TabControl.
-    /// </summary>
+    //реализация TabControl с возможностью смены цвета фона, взята с 
+    //https://dotnetrix.co.uk/tabcontrol.htm#tip2
+    //но я ее подогнал под свои нужды
+
     public class MyTabControl : System.Windows.Forms.TabControl
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.Container components = null;
 
         public MyTabControl()
         {
-            // This call is required by the Windows.Forms Form Designer.
+
             InitializeComponent();
 
-            // TODO: Add any initialization after the InitializeComponent call
+        
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
 
         }
@@ -47,10 +45,6 @@ namespace TaskSpyAdminPanel
 
 
         #region Component Designer generated code
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
@@ -82,8 +76,6 @@ namespace TaskSpyAdminPanel
 
         #region BackColor Manipulation
 
-        //As well as exposing the property to the Designer we want it to behave just like any other 
-        //controls BackColor property so we need some clever manipulation.
 
         private Color m_Backcolor = Color.Empty;
         [Browsable(true), Description("The background color used to display text and graphics in a control.")]
@@ -152,19 +144,28 @@ namespace TaskSpyAdminPanel
             //Draw a border around TabPage
             r.Inflate(3, 3);
             TabPage tp = TabPages[SelectedIndex];
+
             SolidBrush PaintBrush = new SolidBrush(tp.BackColor);
-            e.Graphics.FillRectangle(PaintBrush, r);
-            ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, ButtonBorderStyle.Outset);
+            Brush borderBrush = new LinearGradientBrush(new Point(0, r.Bottom), new Point(0, r.Top), tp.BackColor, ColorPalette.Selected);
+
+            e.Graphics.FillRectangle(borderBrush, r);
+            //ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, ButtonBorderStyle.Outset);
             //Draw the Tabs
             for (int index = 0; index <= TabCount - 1; index++)
             {
                 tp = TabPages[index];
                 r = GetTabRect(index);
                 ButtonBorderStyle bs = ButtonBorderStyle.Outset;
-                if (index == SelectedIndex) bs = ButtonBorderStyle.Inset;
+                
                 PaintBrush.Color = tp.BackColor;
-                e.Graphics.FillRectangle(PaintBrush, r);
-                ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, bs);
+                if (index == SelectedIndex)
+                {
+                    borderBrush = new LinearGradientBrush(new Point(0, r.Bottom + 2), new Point(0, r.Top), ColorPalette.Selected, tp.BackColor);
+                    e.Graphics.FillRectangle(borderBrush, r);
+                }
+                e.Graphics.FillRectangle(PaintBrush, new Rectangle(r.X + 2, r.Y + 2, r.Width - 4, r.Height - 2));
+
+                //ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, bs);
                 PaintBrush.Color = tp.ForeColor;
 
                 //Set up rotation for left and right aligned tabs

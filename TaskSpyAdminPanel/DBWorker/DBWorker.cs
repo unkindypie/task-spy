@@ -12,6 +12,21 @@ using TaskSpyAdminPanel.Config;
 
 namespace TaskSpyAdminPanel.DB
 {
+    class ProcessHistoryItem
+    {
+        public DateTime Created
+        {
+            get; set;
+        }
+        public float CPU
+        {
+            get; set;
+        }
+        //public long Memory
+        //{
+        //    get; set;
+        //}
+    }
     class DBWorker
     {
         SqlConnection connection = new SqlConnection();
@@ -49,18 +64,37 @@ namespace TaskSpyAdminPanel.DB
         public async Task<List<User>> fetchUsers(string searchString)
         {
             List<User> users = new List<User>();
-            SqlCommand cmd = new SqlCommand($"select local_username, pseudonym, id from users " +
-                $"where is_real = 1{(searchString != ""? $" and local_username like '%{searchString}%'":"")}", connection);
-            var reader = await cmd.ExecuteReaderAsync();
-            var table = new DataTable();
-            table.Load(reader);
-            
-            foreach(DataRow row in table.Rows)
+            SqlCommand cmd;
+            try
             {
-                users.Add(new User(row["local_username"].ToString(), row["pseudonym"].ToString(), int.Parse(row["id"].ToString()), true));
-            }
+                if (searchString == "")
+                {
+                    cmd = new SqlCommand($"select local_username, pseudonym, id from users " +
+                  $"where is_real = 1", connection);
+                }
+                else
+                {
+                    cmd = new SqlCommand($"select local_username, pseudonym, id from users " +
+                    $"where is_real = 1 and local_username like '%' + @search + '%'", connection);
+                    var param = new SqlParameter("@search", SqlDbType.VarChar);
+                    param.Value = searchString;
+                    cmd.Parameters.Add(param);
+                }
+                var reader = await cmd.ExecuteReaderAsync();
+                var table = new DataTable();
+                table.Load(reader);
 
-            return users;
+                foreach (DataRow row in table.Rows)
+                {
+                    users.Add(new User(row["local_username"].ToString(), row["pseudonym"].ToString(), int.Parse(row["id"].ToString()), true));
+                }
+                return users;
+            } catch
+            {
+                MessageBox.Show("Ошибка поиска.");
+                return new List<User>();
+            }
+     
         }
 
       
@@ -189,6 +223,32 @@ namespace TaskSpyAdminPanel.DB
             }
         }
 
+        public async Task<List<ProcessHistoryItem>> getProcessHistory(long userId, long procId, long machineId)
+        {
+            if (self.Connect())
+            {
+                var commandText = $"execute get_process_history {userId}, {procId}, {machineId}";
+                SqlCommand cmd = new SqlCommand(commandText, connection);
+
+                var reader = await cmd.ExecuteReaderAsync();
+                var table = new DataTable();
+                table.Load(reader);
+
+                List<ProcessHistoryItem> history = new List<ProcessHistoryItem>();
+                foreach (DataRow r in table.Rows)
+                {
+                    history.Add(new ProcessHistoryItem()
+                    {
+                        Created = DateTime.Parse(r["created"].ToString()),
+                        CPU = float.Parse(r["cpu_load"].ToString()),
+                        //Memory = long.Parse(r["mem_load"].ToString())
+                    });
+                }
+                return history;
+            }
+            return null;
+        }
+
         public async Task<bool> hasUnwhitelistedProcesses(long userId)
         {
             var commandText = $"select top 1 processEntries.id" +
@@ -208,10 +268,20 @@ namespace TaskSpyAdminPanel.DB
         {
             if (self.Connect())
             {
-                string commandText =
-                      $" update users set pseudonym = '{pseudonym}' where id = {userId}";
-                SqlCommand cmd = new SqlCommand(commandText, connection);
-                await cmd.ExecuteNonQueryAsync();
+                try
+                {
+                    string commandText =
+                    $" update users set pseudonym = @pdm where id = {userId}";
+                    SqlCommand cmd = new SqlCommand(commandText, connection);
+                    var param = new SqlParameter("@pdm", SqlDbType.VarChar);
+                    param.Value = pseudonym;
+                    cmd.Parameters.Add(param);
+                    await cmd.ExecuteNonQueryAsync();
+                } catch
+                {
+                    MessageBox.Show("Не удалось изменить всевдоним, вы пытались поломать бд, да?");
+                }
+              
             }
         }
 

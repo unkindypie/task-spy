@@ -26,13 +26,22 @@ namespace TaskSpyAdminPanel
         {
             get; set;
         }
+        public static Color Selected
+        {
+            get; set;
+        }
+        public static Color Red
+        {
+            get; set;
+        }
         static ColorPalette()
         {
             Dark = Color.FromArgb(28, 28, 28);
             LightDark = Color.FromArgb(37, 37, 38);
             Light = Color.FromArgb(45, 45, 48);
             FontColor = Color.WhiteSmoke;
-           
+            Selected = Color.CornflowerBlue;
+            Red = Color.FromArgb(156, 67, 71);
         }
     }
 }

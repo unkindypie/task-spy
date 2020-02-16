@@ -17,6 +17,8 @@ namespace TaskSpyAdminPanel
 {
     public partial class Form1 : Form
     {
+        //мой наследник tabcontrol с переписанной отрисовкой, для того, чтобы покрасить ее фон
+        MyTabControl tabControl;
         LoginForm loginForm;
         async void FillUsers()
         {
@@ -68,28 +70,28 @@ namespace TaskSpyAdminPanel
             var processesTab = new ProcessesTab(user, report, machine);
             processesTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(processesTab);
-            tabControl1.TabPages.Add(tabpage);
+            tabControl.TabPages.Add(tabpage);
             //переключаюсь на новую вкладку
-            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
             //если это первая октрытая вкладка, то по какой-то причине
             //событие selected не отрабатывает, так что нужно делать все самому
-            if (tabControl1.TabCount == 1)
+            if (tabControl.TabCount == 1)
             {
                 processesTab.TabOpenned();
             }
         }
 
-        void AddProcessTab(Process process)
+        void AddProcessTab(Process process, User user)
         {
             var tabpage = createNiceTab();
             tabpage.Text = $"{process.ProcessName} из {process.Machine.Name}";
-            var processesTab = new ProcessTab(process);
+            var processesTab = new ProcessTab(process, user);
             processesTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(processesTab);
-            tabControl1.TabPages.Add(tabpage);
+            tabControl.TabPages.Add(tabpage);
 
-            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
-            if (tabControl1.TabCount == 1)
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
+            if (tabControl.TabCount == 1)
             {
                 processesTab.TabOpenned();
             }
@@ -102,15 +104,15 @@ namespace TaskSpyAdminPanel
             var reportsTab = new ReportSelectorTab(user, AddUserTab);
             reportsTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(reportsTab);
-            tabControl1.TabPages.Add(tabpage);
+            tabControl.TabPages.Add(tabpage);
 
-            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
-            if (tabControl1.TabCount == 1)
+            tabControl.SelectedIndex = tabControl.TabCount - 1;
+            if (tabControl.TabCount == 1)
             {
                 reportsTab.TabOpenned();
             }
         }
-
+       
         private UserPseudonymMenuItem userPseudonymForm;
         public Form1()
         {
@@ -149,18 +151,48 @@ namespace TaskSpyAdminPanel
             {
                 AddUserTab(userUnderClick, null, null);
             };
+            //инициализация tabcontrol
+            tabControl = new MyTabControl();
+            tabControl.Font = new Font("HelveticaNeueCyr", 8.25f, FontStyle.Bold); ;
+            tabControl.Size = new Size(864, 548);
 
-            //var myTabControl = new MyTabControl();
-            //myTabControl.Font = tabControl1.Font;
-            //myTabControl.Location = tabControl1.Location;
-            //myTabControl.Size = tabControl1.Size;
-            //myTabControl.MinimumSize = tabControl1.MinimumSize;
+            tabControl.Selected += tabControl1_Selected;
+            tabControl.MouseDoubleClick += tabControl1_MouseDoubleClick;
+            tabControl.Dock = DockStyle.Fill;
+            this.splitContainer1.Panel2.Controls.Add(tabControl);
+            cmsUser.ForeColor = ColorPalette.FontColor;
 
-            //myTabControl.Selected += tabControl1_Selected;
-            //myTabControl.MouseDoubleClick += tabControl1_MouseDoubleClick;
-            Controls.Remove(tabControl1);
-            //Controls.Add(myTabControl);
+            menuStrip1.BackColor = ColorPalette.Dark;
+            menuStrip1.Renderer = new MyRenderer();
 
+        }
+        //кастомный рендерер для менюшки, чтобы перекрасить цвет выбранного элемента
+        private class MyRenderer : ToolStripProfessionalRenderer
+        {
+            public MyRenderer() : base(new MyColors()) { }
+        }
+        private class MyColors : ProfessionalColorTable
+        {
+            public override Color MenuItemSelected
+            {
+                get { return ColorPalette.Selected; }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return ColorPalette.Dark; }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return ColorPalette.Light; }
+            }
+            public override Color MenuItemPressedGradientBegin
+            {
+                get { return Color.DarkSlateGray; }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return ColorPalette.Light; }
+            }
         }
 
         private void действияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,7 +202,9 @@ namespace TaskSpyAdminPanel
         bool loaded = false;
         private void Form1_Load(object sender, EventArgs e)
         {
+            //подгрузка конфига
             OnLaunch();
+            //авторизация
             loginForm = new LoginForm();
             Show();
             if (loginForm.ShowDialog() != DialogResult.OK)
@@ -179,21 +213,15 @@ namespace TaskSpyAdminPanel
                 Close();
                 return;
             }
-     
-            //DBWorker.SetCredentials("SQL_E1118P1", "10.3.31.8", "E1118P1", "1P8111E");
-            //DBWorker.SetCredentials("DESKTOP-CJ4FN0M", "", "sa", "baddev02");
-            //DBWorker.SetCredentials("DESKTOP-6DIF51U\\SQL_S2", "", "sa", "baddev02");
+            //подгрузка/отрисовка пользователей
             FillUsers();
 
-            //var menu = new ContextMenuStrip();
-            
+            //для перегрузки drawItem
             lbUsers.DrawMode = DrawMode.OwnerDrawFixed;
             lbUsers.ItemHeight = 40;
-            
-           
-
-
         }
+        //перегруженный метод отрисовки элемента списка пользователей,
+        //где я рисую local_username и pseudonym пользователя
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (lbUsers.Items.Count == 0) return;
@@ -219,8 +247,8 @@ namespace TaskSpyAdminPanel
             e.DrawBackground();
             var user = lbUsers.Items[e.Index] as User;
             var timeFont = new Font("HelveticaNeueCyr", 10.25f, FontStyle.Bold);
-            e.Graphics.DrawString(user.Name, timeFont, Brushes.DarkBlue, e.Bounds.Left + 3, e.Bounds.Top + 5);
-            var roomsFont = new Font("HelveticaNeueCyr", 9.25f, FontStyle.Regular);
+            e.Graphics.DrawString(user.Name, timeFont, Brushes.CornflowerBlue, e.Bounds.Left + 3, e.Bounds.Top + 5);
+            var roomsFont = new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold);
             if (user.Pseudonym != "")
             {
                 e.Graphics.DrawString(user.Pseudonym, roomsFont, roomsBrush, e.Bounds.Left + 3, e.Bounds.Top + 18);
@@ -262,17 +290,17 @@ namespace TaskSpyAdminPanel
 
         private void tabControl1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            TabPage page = tabControl1.SelectedTab;
+            TabPage page = tabControl.SelectedTab;
             
             if (page != null)
             {
-                if (tabControl1.SelectedIndex - 1 < tabControl1.TabPages.Count
-                    && tabControl1.SelectedIndex - 1 > 0)
+                if (tabControl.SelectedIndex - 1 < tabControl.TabPages.Count
+                    && tabControl.SelectedIndex - 1 > 0)
                 {
-                    tabControl1.SelectedTab = tabControl1.TabPages[tabControl1.SelectedIndex - 1];
+                    tabControl.SelectedTab = tabControl.TabPages[tabControl.SelectedIndex - 1];
                 }
                 (page.Controls[0] as ControllableTab).OnTabClose();
-                tabControl1.TabPages.Remove(page);
+                tabControl.TabPages.Remove(page);
 
 
             }
@@ -280,13 +308,13 @@ namespace TaskSpyAdminPanel
         //подгрузка процессов с бд только при октрытии
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            if (tabControl1.TabCount > 0 && tabControl1.SelectedTab.Controls.Count != 0)
+            if (tabControl.TabCount > 0 && tabControl.SelectedTab.Controls.Count != 0)
             {
-                foreach (TabPage tp in tabControl1.TabPages)
+                foreach (TabPage tp in tabControl.TabPages)
                 {
                     (tp.Controls[0] as ControllableTab).IsActive = false;
                 }
-                (tabControl1.SelectedTab.Controls[0] as ControllableTab).TabOpenned();
+                (tabControl.SelectedTab.Controls[0] as ControllableTab).TabOpenned();
 
 
             }
@@ -337,22 +365,22 @@ namespace TaskSpyAdminPanel
         //обвновляю текущую вкладку с помощью абстрактного метода ее интерфейса
         private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(tabControl1.SelectedIndex != -1)
+            if(tabControl.SelectedIndex != -1)
             {
-                (tabControl1.SelectedTab.Controls[0] as ControllableTab).Refresh();
+                (tabControl.SelectedTab.Controls[0] as ControllableTab).Refresh();
             }  
         }
 
         private void закрытьАктивнуюToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedIndex == -1) return;
+            if (tabControl.SelectedIndex == -1) return;
 
-            if (tabControl1.SelectedIndex - 1 < tabControl1.TabPages.Count
-                && tabControl1.SelectedIndex - 1 > 0)
+            if (tabControl.SelectedIndex - 1 < tabControl.TabPages.Count
+                && tabControl.SelectedIndex - 1 > 0)
             {
-                tabControl1.SelectedTab = tabControl1.TabPages[tabControl1.SelectedIndex - 1];
+                tabControl.SelectedTab = tabControl.TabPages[tabControl.SelectedIndex - 1];
             }
-            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+            tabControl.TabPages.Remove(tabControl.SelectedTab);
         }
 
         private void обновитьСписокПользователейToolStripMenuItem_Click(object sender, EventArgs e)
@@ -387,7 +415,7 @@ namespace TaskSpyAdminPanel
             // Then draw the current tab button text 
             Rectangle paddedBounds = e.Bounds;
             paddedBounds.Inflate(-2, -2);
-            e.Graphics.DrawString(tabControl1.TabPages[e.Index].Text, this.Font, SystemBrushes.HighlightText, paddedBounds);
+            e.Graphics.DrawString(tabControl.TabPages[e.Index].Text, this.Font, SystemBrushes.HighlightText, paddedBounds);
         }
     }
     public static class TextBoxExtension

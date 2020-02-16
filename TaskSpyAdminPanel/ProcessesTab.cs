@@ -35,7 +35,7 @@ namespace TaskSpyAdminPanel
         DateTime lastLoad;
         Dictionary<KeyValuePair<int, int>, Process> pidsToProcess = new Dictionary<KeyValuePair<int, int>, Process>();
         DateTime lastReport = new DateTime();
-        static public Action<Process> AddProcessTab;
+        static public Action<Process, User> AddProcessTab;
 
         static Dictionary<string, string> dbNamesToUI = new Dictionary<string, string>();
         static ProcessesTab()
@@ -274,7 +274,7 @@ namespace TaskSpyAdminPanel
 
                 if (!pidsToProcess[pair].InWhitelist)
                 {
-                    r.DefaultCellStyle.BackColor = Color.FromArgb(156, 67, 71);
+                    r.DefaultCellStyle.BackColor = ColorPalette.Red;
                     r.DefaultCellStyle.ForeColor = Color.White;
                     r.DefaultCellStyle.Font = new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold);
                     // r.DefaultCellStyle.Font = new Font(r.InheritedStyle.Font, FontStyle.Bold);
@@ -294,7 +294,6 @@ namespace TaskSpyAdminPanel
             InitializeComponent();
             this.dynamic = true;
             this.user = user;
-            lbProcessCount.ForeColor = Color.Black;
             //гружу конфиг
             ConfigManager.Load();
 
@@ -327,7 +326,14 @@ namespace TaskSpyAdminPanel
 
         private void ProcessesTab_Load(object sender, EventArgs e)
         {
-        
+            lbProcessCount.ForeColor = ColorPalette.FontColor;
+            processesGridView.EnableHeadersVisualStyles = false;
+            processesGridView.ColumnHeadersDefaultCellStyle.BackColor = ColorPalette.LightDark;
+            contextMenuStrip1.BackColor = ColorPalette.Dark;
+            contextMenuStrip1.ForeColor = ColorPalette.FontColor;
+            contextMenuStrip1.DropShadowEnabled = true;
+            processesGridView.DefaultCellStyle.SelectionBackColor = ColorPalette.Selected;
+
         }
        
         private void chbShowSysProc_CheckedChanged(object sender, EventArgs e)
@@ -403,7 +409,7 @@ namespace TaskSpyAdminPanel
             if(AddProcessTab != null)
             {
                 //открываю вкладку процесса
-                AddProcessTab(pidsToProcess[pair]);
+                AddProcessTab(pidsToProcess[pair], user);
             }
 
 
@@ -487,7 +493,7 @@ namespace TaskSpyAdminPanel
             if (AddProcessTab != null)
             {
                 //открываю вкладку процесса
-                AddProcessTab(pidsToProcess[pair]);
+                AddProcessTab(pidsToProcess[pair], user);
             }
         }
 

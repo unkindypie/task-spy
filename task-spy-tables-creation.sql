@@ -320,5 +320,3 @@ select * from reports;
 --select * from users
 --where local_username like '%ir%'
 
-
-select max(created) from reports;
