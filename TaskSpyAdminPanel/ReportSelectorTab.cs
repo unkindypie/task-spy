@@ -77,8 +77,9 @@ namespace TaskSpyAdminPanel
         {
             if (loading) return;
             loading = true;
-            dtpTo.Enabled = dtpFrom.Enabled = cbMachine.Enabled = false;
-
+            dtpTo.Enabled = dtpFrom.Enabled =
+                cbMachine.Enabled = сhbOnlyUnwhitelisted.Enabled = button1.Enabled = false;
+            
             if(loadDates)
             {
                 var maxTime = await DBWorker.Self.lastReport(user.Id);
@@ -135,7 +136,7 @@ namespace TaskSpyAdminPanel
                 from = (reports[reports.Count - 1] as ReportView).report.Created;
                 listLength = length == -1 ? CalculateReportsCount() : length;
             }
-            var loadedReports = await DBWorker.Self.getReportList(from, user.Id, listLength, true, dtpTo.Value);
+            var loadedReports = await DBWorker.Self.getReportList(from, user.Id, listLength, true, dtpTo.Value, сhbOnlyUnwhitelisted.Checked);
 
             if(loadedReports != null)
             {
@@ -144,7 +145,8 @@ namespace TaskSpyAdminPanel
             }
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
 
-            dtpTo.Enabled = dtpFrom.Enabled = cbMachine.Enabled = true;
+            dtpTo.Enabled = dtpFrom.Enabled = cbMachine.Enabled = 
+                сhbOnlyUnwhitelisted.Enabled = button1.Enabled = true;
             if (!loaded) loaded = true;
             loading = false;
         }
@@ -204,7 +206,10 @@ namespace TaskSpyAdminPanel
 
         private void сhbOnlyUnwhitelisted_CheckedChanged(object sender, EventArgs e)
         {
+            if (!loaded) return;
 
+            reports.Clear();
+            LoadReports(-1, false, false);
         }
 
         private void cbMachine_SelectedIndexChanged(object sender, EventArgs e)
@@ -223,12 +228,12 @@ namespace TaskSpyAdminPanel
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
-
+            dtpTo.MaxDate = dtpFrom.Value;
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
-           
+            dtpFrom.MinDate = dtpTo.Value;
         }
 
         private void dtpFrom_CloseUp(object sender, EventArgs e)
@@ -265,6 +270,10 @@ namespace TaskSpyAdminPanel
         private void updateTimer_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void сhbOnlyUnwhitelisted_Click(object sender, EventArgs e)
+        {
         }
     }
 }

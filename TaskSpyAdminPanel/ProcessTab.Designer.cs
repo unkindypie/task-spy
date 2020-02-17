@@ -60,11 +60,12 @@
             this.graphicGroupBox.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.graphicGroupBox.Location = new System.Drawing.Point(70, 348);
             this.graphicGroupBox.Name = "graphicGroupBox";
-            this.graphicGroupBox.Size = new System.Drawing.Size(521, 294);
+            this.graphicGroupBox.Size = new System.Drawing.Size(504, 294);
             this.graphicGroupBox.TabIndex = 25;
             this.graphicGroupBox.TabStop = false;
             this.toolTip1.SetToolTip(this.graphicGroupBox, "График работы процессора. Значение - загрузка процесса,  в левом верхнем углу мак" +
         "симальное значение, нижнем - минимальное.");
+            this.graphicGroupBox.SizeChanged += new System.EventHandler(this.graphicGroupBox_SizeChanged);
             this.graphicGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicGroupBox_Paint);
             // 
             // graphicScroll
@@ -74,7 +75,7 @@
             this.graphicScroll.Enabled = false;
             this.graphicScroll.Location = new System.Drawing.Point(70, 338);
             this.graphicScroll.Name = "graphicScroll";
-            this.graphicScroll.Size = new System.Drawing.Size(521, 17);
+            this.graphicScroll.Size = new System.Drawing.Size(504, 17);
             this.graphicScroll.TabIndex = 0;
             this.graphicScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.graphicScroll_Scroll);
             // 
@@ -191,7 +192,7 @@
             this.chbWhitelisted.Enabled = false;
             this.chbWhitelisted.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbWhitelisted.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chbWhitelisted.Location = new System.Drawing.Point(527, 32);
+            this.chbWhitelisted.Location = new System.Drawing.Point(510, 32);
             this.chbWhitelisted.Name = "chbWhitelisted";
             this.chbWhitelisted.Size = new System.Drawing.Size(95, 18);
             this.chbWhitelisted.TabIndex = 31;
@@ -234,7 +235,7 @@
             this.chbIsSytem.AutoSize = true;
             this.chbIsSytem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbIsSytem.Font = new System.Drawing.Font("HelveticaNeueCyr", 8.999999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.chbIsSytem.Location = new System.Drawing.Point(527, 67);
+            this.chbIsSytem.Location = new System.Drawing.Point(510, 67);
             this.chbIsSytem.Name = "chbIsSytem";
             this.chbIsSytem.Size = new System.Drawing.Size(90, 18);
             this.chbIsSytem.TabIndex = 34;
@@ -317,6 +318,7 @@
             this.Name = "ProcessTab";
             this.Size = new System.Drawing.Size(815, 503);
             this.Load += new System.EventHandler(this.ProcessTab_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ProcessTab_Scroll);
             this.ResumeLayout(false);
             this.PerformLayout();
 

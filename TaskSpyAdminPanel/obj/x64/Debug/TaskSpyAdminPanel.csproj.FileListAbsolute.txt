@@ -101,3 +101,17 @@ C:\Users\soft\Desktop\task-spy-11\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPa
 C:\Users\soft\Desktop\task-spy-11\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ReportView.resources
 C:\Users\soft\Desktop\task-spy-11\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ToolStripTextControl.resources
 C:\Users\soft\Desktop\task-spy-11\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.GenerateResource.Cache
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe.config
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.exe
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\bin\x64\Debug\DemotInterfaceTaskSpy.pdb
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.Form1.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.LoginForm.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ProcessesTab.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ProcessTab.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\DemotInterfaceTaskSpy.Properties.Resources.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ReportSelectorTab.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ReportView.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.ToolStripTextControl.resources
+C:\Users\soft\Desktop\task-spy-14\task-spy-master\TaskSpyAdminPanel\obj\x64\Debug\TaskSpyAdminPanel.csproj.GenerateResource.Cache

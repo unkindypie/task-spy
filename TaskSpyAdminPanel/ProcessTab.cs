@@ -81,9 +81,11 @@ namespace TaskSpyAdminPanel
                 try
                 {
                     history = await DBWorker.Self.getProcessHistory(user.Id, process.Id, machine.Id);
-                } catch { }
-            
-                backgroundWorker1.RunWorkerAsync();   
+                    backgroundWorker1.RunWorkerAsync();
+                }
+                catch { }
+
+           
                 //canDraw = true;
             }
            
@@ -104,15 +106,16 @@ namespace TaskSpyAdminPanel
         float scrollScaler = 25;
         public void DrawGraphic(Graphics g = null)
         {
-            if (!canDraw || history.Count == 0) return;
+            if (!canDraw || history == null || history.Count == 0) return;
             if (g == null) g = graphicGroupBox.CreateGraphics();
             g.Clear(this.BackColor);
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            //бордер
             g.DrawRectangle(Pens.LightGray, new Rectangle(0, 3, graphicGroupBox.Width - 2, graphicGroupBox.Height - 2));
 
             float max = history.Select(x => x.CPU).Max();
-            float min = history.Select(x => x.CPU).Min() - 0.5f;
+            float min = history.Select(x => x.CPU).Min() - 1f;
             if(minText == "" || maxText == "")
             {
                 maxText = max.ToString("F") + "%";
@@ -121,7 +124,7 @@ namespace TaskSpyAdminPanel
      
 
             float height = graphicGroupBox.Height + 5 - graphicScroll.Height;
-
+            //рисую минимумы/максимумы
             g.DrawString(
                maxText,
                new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold
@@ -138,6 +141,7 @@ namespace TaskSpyAdminPanel
                 new PointF(20, height * 0.9f)
             );
 
+            //высчитываю шаг по y для правильного масштаба
             float yStep = height / (max - min);
 
 
@@ -151,6 +155,7 @@ namespace TaskSpyAdminPanel
             float xOffset = 0;
             DateTime offBegin = new DateTime();
             DateTime offEnd = new DateTime();
+            int offStringOffset = 1;
             for (int i = (int)Math.Round(startCord);
                 i < startCord + (graphicGroupBox.Width) / xStep; i++)
             {
@@ -164,10 +169,11 @@ namespace TaskSpyAdminPanel
                         pen,
                         new PointF(lastX, height - (lastY * yStep)),
                         new PointF(xOffset, height - (history[i].CPU * yStep)));
+                    //время, когда не было отчетов процесса
                     if(i > 0 && history[i].CPU == -1 && history[i - 1].CPU != -1)
                     {
                         offBegin = history[i].Created;
-                    }
+                    } 
                     else if (i < history.Count && history[i].CPU == -1 && history[i + 1].CPU != -1 && offBegin != new DateTime())
                     {
                         offEnd = history[i + 1].Created;
@@ -177,8 +183,9 @@ namespace TaskSpyAdminPanel
                            new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold
                            ),
                            new SolidBrush(ColorPalette.Red),
-                           new PointF(xOffset - xStep * 20, height * 0.5f)
+                           new PointF(xOffset - xStep * 20,  height * 0.5f + offStringOffset * 10)
                            );
+                        offStringOffset++;
                     }
                 }
                 //даты
@@ -188,7 +195,7 @@ namespace TaskSpyAdminPanel
                         history[i].Created.ToString(),
                         new Font("HelveticaNeueCyr", 9.25f, FontStyle.Bold
                         ),
-                        new SolidBrush(ColorPalette.Light),
+                        new SolidBrush(ColorPalette.FontColor),
                         new PointF(xOffset, height * 0.2f)
                         );
                 }
@@ -268,7 +275,9 @@ namespace TaskSpyAdminPanel
 
         public void Refresh()
         {
-           
+            canDraw = false;
+            history = null;
+            LoadProcess();
         }
 
         public void OnTabClose()
@@ -292,6 +301,7 @@ namespace TaskSpyAdminPanel
         }
         private void enableScroll()
         {
+            if (history == null) return;
             graphicScroll.Enabled = true;
             graphicScroll.Maximum =
             (int)(((history.Count - 1) * xStep - graphicScroll.ClientRectangle.Width) / scrollScaler);
@@ -306,8 +316,8 @@ namespace TaskSpyAdminPanel
                 //System.Diagnostics.Debug.WriteLine(history[i].Created.ToString());
                 int insertionCounter = 0;
                 while (i + 1 < historyCount &&
-                    history[i + 1].Created - history[i].Created > new TimeSpan(0, 0, 0, 16, 500)
-                    && insertionCounter < 20)
+                    history[i + 1].Created - history[i].Created > new TimeSpan(0, 0, 0, 20, 500)
+                    && insertionCounter < 25)
                 {
                     history.Insert(i + 1, new ProcessHistoryItem()
                     {
@@ -326,6 +336,16 @@ namespace TaskSpyAdminPanel
             this.BeginInvoke(new MethodInvoker(() => enableScroll()));
             //InvokePaint(graphicGroupBox, new PaintEventArgs(CreateGraphics(), graphicGroupBox.ClientRectangle));
             //DrawGraphic();
+        }
+
+        private void graphicGroupBox_SizeChanged(object sender, EventArgs e)
+        {
+            enableScroll();
+        }
+
+        private void ProcessTab_Scroll(object sender, ScrollEventArgs e)
+        {
+            DrawGraphic();
         }
     }
 }

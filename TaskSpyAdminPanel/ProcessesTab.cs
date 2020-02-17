@@ -218,7 +218,17 @@ namespace TaskSpyAdminPanel
             //запоминаю позицию скролла
             int scroll = processesGridView.FirstDisplayedScrollingRowIndex;
             if (scroll == -1) scroll = 0;
-   
+
+            HashSet< KeyValuePair<int, int>> selected = new HashSet< KeyValuePair<int, int>>();
+
+            foreach (DataGridViewCell row in processesGridView.SelectedCells)
+            {
+                selected.Add(new KeyValuePair<int, int>(
+                    int.Parse(processesGridView[dbNamesToUI["pid"], row.RowIndex].Value.ToString()),
+                    int.Parse(processesGridView[dbNamesToUI["parent_pid"], row.RowIndex].Value.ToString())
+                ));
+            }
+
             if (processesGridView.SortedColumn != null)
             {
                 sortBy = processesGridView.SortedColumn.Name;
@@ -236,23 +246,47 @@ namespace TaskSpyAdminPanel
             //    r.Cells[dbNamesToUI["mem_load"]].Value = long.Parse(r.Cells[dbNamesToUI["mem_load"]].Value.ToString()).ToString("N0");
             //}
 
-            //применяю сортировку
-            if (sortBy != "")
+            try
             {
-                processesGridView.Sort(processesGridView.Columns[sortBy], sortOrder);
-            }
-            if (processesGridView.FirstDisplayedScrollingRowIndex != -1 && processesGridView.VerticalScrollingOffset > scroll)
-            {
-                processesGridView.FirstDisplayedScrollingRowIndex = scroll;
-            }
+                //применяю сортировку
+                if (sortBy != "")
+                {
+                    processesGridView.Sort(processesGridView.Columns[sortBy], sortOrder);
+                }
+                if (processesGridView.FirstDisplayedScrollingRowIndex != -1 && processesGridView.VerticalScrollingOffset > scroll)
+                {
+                    processesGridView.FirstDisplayedScrollingRowIndex = scroll;
+                }
+            } catch { }
+           
+
+
             //processesGridView.AutoResizeColumns();
             processesGridView.AutoResizeRows();
-
             processesGridView.Columns.Remove("id");
+
+            //сохранение выделения
+            foreach (DataGridViewRow row in processesGridView.Rows)
+            {
+                row.Selected = false;
+            }
+            foreach (KeyValuePair<int, int> pair in selected)
+            {
+                foreach (DataGridViewRow row in processesGridView.Rows)
+                {
+                    if(int.Parse(processesGridView[dbNamesToUI["pid"], row.Index].Value.ToString()) == pair.Key
+                        && int.Parse(processesGridView[dbNamesToUI["parent_pid"], row.Index].Value.ToString()) == pair.Value)
+                    {
+                        row.Selected = true;
+                    }
+                }
+            }
+
+
 
             //прячу id записи и is_system в FieldsHider, который записываю в поле имени, так что
             //пользователю не заметен id в бд, но он все еще привязан к строке
-           
+
             lastLoad = DateTime.Now;
             loading = false;
             if (!loaded)

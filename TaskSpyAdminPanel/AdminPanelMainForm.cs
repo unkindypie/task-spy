@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 //мои пространства имен
 using TaskSpyAdminPanel.Models;
 using TaskSpyAdminPanel.Config;
 using TaskSpyAdminPanel.DB;
-using System.Runtime.InteropServices;
+
 
 namespace TaskSpyAdminPanel
 {
@@ -121,6 +122,8 @@ namespace TaskSpyAdminPanel
             ProcessesTab.AddProcessTab = AddProcessTab;
             //для того, чтобы отрывать материнские процессы
             ProcessTab.AddProcessTab = AddProcessTab;
+            //даблбаферинг
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             tbUsrSearch.SetPlaceholder("Поиск");
             lbUsers.IntegralHeight = false;

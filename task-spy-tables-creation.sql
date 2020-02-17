@@ -86,7 +86,9 @@ create table reports_mutator (
 	ip varchar(16) not null,
 )
 
-insert into reports_mutator values (1515, 15, 'effe', '12.2121.465');
+
+
+--insert into reports_mutator values (1515, 15, 'effe', '12.2121.465');
 
 go
 alter trigger reports_mutator_insert on reports_mutator
@@ -120,6 +122,16 @@ begin
 	(select total_cpu_load from inserted), @ip_id)
 	SELECT SCOPE_IDENTITY() as id
 end
+
+create table report_user
+(
+	id bigint primary key identity(1, 1),
+	report_id bigint,
+	user_id bigint,
+	foreign key (report_id) references reports(id),
+	foreign key (user_id) references users(id)
+)
+
 
 create table processes_mutator (
 	report_id bigint not null,
@@ -159,6 +171,16 @@ begin
 		insert into users
 		values (null, @local_username, @is_user_real)
 		set @user_id = (SELECT SCOPE_IDENTITY());
+	end
+
+	if(@is_user_real = 1 and
+	(
+		select id from report_user 
+		where report_id = @report_id and user_id = @user_id
+	) is null 
+	)
+	begin
+		insert into report_user values (@report_id, @user_id)
 	end
 
 	declare @bin_path_id bigint;
@@ -263,7 +285,29 @@ begin
 end
 go
 
-select * from reports;
+
+delete from report_user;
+select * from report_user;
+
+select * from report_user 
+where report_id = some (select ru.report_id from report_user as ru where ru.id != report_user.id and ru.report_id = report_user.report_id)
+
+select distinct created from reports
+join report_user on report_user.report_id = reports.id
+where user_id = 2
+
+select count(*) from processes;
+select distinct created from reports
+join processes on report_id = reports.id
+where processes.user_id = 2
+
+select * from users;
+--обновление отчетов без св€зи с пользовател€ми
+insert into report_user
+select distinct reports.id, user_id from reports
+join processes on report_id  = reports.id
+join users on users.id = user_id and users.is_real = 1
+where (select top 1 report_user.id from report_user where report_id = reports.id) is null
 
 --ALTER TABLE
 --  reports

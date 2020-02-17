@@ -58,6 +58,7 @@ namespace TaskSpyAdminPanel.DB
             builder.UserID = userId;
             builder.Password = password;
             builder.MultipleActiveResultSets = true;
+            builder.ConnectTimeout = 5 * 60;
             connection.ConnectionString = builder.ConnectionString;
 
         }

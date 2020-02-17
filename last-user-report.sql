@@ -16,18 +16,19 @@ begin
 	--join bin_paths on processEntries.bin_path_id = bin_paths.id
 	--если процесс пришел из последнего отчета, в котором присутствовали процессы пользователя
 	where report_id = (
-		select top 1 reports.id from reports, processes
-		where report_id = reports.id and processes.user_id = @user_id and machine_id = @machine_id
+		select top 1 reports.id from reports
+		where machine_id = @machine_id
 		and created = (
 				select max(created) from reports
-				join processes
+				join report_user
 				on report_id = reports.id
-				where processes.user_id = @user_id
+				where report_user.user_id = @user_id
 				and machine_id = @machine_id
 		)
 		and (@show_every_user = 1 or (is_real = 0 or users.id = @user_id))
 	)
 end
+
 
 go
 alter procedure get_user_machines
@@ -37,14 +38,14 @@ begin
 	select distinct max(created) as created, machines.id as machine_id, machines.name from machines
 	join reports on 
 	machine_id = machines.id
-	join processes 
+	join report_user
 	on report_id = reports.id
 	where user_id = @user_id
 	group by name, machines.id, machines.name
 	order by created desc
 end
 go;
-create procedure get_process
+alter procedure get_process
  @pid int,
  @machine_id bigint
 as
@@ -118,7 +119,7 @@ select * from users;
 select * from reports order by created desc;
 
 use [task-spy];
-alter function  hasUnvitelisted ( @report_id bigint )
+create function  hasUnvitelisted ( @report_id bigint )
 returns bit
 as
 begin
@@ -137,7 +138,7 @@ exec dbo.hasUnvitelisted(4584);
 select * from dbo.hasUnvitelisted (4584)
 
 
-create procedure get_report_list
+alter procedure get_report_list
  @from datetime,
  @userid bigint,
  @limit int,
@@ -154,7 +155,8 @@ begin
 	 total_memory_load, machines.name 'machine',
 	  ips.ip, null, null from (
 			select top (@limit) created, reports.id, total_cpu_load, total_memory_load, machine_id, ip_id from reports
-			where ((@including_from = 0 and created < @from) or (@including_from = 1 and created <= @from)) 
+			join report_user on report_user.report_id = reports.id
+			where user_id = @userid and ((@including_from = 0 and created < @from) or (@including_from = 1 and created <= @from)) 
 				and ((@to is null and 1 < 2) or (@to is not null and created >= @to)) 
 				and ((@only_unwhitelisted = 0 and 1 < 2) or (@only_unwhitelisted = 1 and 0 = (select top 1 in_whitelist from processes
 							join processEntries
@@ -163,8 +165,8 @@ begin
 							))
 			order by created desc
 		) as reps
-		join processes
-		on user_id = @userid
+		--join processes
+		--on user_id = @userid
 		join machines
 		on machine_id = machines.id
 		join ips
@@ -227,7 +229,7 @@ end
 
 
 
-create procedure get_report
+alter procedure get_report
 	@user_id bigint,
 	@machine_id bigint,
 	@show_every_user bit,
@@ -246,7 +248,7 @@ end
 
 
 
-create procedure whitelist_report 
+alter procedure whitelist_report 
 	@report_id bigint,
 	@value bit
 as
@@ -267,7 +269,7 @@ order by name
 
 select * from processes where entry_id = 137
 
-create procedure get_process_history
+alter procedure get_process_history
 	@user_id bigint,
 	@process_id bigint,
 	@machine_id bigint
@@ -282,17 +284,22 @@ begin
 	join processEntries
 	on entry_id = processEntries.id
 	join reports on report_id = reports.id
-	where created is not null and machine_id = @machine_id and  --created <= @to and created >= @from and
-	(
-		select top 1 user_id from processes
-		where processes.report_id = reports.id
-		and user_id = @user_id
-	)  is not null
+	join report_user on report_user.report_id = reports.id
+	where created is not null and machine_id = @machine_id
+	 and  --created <= @to and created >= @from and
+	--(
+	--	select top 1 user_id from processes
+	--	where processes.report_id = reports.id
+	--	and user_id = @user_id
+	--)  is not null
+	report_user.user_id = @user_id
 	and entry_id = @entry_id
 	group by created
 	order by created
 end
 
+select * from machines;
+select * from processes;
+execute get_process_history 2, 791165, 1
 
---execute get_process_history 105, 4306402, 1
-
+		

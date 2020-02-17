@@ -7,30 +7,23 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
 
+//реализация TabControl с возможностью смены цвета фона и кнопками, взята с 
+//https://dotnetrix.co.uk/tabcontrol.htm#tip2
+//но я ее подогнал под свои нужды
 namespace TaskSpyAdminPanel
 {
-    //реализация TabControl с возможностью смены цвета фона, взята с 
-    //https://dotnetrix.co.uk/tabcontrol.htm#tip2
-    //но я ее подогнал под свои нужды
-
     public class MyTabControl : System.Windows.Forms.TabControl
     {
         private System.ComponentModel.Container components = null;
+        private int _hotTabIndex = -1;
 
         public MyTabControl()
+            : base()
         {
-
-            InitializeComponent();
-
-        
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
-
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
+            Font = new Font("HelveticaNeueCyr", 8.25f, FontStyle.Bold);
+ 
         }
-
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -44,229 +37,273 @@ namespace TaskSpyAdminPanel
         }
 
 
-        #region Component Designer generated code
-        private void InitializeComponent()
-        {
-            components = new System.ComponentModel.Container();
-        }
-        #endregion
+        #region Properties
 
-        #region Interop
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct NMHDR
+        private int CloseButtonHeight
         {
-            public IntPtr HWND;
-            public uint idFrom;
-            public int code;
-            public override String ToString()
-            {
-                return String.Format("Hwnd: {0}, ControlID: {1}, Code: {2}", HWND, idFrom, code);
-            }
+            get { return FontHeight; }
         }
 
-        private const int TCN_FIRST = 0 - 550;
-        private const int TCN_SELCHANGING = (TCN_FIRST - 2);
-
-        private const int WM_USER = 0x400;
-        private const int WM_NOTIFY = 0x4E;
-        private const int WM_REFLECT = WM_USER + 0x1C00;
-
-        #endregion
-
-        #region BackColor Manipulation
-
-
-        private Color m_Backcolor = Color.Empty;
-        [Browsable(true), Description("The background color used to display text and graphics in a control.")]
-        public override Color BackColor
+        private int HotTabIndex
         {
-            get
-            {
-                if (m_Backcolor.Equals(Color.Empty))
-                {
-                    if (Parent == null)
-                        return Control.DefaultBackColor;
-                    else
-                        return Parent.BackColor;
-                }
-                return m_Backcolor;
-            }
+            get { return _hotTabIndex; }
             set
             {
-                if (m_Backcolor.Equals(value)) return;
-                m_Backcolor = value;
-                Invalidate();
-                //Let the Tabpages know that the backcolor has changed.
-                base.OnBackColorChanged(EventArgs.Empty);
+                if (_hotTabIndex != value)
+                {
+                    _hotTabIndex = value;
+                    this.Invalidate();
+                }
             }
-        }
-        public bool ShouldSerializeBackColor()
-        {
-            return !m_Backcolor.Equals(Color.Empty);
-        }
-        public override void ResetBackColor()
-        {
-            m_Backcolor = Color.Empty;
-            Invalidate();
         }
 
         #endregion
 
-        protected override void OnParentBackColorChanged(EventArgs e)
+        #region Overridden Methods
+
+        protected override void OnCreateControl()
         {
-            base.OnParentBackColorChanged(e);
-            Invalidate();
+            base.OnCreateControl();
+            this.OnFontChanged(EventArgs.Empty);
         }
 
-
-        protected override void OnSelectedIndexChanged(EventArgs e)
+        protected override void OnFontChanged(EventArgs e)
         {
-            base.OnSelectedIndexChanged(e);
-            Invalidate();
+            base.OnFontChanged(e);
+            IntPtr hFont = this.Font.ToHfont();
+            SendMessage(this.Handle, WM_SETFONT, hFont, new IntPtr(-1));
+            SendMessage(this.Handle, WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
+            this.UpdateStyles();
         }
 
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            TCHITTESTINFO HTI = new TCHITTESTINFO(e.X, e.Y);
+            HotTabIndex = SendMessage(this.Handle, TCM_HITTEST, IntPtr.Zero, ref HTI);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            HotTabIndex = -1;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            base.OnPaintBackground(pevent);
+            Brush borderBrush;// = new SolidBrush(ColorPalette.Dark);
+            Rectangle r = ClientRectangle;
+            //pevent.Graphics.FillRectangle(borderBrush, r);
+            //r.Y += 17;
+            //r.Height -= 17 * 2;
+
+            borderBrush = new LinearGradientBrush(new Point(0, r.Bottom), new Point(0, r.Top), ColorPalette.Dark, ColorPalette.Selected);
+            pevent.Graphics.FillRectangle(borderBrush, r);
+            r.X+=3;
+            r.Width-=6;
+            r.Y+=2;
+            r.Height -= 4;
+            borderBrush = new SolidBrush(ColorPalette.Dark);
+            pevent.Graphics.FillRectangle(borderBrush, r);
+            for (int id = 0; id < this.TabCount; id++)
+                DrawTabBackground(pevent.Graphics, id);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.Clear(BackColor);
-            Rectangle r = ClientRectangle;
-            if (TabCount <= 0) return;
-            //Draw a custom background for Transparent TabPages
-            r = SelectedTab.Bounds;
-            StringFormat sf = new StringFormat();
-            sf.Alignment = StringAlignment.Center;
-            sf.LineAlignment = StringAlignment.Center;
-            Font DrawFont = new Font(Font.FontFamily, 24, FontStyle.Regular, GraphicsUnit.Pixel);
-            ControlPaint.DrawStringDisabled(e.Graphics, "Micks Ownerdraw TabControl", DrawFont, BackColor, (RectangleF)r, sf);
-            DrawFont.Dispose();
-            //Draw a border around TabPage
-            r.Inflate(3, 3);
-            TabPage tp = TabPages[SelectedIndex];
-
-            SolidBrush PaintBrush = new SolidBrush(tp.BackColor);
-            Brush borderBrush = new LinearGradientBrush(new Point(0, r.Bottom), new Point(0, r.Top), tp.BackColor, ColorPalette.Selected);
-
-            e.Graphics.FillRectangle(borderBrush, r);
-            //ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, ButtonBorderStyle.Outset);
-            //Draw the Tabs
-            for (int index = 0; index <= TabCount - 1; index++)
-            {
-                tp = TabPages[index];
-                r = GetTabRect(index);
-                ButtonBorderStyle bs = ButtonBorderStyle.Outset;
-                
-                PaintBrush.Color = tp.BackColor;
-                if (index == SelectedIndex)
-                {
-                    borderBrush = new LinearGradientBrush(new Point(0, r.Bottom + 2), new Point(0, r.Top), ColorPalette.Selected, tp.BackColor);
-                    e.Graphics.FillRectangle(borderBrush, r);
-                }
-                e.Graphics.FillRectangle(PaintBrush, new Rectangle(r.X + 2, r.Y + 2, r.Width - 4, r.Height - 2));
-
-                //ControlPaint.DrawBorder(e.Graphics, r, PaintBrush.Color, bs);
-                PaintBrush.Color = tp.ForeColor;
-
-                //Set up rotation for left and right aligned tabs
-                if (Alignment == TabAlignment.Left || Alignment == TabAlignment.Right)
-                {
-                    float RotateAngle = 90;
-                    if (Alignment == TabAlignment.Left) RotateAngle = 270;
-                    PointF cp = new PointF(r.Left + (r.Width >> 1), r.Top + (r.Height >> 1));
-                    e.Graphics.TranslateTransform(cp.X, cp.Y);
-                    e.Graphics.RotateTransform(RotateAngle);
-                    r = new Rectangle(-(r.Height >> 1), -(r.Width >> 1), r.Height, r.Width);
-                }
-                //Draw the Tab Text
-                if (tp.Enabled)
-                    e.Graphics.DrawString(tp.Text, Font, PaintBrush, (RectangleF)r, sf);
-                else
-                    ControlPaint.DrawStringDisabled(e.Graphics, tp.Text, Font, tp.BackColor, (RectangleF)r, sf);
-
-                e.Graphics.ResetTransform();
-            }
-
-            PaintBrush.Dispose();
-
+            for (int id = 0; id < this.TabCount; id++)
+                DrawTabContent(e.Graphics, id);
         }
-
-
-        [Description("Occurs as a tab is being changed.")]
-        public event SelectedTabPageChangeEventHandler SelectedIndexChanging;
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == (WM_REFLECT + WM_NOTIFY))
+            if (m.Msg == TCM_SETPADDING)
+                m.LParam = MAKELPARAM(this.Padding.X + CloseButtonHeight / 2, this.Padding.Y);
+
+            if (m.Msg == WM_MOUSEDOWN && !this.DesignMode)
             {
-                NMHDR hdr = (NMHDR)(Marshal.PtrToStructure(m.LParam, typeof(NMHDR)));
-                if (hdr.code == TCN_SELCHANGING)
+                Point pt = this.PointToClient(Cursor.Position);
+                Rectangle closeRect = GetCloseButtonRect(HotTabIndex);
+                if (closeRect.Contains(pt))
                 {
-                    TabPage tp = TestTab(PointToClient(Cursor.Position));
-                    if (tp != null)
-                    {
-                        TabPageChangeEventArgs e = new TabPageChangeEventArgs(SelectedTab, tp);
-                        if (SelectedIndexChanging != null)
-                            SelectedIndexChanging(this, e);
-                        if (e.Cancel || tp.Enabled == false)
-                        {
-                            m.Result = new IntPtr(1);
-                            return;
-                        }
-                    }
+                    var e_ = new MouseEventArgs(MouseButtons.Left, 2, pt.X, pt.Y, 0);
+                    this.OnMouseDoubleClick(e_);
+                    //TabPages.RemoveAt(HotTabIndex);
+                    m.Msg = WM_NULL;
                 }
             }
             base.WndProc(ref m);
         }
 
+        #endregion
 
-        private TabPage TestTab(Point pt)
+        #region Private Methods
+
+        private IntPtr MAKELPARAM(int lo, int hi)
         {
-            for (int index = 0; index <= TabCount - 1; index++)
-            {
-                if (GetTabRect(index).Contains(pt.X, pt.Y))
-                    return TabPages[index];
-            }
-            return null;
+            return new IntPtr((hi << 16) | (lo & 0xFFFF));
         }
+
+        private void DrawTabBackground(Graphics graphics, int id)
+        {
+            if (id == SelectedIndex)
+            {
+                Rectangle r = GetTabRect(id);
+                Brush b = new LinearGradientBrush(new Point(0, r.Top), new Point(0, r.Bottom), ColorPalette.Selected, ColorPalette.Dark);
+                graphics.FillRectangle(b, r);
+            }
+            else if (id == HotTabIndex)
+            {
+                Rectangle rc = GetTabRect(id);
+                graphics.FillRectangle(new SolidBrush(ColorPalette.Light), rc);
+                rc.Width--;
+                rc.Height--;
+                graphics.DrawRectangle(new Pen(Color.LightGray, 2), rc);
+            }
+            else
+            {
+                Rectangle r = GetTabRect(id);
+                r.X += 2;
+                r.Width -= 4;
+                graphics.FillRectangle(new SolidBrush(ColorPalette.Light), r);
+            }
+        }
+
+        private void DrawTabContent(Graphics graphics, int id)
+        {
+            bool selectedOrHot = id == this.SelectedIndex || id == this.HotTabIndex;
+            bool vertical = this.Alignment >= TabAlignment.Left;
+
+            Image tabImage = null;
+
+            if (this.ImageList != null)
+            {
+                TabPage page = this.TabPages[id];
+                if (page.ImageIndex > -1 && page.ImageIndex < this.ImageList.Images.Count)
+                    tabImage = this.ImageList.Images[page.ImageIndex];
+
+                if (page.ImageKey.Length > 0 && this.ImageList.Images.ContainsKey(page.ImageKey))
+                    tabImage = this.ImageList.Images[page.ImageKey];
+            }
+
+            Rectangle tabRect = GetTabRect(id);
+            Rectangle contentRect = vertical ? new Rectangle(0, 0, tabRect.Height, tabRect.Width) : new Rectangle(Point.Empty, tabRect.Size);
+            Rectangle textrect = contentRect;
+            textrect.Width -= FontHeight;
+
+            if (tabImage != null)
+            {
+                textrect.Width -= tabImage.Width;
+                textrect.X += tabImage.Width;
+            }
+
+            Color frColor = ColorPalette.FontColor;
+            Color bkColor = ColorPalette.Light;
+
+            using (Bitmap bm = new Bitmap(contentRect.Width, contentRect.Height))
+            {
+                using (Graphics bmGraphics = Graphics.FromImage(bm))
+                {
+                    TextRenderer.DrawText(bmGraphics, this.TabPages[id].Text, this.Font, textrect, frColor, bkColor);
+                    if (selectedOrHot)
+                    {
+                        Rectangle closeRect = new Rectangle(contentRect.Right - CloseButtonHeight, 0, CloseButtonHeight, CloseButtonHeight);
+                        closeRect.Offset(-2, (contentRect.Height - closeRect.Height) / 2);
+                        DrawCloseButton(bmGraphics, closeRect);
+                    }
+                    if (tabImage != null)
+                    {
+                        Rectangle imageRect = new Rectangle(Padding.X, 0, tabImage.Width, tabImage.Height);
+                        imageRect.Offset(0, (contentRect.Height - imageRect.Height) / 2);
+                        bmGraphics.DrawImage(tabImage, imageRect);
+                    }
+                }
+
+                if (vertical)
+                {
+                    if (this.Alignment == TabAlignment.Left)
+                        bm.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    else
+                        bm.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                }
+                graphics.DrawImage(bm, tabRect);
+
+            }
+        }
+
+        private void DrawCloseButton(Graphics graphics, Rectangle bounds)
+        {
+            graphics.FillRectangle(new SolidBrush(ColorPalette.Red), bounds);
+            using (Font closeFont = new Font("HelveticaNeueCyr", Font.Size, FontStyle.Bold))
+                TextRenderer.DrawText(graphics, "X", closeFont, bounds, ColorPalette.Light, ColorPalette.Red, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding | TextFormatFlags.SingleLine | TextFormatFlags.VerticalCenter);
+
+        }
+
+        private Rectangle GetCloseButtonRect(int id)
+        {
+            Rectangle tabRect = GetTabRect(id);
+            Rectangle closeRect = new Rectangle(tabRect.Left, tabRect.Top, CloseButtonHeight, CloseButtonHeight);
+
+            switch (Alignment)
+            {
+                case TabAlignment.Left:
+                    closeRect.Offset((tabRect.Width - closeRect.Width) / 2, 0);
+                    break;
+                case TabAlignment.Right:
+                    closeRect.Offset((tabRect.Width - closeRect.Width) / 2, tabRect.Height - closeRect.Height);
+                    break;
+                default:
+                    closeRect.Offset(tabRect.Width - closeRect.Width, (tabRect.Height - closeRect.Height) / 2);
+                    break;
+            }
+
+            return closeRect;
+        }
+
+        #endregion
+
+        #region Interop
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hwnd, int msg, IntPtr wParam, ref TCHITTESTINFO lParam);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct TCHITTESTINFO
+        {
+            public Point pt;
+            public TCHITTESTFLAGS flags;
+            public TCHITTESTINFO(int x, int y)
+            {
+                pt = new Point(x, y);
+                flags = TCHITTESTFLAGS.TCHT_NOWHERE;
+            }
+        }
+
+        [Flags()]
+        private enum TCHITTESTFLAGS
+        {
+            TCHT_NOWHERE = 1,
+            TCHT_ONITEMICON = 2,
+            TCHT_ONITEMLABEL = 4,
+            TCHT_ONITEM = TCHT_ONITEMICON | TCHT_ONITEMLABEL
+        }
+
+        private const int WM_NULL = 0x0;
+        private const int WM_SETFONT = 0x30;
+        private const int WM_FONTCHANGE = 0x1D;
+        private const int WM_MOUSEDOWN = 0x201;
+
+        private const int TCM_FIRST = 0x1300;
+        private const int TCM_HITTEST = TCM_FIRST + 13;
+        private const int TCM_SETPADDING = TCM_FIRST + 43;
+
+        #endregion
 
     }
-
-
-    public class TabPageChangeEventArgs : EventArgs
-    {
-        private TabPage _Selected = null;
-        private TabPage _PreSelected = null;
-        public bool Cancel = false;
-
-        public TabPage CurrentTab
-        {
-            get
-            {
-                return _Selected;
-            }
-        }
-
-
-        public TabPage NextTab
-        {
-            get
-            {
-                return _PreSelected;
-            }
-        }
-
-
-        public TabPageChangeEventArgs(TabPage CurrentTab, TabPage NextTab)
-        {
-            _Selected = CurrentTab;
-            _PreSelected = NextTab;
-        }
-
-
-    }
-
-
-    public delegate void SelectedTabPageChangeEventHandler(Object sender, TabPageChangeEventArgs e);
-
 }
+
