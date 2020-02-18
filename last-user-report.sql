@@ -302,4 +302,67 @@ select * from machines;
 select * from processes;
 execute get_process_history 2, 791165, 1
 
-		
+
+
+--EXECUTE IT.
+use [task-spy];
+create TYPE WhitelistTempTable
+AS TABLE (
+	id int identity(1, 1),
+	entry_id bigint
+)
+create procedure whitelist_all_user_processes
+(
+	@user_id bigint,
+	@value bit
+)
+as
+begin
+	declare @whitelist_it as WhitelistTempTable;
+	
+	insert into @whitelist_it
+	select distinct entry_id from processes
+	join report_user on report_user.report_id = processes.report_id
+	join processEntries on entry_id = processEntries.id
+	where in_whitelist = ~@value and report_user.user_id = @user_id 
+
+	update processEntries
+	set in_whitelist = @value
+	from processEntries
+	where processEntries.id = some (select entry_id from @whitelist_it) 
+	and processEntries.in_whitelist != @value
+end
+
+create procedure get_specific_process
+ @pid int,
+ @report_id bigint
+as
+begin
+	select top 1 process_names.name, bin_path, ROUND(cpu_load, 2) 'cpu_load', 
+	mem_load, parent_pid, pid, created, is_system, in_whitelist, users.local_username, users.is_real, processes.id from processes 
+	join reports
+	on report_id = reports.id
+	join processEntries
+	on processEntries.id = entry_id
+	join process_names 
+	on processEntries.process_name_id = process_names.id
+	join bin_paths
+	on bin_paths.id = bin_path_id
+	join users
+	on user_id = users.id
+	where reports.id = @report_id and pid = @pid
+end
+
+
+--execute whitelist_all_user_processes 105, 0;
+
+
+--update processEntries
+--set in_whitelist = 1
+--from processEntries
+--join processes on processEntries.id = processes.entry_id
+--join reports
+--on reports.id = processes.report_id
+--join report_user
+--on report_user.report_id = reports.id
+--where report_user.user_id = 105 and in_whitelist = 0

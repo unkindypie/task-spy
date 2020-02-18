@@ -82,11 +82,11 @@ namespace TaskSpyAdminPanel
             }
         }
 
-        void AddProcessTab(Process process, User user)
+        void AddProcessTab(Process process, User user, long reportId)
         {
             var tabpage = createNiceTab();
             tabpage.Text = $"{process.ProcessName} из {process.Machine.Name}";
-            var processesTab = new ProcessTab(process, user);
+            var processesTab = new ProcessTab(process, user, reportId);
             processesTab.Dock = DockStyle.Fill;
             tabpage.Controls.Add(processesTab);
             tabControl.TabPages.Add(tabpage);

@@ -203,6 +203,31 @@ namespace TaskSpyAdminPanel.DB
                 Id = long.Parse(row["id"].ToString()),
             };
         }
+
+        public async Task<Process> fetchHistoryProcessAsync(int pid, long reportId)
+        {
+            SqlCommand cmd = new SqlCommand($"execute get_specific_process {pid}, {reportId}", connection);
+            var reader = await cmd.ExecuteReaderAsync();
+            var table = new DataTable();
+            table.Load(reader);
+            var row = table.Rows[0];
+            return new Process()
+            {
+                ProcessName = row["name"].ToString(),
+                BinPath = row["bin_path"].ToString(),
+                CPU = float.Parse(row["cpu_load"].ToString()),
+                Mem = long.Parse(row["mem_load"].ToString()),
+                PID = int.Parse(row["pid"].ToString()),
+                ParentPID = int.Parse(row["parent_pid"].ToString()),
+                IsSystem = bool.Parse(row["is_system"].ToString()),
+                InWhitelist = bool.Parse(row["in_whitelist"].ToString()),
+                Report = new Report { Created = (DateTime)row["created"] },
+                User = new User { Name = row["local_username"].ToString() },
+                Id = long.Parse(row["id"].ToString()),
+            };
+        }
+
+
         public async void whitelistProcess(long processId, bool value) {
             if (self.Connect())
             {
@@ -215,10 +240,7 @@ namespace TaskSpyAdminPanel.DB
         {
             if (self.Connect())
             {
-                var commandText = $"update processEntries " +
-                    $"set in_whitelist = {(mode ? 1 : 0)} from processEntries " +
-                    $"join processes on entry_id = processEntries.id" +
-                    $" where user_id = {userId}";
+                var commandText = $"execute whitelist_all_user_processes {userId}, {(mode ? 1 : 0)}";
                 SqlCommand cmd = new SqlCommand(commandText, connection);
                 await cmd.ExecuteNonQueryAsync();
             }

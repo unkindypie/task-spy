@@ -35,7 +35,7 @@ namespace TaskSpyAdminPanel
         DateTime lastLoad;
         Dictionary<KeyValuePair<int, int>, Process> pidsToProcess = new Dictionary<KeyValuePair<int, int>, Process>();
         DateTime lastReport = new DateTime();
-        static public Action<Process, User> AddProcessTab;
+        static public Action<Process, User, long> AddProcessTab;
 
         static Dictionary<string, string> dbNamesToUI = new Dictionary<string, string>();
         static ProcessesTab()
@@ -443,7 +443,14 @@ namespace TaskSpyAdminPanel
             if(AddProcessTab != null)
             {
                 //открываю вкладку процесса
-                AddProcessTab(pidsToProcess[pair], user);
+                if(dynamic)
+                {
+                    AddProcessTab(pidsToProcess[pair], user, -1);
+                }
+                else
+                {
+                    AddProcessTab(pidsToProcess[pair], user, staticReport.Id);
+                }   
             }
 
 
@@ -527,7 +534,15 @@ namespace TaskSpyAdminPanel
             if (AddProcessTab != null)
             {
                 //открываю вкладку процесса
-                AddProcessTab(pidsToProcess[pair], user);
+                if (dynamic)
+                {
+                    AddProcessTab(pidsToProcess[pair], user, -1);
+                }
+                else
+                {
+                    AddProcessTab(pidsToProcess[pair], user, staticReport.Id);
+                }
+                
             }
         }
 

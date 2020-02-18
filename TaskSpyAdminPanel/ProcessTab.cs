@@ -21,16 +21,24 @@ namespace TaskSpyAdminPanel
         Machine machine;
         User user;
         List<ProcessHistoryItem> history;
+        long reportId;
         bool canDraw = false;
-        static public Action<Process, User> AddProcessTab;
+        bool dynamic = true;
+        static public Action<Process, User, long> AddProcessTab;
 
-        public ProcessTab(Process process, User user)
+        public ProcessTab(Process process, User user, long reportId = -1)
         {
             InitializeComponent();
 
             this.process = process;
             machine = new Machine() { Id = process.Machine.Id, Name = process.Machine.Name };
             this.user = user;
+            
+            if(reportId != -1)
+            {
+                this.reportId = reportId;
+                this.dynamic = false;
+            }
 
             chbIsSytem.ForeColor = ColorPalette.FontColor;
             fillForm();
@@ -48,16 +56,23 @@ namespace TaskSpyAdminPanel
             loading = true;
             if (DBWorker.Self.Connect())
             {
-                var newProcess = await DBWorker.Self.fetchProcessAsync(process.PID, machine.Id);
-                
-                if (process.Report != null && newProcess.Report.Created < process.Report.Created)
+                if (dynamic)
                 {
-                    loading = false;
-                    if (!loaded) loaded = true;
-                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
-                    return;
+                    var newProcess = await DBWorker.Self.fetchProcessAsync(process.PID, machine.Id);
+
+                    if (process.Report != null && newProcess.Report.Created < process.Report.Created)
+                    {
+                        loading = false;
+                        if (!loaded) loaded = true;
+                        System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                        return;
+                    }
+                    this.process = newProcess;
                 }
-                this.process = newProcess;
+                else
+                {
+                    this.process = await DBWorker.Self.fetchHistoryProcessAsync(process.PID, reportId);
+                }
                 fillForm();    
             }
             chbWhitelisted.Enabled = true;
@@ -69,7 +84,15 @@ namespace TaskSpyAdminPanel
             }
             try
             {
-                parentProcess = await DBWorker.Self.fetchProcessAsync(process.ParentPID, machine.Id);
+                if (dynamic)
+                {
+                    parentProcess = await DBWorker.Self.fetchProcessAsync(process.ParentPID, machine.Id);
+                }
+                else
+                {
+                    parentProcess = await DBWorker.Self.fetchHistoryProcessAsync(process.ParentPID, reportId);
+                }
+               
                 linkParentProc.Enabled = true;
             }
             catch
@@ -259,7 +282,15 @@ namespace TaskSpyAdminPanel
         {
             parentProcess.Machine = new Machine() { Id = machine.Id, Name = machine.Name };
             parentProcess.User = new User() { Name = process.User.Name };
-            AddProcessTab(parentProcess, user);
+            if (dynamic)
+            {
+                AddProcessTab(parentProcess, user, -1);
+            }
+            else
+            {
+                AddProcessTab(parentProcess, user, reportId);
+            }
+            
         }
 
         private void chbWhitelisted_CheckedChanged(object sender, EventArgs e)
